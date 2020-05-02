@@ -22,8 +22,8 @@ public class SimpleStmtPrint extends SimpleStmt {
 
 	@Override
 	public BTBase inferBehavior(Environment e) {
-		
-		return new BTPrint(exp.getValue(e));
+		return null;
+//		return new BTPrint(exp.getType(e));
 	}
 
 }

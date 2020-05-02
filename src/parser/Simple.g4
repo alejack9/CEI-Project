@@ -8,15 +8,17 @@ block		: '{' statement* '}';
 statement	: returnRule ';'
 			| functionCall ';'
 			| functionDec
-			| ifThenElse
+			| ifThenElse 
 			| declaration ';'
 			| declarationAssignment ';'
 			| assignment ';'
 			| deletion ';' 
-			| print ';'
+			| print ';' 
 			| block;
 			
 // added declaration rule
+
+//declaration	: TYPE ID;
 
 declaration	: TYPE ID;
 

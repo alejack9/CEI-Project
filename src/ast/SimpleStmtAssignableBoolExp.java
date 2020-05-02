@@ -16,8 +16,7 @@ public class SimpleStmtAssignableBoolExp extends SimpleStmtAssignable {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-
-		return null;		
+		return exp.checkSemantics(e);		
 	}
 
 	@Override

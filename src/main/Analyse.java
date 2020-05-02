@@ -2,6 +2,7 @@ package main;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import ast.SimpleElementBase;
 import ast.SimpleStmtBlock;
@@ -13,6 +14,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import parser.SimpleLexer;
 import parser.SimpleParser;
+import util_analysis.Environment;
+import util_analysis.SemanticError;
 
 public class Analyse {
 
@@ -40,7 +43,7 @@ public class Analyse {
 			//visit the root, this will recursively visit the whole tree
 			SimpleElementBase mainBlock = visitor.visitBlock(parser.block());
 			
-			/*
+			
 			//check semantics
 			//give a fresh environment, no need to make it persist
 			List<SemanticError> errors = mainBlock.checkSemantics(new Environment());
@@ -52,14 +55,14 @@ public class Analyse {
 					System.out.println(err);
 			}else{
 				System.out.println("Check semantics succeded");
-				System.out.println("Calculating behavioral type");
+//				System.out.println("Calculating behavioral type");
 				
 				//give a fresh environment, no need to make it persist
-				BTBlock res = (BTBlock)mainBlock.inferBehavior(new Environment());
-				
-				System.out.println(res.toString());
+//				BTBlock res = (BTBlock)mainBlock.inferBehavior(new Environment());
+//				
+//				System.out.println(res.toString());
 			}
-			*/
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

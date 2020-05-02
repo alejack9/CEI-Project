@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import util_analysis.SemanticError;
@@ -15,18 +16,18 @@ public class SimpleBoolExpOr extends SimpleBoolExp {
 	}
 
 	@Override
-	public boolean getValue(Environment e) {
+	public STEntry getType(Environment e) {
 		throw new Error("Method not implemented");
 	}
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		throw new Error("Method not implemented");
-//		List<SemanticError> result = new LinkedList<SemanticError>();
-//		
-//		result.addAll(exp.checkSemantics(e));
-//			
-//		return result;
+	List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		toRet.addAll(leftSide.checkSemantics(e));
+		toRet.addAll(rightSide.checkSemantics(e));
+			
+		return toRet;
 	}
 
 }

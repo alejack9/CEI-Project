@@ -16,8 +16,8 @@ public class SimpleExpDiv extends SimpleExp {
 	}
 
 	@Override
-	public int getValue(Environment e) {
-		return leftSide.getValue(e) / rightSide.getValue(e);
+	public STEntry getType(Environment e) {
+		return null;
 	}
 
 	@Override

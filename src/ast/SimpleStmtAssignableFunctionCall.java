@@ -16,8 +16,7 @@ public class SimpleStmtAssignableFunctionCall extends SimpleStmtAssignable {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-
-		return null;		
+		return fun.checkSemantics(e);		
 	}
 
 	@Override

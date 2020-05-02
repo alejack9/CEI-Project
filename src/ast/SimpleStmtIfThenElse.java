@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import behavioural_analysis.BTBase;
@@ -18,8 +19,12 @@ public class SimpleStmtIfThenElse extends SimpleStmt {
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		toRet.addAll(ifRule.checkSemantics(e));
+		toRet.addAll(elseRule.checkSemantics(e));	
+	
+		return toRet;
 	}
 
 	@Override

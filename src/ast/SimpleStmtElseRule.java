@@ -16,8 +16,8 @@ public class SimpleStmtElseRule extends SimpleStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO unimplemented
-		return null;
+	
+		return block.checkSemantics(e);
 		
 	}
 

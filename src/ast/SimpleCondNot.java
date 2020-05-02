@@ -21,9 +21,8 @@ public class SimpleCondNot extends SimpleCond {
 	}
 
 	@Override
-	public boolean getValue(Environment e) {
-		// TODO Auto-generated method stub
-		return false;
+	public STEntry getType(Environment e) {
+		return null;
 	}
 
 }

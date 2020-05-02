@@ -1,9 +1,11 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import util_analysis.Environment;
 import util_analysis.SemanticError;
+import util_analysis.Strings;
 
 public class SimpleBoolExpVar extends SimpleBoolExp {
 
@@ -17,11 +19,14 @@ public class SimpleBoolExpVar extends SimpleBoolExp {
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		throw new Error("Method not implemented");
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		if (!e.containsVariable(id)) 
+			toRet.add(new SemanticError(Strings.ErrorVariableDoesntExist));
+		return toRet;
 	}
 
 	@Override
-	public boolean getValue(Environment e) {
+	public STEntry getType(Environment e) {
 		throw new Error("Method not implemented");
 	}
 

@@ -16,8 +16,7 @@ public class SimpleReturnBoolExp extends SimpleStmtReturnRule {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO unimplemented
-		return null;
+		return exp.checkSemantics(e);
 		
 	}
 

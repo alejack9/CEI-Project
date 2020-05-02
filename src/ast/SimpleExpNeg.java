@@ -15,8 +15,8 @@ public class SimpleExpNeg extends SimpleExp {
 	}
 
 	@Override
-	public int getValue(Environment e) {
-		return -exp.getValue(e);
+	public STEntry getType(Environment e) {
+		return null;
 	}
 
 	@Override

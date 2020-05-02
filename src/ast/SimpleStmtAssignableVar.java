@@ -1,11 +1,13 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import behavioural_analysis.BTAtom;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
+import util_analysis.Strings;
 
 public class SimpleStmtAssignableVar extends SimpleStmtAssignable {
 	String ID;
@@ -16,9 +18,10 @@ public class SimpleStmtAssignableVar extends SimpleStmtAssignable {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		
-		
-		return null;
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		if (!e.containsVariable(ID))
+			toRet.add(new SemanticError(Strings.ErrorVariableDoesntExist + this.ID));
+		return toRet;
 		
 	}
 

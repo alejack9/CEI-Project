@@ -76,7 +76,7 @@ public class SimpleVisitorImpl extends SimpleBaseVisitor<SimpleElementBase> {
 
 	@Override
 	public SimpleElementBase visitDeclaration(DeclarationContext ctx) {
-		return new SimpleStmtDeclaration(ctx.ID().getText(),ctx.TYPE().getText());
+		return new SimpleStmtDeclaration(ctx.TYPE().getText(),ctx.ID().getText());
 	}
 	
 	@Override

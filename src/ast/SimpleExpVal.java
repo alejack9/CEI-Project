@@ -23,8 +23,8 @@ public class SimpleExpVal extends SimpleExp {
 	}
 
 	@Override
-	public int getValue(Environment e) {	
-		return value;
+	public STEntry getType(Environment e) {	
+		return null;
 	}
 
 }

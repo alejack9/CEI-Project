@@ -16,18 +16,18 @@ public class SimpleCondEqual extends SimpleCond {
 	}
 	
 	@Override
-	public boolean getValue(Environment e) {
+	public STEntry getType(Environment e) {
 		throw new Error("Method not implemented");
 	}
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		throw new Error("Method not implemented");
-//		List<SemanticError> result = new LinkedList<SemanticError>();
-//		
-//		result.addAll(leftSide.checkSemantics(e));
-//		result.addAll(rightSide.checkSemantics(e));
-//		
-//		return result;
+		
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		toRet.addAll(leftExpSide.checkSemantics(e));
+		toRet.addAll(rightExpSide.checkSemantics(e));
+			
+		return toRet;
 	}
 }

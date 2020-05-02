@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import behavioural_analysis.BTAtom;
@@ -18,8 +19,13 @@ public class SimpleStmtIfThen extends SimpleStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO unimplemented
-		return null;
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		toRet.addAll(block.checkSemantics(e));
+		toRet.addAll(exp.checkSemantics(e));	
+	
+		return toRet;
+		
 		
 	}
 

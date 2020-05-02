@@ -17,8 +17,7 @@ public class SimpleParamDefExp extends SimpleParamDef {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO unimplemented
-		return null;
+		return exp.checkSemantics(e);
 	}
 
 	@Override

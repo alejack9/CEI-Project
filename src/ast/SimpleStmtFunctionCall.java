@@ -1,10 +1,12 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
+import util_analysis.Strings;
 
 /**
  * Represents a Simple Expression
@@ -24,8 +26,14 @@ public class SimpleStmtFunctionCall extends SimpleStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		if (!e.containsVariable(ID))
+			toRet.add(new SemanticError(Strings.ErrorVariableDoesntExist));
+		
+		params.forEach(param -> toRet.addAll(param.checkSemantics(e)) );
+		
+		return toRet;
 	}
 
 	@Override

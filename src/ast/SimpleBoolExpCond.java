@@ -18,11 +18,11 @@ public class SimpleBoolExpCond extends SimpleBoolExp {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		throw new Error("Method not implemented");
+		return value.checkSemantics(e);
 	}
 
 	@Override
-	public boolean getValue(Environment e) {
+	public STEntry getType(Environment e) {
 		throw new Error("Method not implemented");
 	}
 

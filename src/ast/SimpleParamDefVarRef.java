@@ -17,8 +17,7 @@ public class SimpleParamDefVarRef extends SimpleParamDef {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO unimplemented
-				return null;
+		return ref.checkSemantics(e);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import behavioural_analysis.BTAtom;
@@ -16,9 +17,7 @@ public class SimpleStmtAssignableExp extends SimpleStmtAssignable {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		
-		return null;
-		
+		return exp.checkSemantics(e);
 	}
 
 	@Override
