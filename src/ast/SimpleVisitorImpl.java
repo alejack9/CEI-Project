@@ -42,7 +42,6 @@ import parser.SimpleParser.NotContext;
 import parser.SimpleParser.ParamDecContext;
 import parser.SimpleParser.ParamDefContext;
 import parser.SimpleParser.PrintContext;
-import parser.SimpleParser.ReturnRuleContext;
 import parser.SimpleParser.StatementContext;
 import parser.SimpleParser.ValExpContext;
 import parser.SimpleParser.VarAssignableContext;
@@ -147,7 +146,7 @@ public class SimpleVisitorImpl extends SimpleBaseVisitor<SimpleElementBase> {
 	
 	@Override
 	public SimpleElementBase visitParamDec(ParamDecContext ctx) {
-		return new SimpleParamDec(ctx.var.getText() != null, (SimpleStmtDeclaration)visit(ctx.declaration()));
+		return new SimpleParamDec(ctx.var != null, (SimpleStmtDeclaration)visit(ctx.declaration()));
 	}
 	
 	@Override
