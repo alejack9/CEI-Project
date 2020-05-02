@@ -28,8 +28,8 @@ public class SimpleStmtFunctionCall extends SimpleStmt {
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
-		if (!e.containsVariable(ID))
-			toRet.add(new SemanticError(Strings.ErrorVariableDoesntExist));
+		if (!e.containsFunction(ID))
+			toRet.add(new SemanticError(Strings.ErrorFunctionDoesntExist));
 		
 		params.forEach(param -> toRet.addAll(param.checkSemantics(e)) );
 		

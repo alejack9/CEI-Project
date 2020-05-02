@@ -18,8 +18,6 @@ statement	: returnRule ';'
 			
 // added declaration rule
 
-//declaration	: TYPE ID;
-
 declaration	: TYPE ID;
 
 declarationAssignment: declaration '=' assignable;
@@ -35,14 +33,16 @@ deletion	: 'delete' ID;
 
 print		: 'print' exp;
 
-functionDec	: type=(TYPE|'void') ID '(' (declaration (',' declaration)*)? ')' block;
+functionDec	: type=(TYPE|'void') ID '(' (paramDec (',' paramDec)*)? ')' block;
 
-paramDef	: variableRef		#varRefParamDef
-			| assignment		#assignParamDef
+paramDec	: var='var'? declaration ;
+
+// cancellato variableref
+paramDef	:  assignment		#assignParamDef
 			| boolExp			#boolExpParamDef
 			| exp				#expParamDef;
 
-variableRef : var='var'? ID;
+
 
 functionCall: ID '(' (paramDef (',' paramDef)*)? ')' ;
 
@@ -54,7 +54,8 @@ elseRule	: 'else' block;
 
 returnRule	: 'return' ID							#varReturn
 			| 'return' boolExp						#boolExpReturn
-			| 'return' exp							#expReturn;
+			| 'return' exp							#expReturn
+			| 'return' functionCall 				#funCallReturn;
 
 boolExp		: '(' boolExp ')'						#baseBoolExp
 			| left=boolExp op='&&' right=boolExp	#binBoolExp

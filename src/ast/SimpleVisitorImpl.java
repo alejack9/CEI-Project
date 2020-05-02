@@ -27,6 +27,7 @@ import parser.SimpleParser.EqualNotIdCondContext;
 import parser.SimpleParser.ExpAssignableContext;
 import parser.SimpleParser.ExpParamDefContext;
 import parser.SimpleParser.ExpReturnContext;
+import parser.SimpleParser.FunCallReturnContext;
 import parser.SimpleParser.FunctionCallAssignableContext;
 import parser.SimpleParser.FunctionCallContext;
 import parser.SimpleParser.FunctionDecContext;
@@ -38,6 +39,7 @@ import parser.SimpleParser.LessCondContext;
 import parser.SimpleParser.LessEqCondContext;
 import parser.SimpleParser.NegExpContext;
 import parser.SimpleParser.NotContext;
+import parser.SimpleParser.ParamDecContext;
 import parser.SimpleParser.ParamDefContext;
 import parser.SimpleParser.PrintContext;
 import parser.SimpleParser.ReturnRuleContext;
@@ -46,9 +48,7 @@ import parser.SimpleParser.ValExpContext;
 import parser.SimpleParser.VarAssignableContext;
 import parser.SimpleParser.VarBoolExpContext;
 import parser.SimpleParser.VarExpContext;
-import parser.SimpleParser.VarRefParamDefContext;
 import parser.SimpleParser.VarReturnContext;
-import parser.SimpleParser.VariableRefContext;
 
 public class SimpleVisitorImpl extends SimpleBaseVisitor<SimpleElementBase> {
 	
@@ -65,7 +65,7 @@ public class SimpleVisitorImpl extends SimpleBaseVisitor<SimpleElementBase> {
 	
 	@Override
 	public SimpleElementBase visitStatement(StatementContext ctx) {
-		SimpleElementBase toRet = visit(ctx.getChild(0)); 
+		SimpleElementBase toRet = ctx.getChild(0) == null? null: visit(ctx.getChild(0)); 
 		return toRet;
 	}
 	
@@ -121,17 +121,12 @@ public class SimpleVisitorImpl extends SimpleBaseVisitor<SimpleElementBase> {
 	@Override
 	public SimpleElementBase visitFunctionDec(FunctionDecContext ctx) {
 		
-		List<SimpleStmtDeclaration> params = new LinkedList<SimpleStmtDeclaration>();
+		List<SimpleParamDec> params = new LinkedList<SimpleParamDec>();
 
-		for(DeclarationContext stmtCtx : ctx.declaration())
-			params.add((SimpleStmtDeclaration) visitDeclaration(stmtCtx));
+		for(ParamDecContext paramCtx : ctx.paramDec())
+			params.add((SimpleParamDec) visitParamDec(paramCtx));
 
 		return new SimpleStmtFunctionDec(ctx.type.getText(), ctx.ID().getText(),params, (SimpleStmtBlock)visit(ctx.block()));
-	}
-
-	@Override
-	public SimpleElementBase visitVarRefParamDef(VarRefParamDefContext ctx) {
-		return new SimpleParamDefVarRef((SimpleVariableRef)visit(ctx.variableRef()));
 	}
 	
 	@Override
@@ -151,8 +146,8 @@ public class SimpleVisitorImpl extends SimpleBaseVisitor<SimpleElementBase> {
 	
 	
 	@Override
-	public SimpleElementBase visitVariableRef(VariableRefContext ctx) {
-		return new SimpleVariableRef(ctx.var.getText() != null, ctx.ID().getText());
+	public SimpleElementBase visitParamDec(ParamDecContext ctx) {
+		return new SimpleParamDec(ctx.var.getText() != null, (SimpleStmtDeclaration)visit(ctx.declaration()));
 	}
 	
 	@Override
@@ -307,6 +302,11 @@ public class SimpleVisitorImpl extends SimpleBaseVisitor<SimpleElementBase> {
 	@Override
 	public SimpleElementBase visitExpReturn(ExpReturnContext ctx) {
 		return new SimpleReturnExp((SimpleExp)visit(ctx.exp()));
+	}
+	
+	@Override
+	public SimpleElementBase visitFunCallReturn(FunCallReturnContext ctx) {
+		return new SimpleReturnFunCall((SimpleStmtFunctionCall)visit(ctx.functionCall()));
 	}
 	/**
 	 * RULE returnRule END

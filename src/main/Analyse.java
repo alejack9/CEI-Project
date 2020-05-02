@@ -46,22 +46,22 @@ public class Analyse {
 			
 			//check semantics
 			//give a fresh environment, no need to make it persist
-			List<SemanticError> errors = mainBlock.checkSemantics(new Environment());
+//			List<SemanticError> errors = mainBlock.checkSemantics(new Environment());
 			
 			//this means the semantic checker found some errors
-			if (errors.size() > 0) {
-				System.out.println("Check semantics FAILED");			
-				for(SemanticError err: errors)
-					System.out.println(err);
-			}else{
-				System.out.println("Check semantics succeded");
-//				System.out.println("Calculating behavioral type");
-				
-				//give a fresh environment, no need to make it persist
-//				BTBlock res = (BTBlock)mainBlock.inferBehavior(new Environment());
+//			if (errors.size() > 0) {
+//				System.out.println("Check semantics FAILED");			
+//				for(SemanticError err: errors)
+//					System.out.println(err);
+//			}else{
+//				System.out.println("Check semantics succeded");
+////				System.out.println("Calculating behavioral type");
 //				
-//				System.out.println(res.toString());
-			}
+//				//give a fresh environment, no need to make it persist
+////				BTBlock res = (BTBlock)mainBlock.inferBehavior(new Environment());
+////				
+////				System.out.println(res.toString());
+//			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();

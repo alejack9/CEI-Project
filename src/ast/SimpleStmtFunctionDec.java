@@ -19,10 +19,10 @@ public class SimpleStmtFunctionDec extends SimpleStmt {
 	
 	String type;
 	String ID;
-	List<SimpleStmtDeclaration> params;
+	List<SimpleParamDec> params;
 	SimpleStmtBlock block;
 	
-	public SimpleStmtFunctionDec(String type,String ID,List<SimpleStmtDeclaration> params, SimpleStmtBlock block) {
+	public SimpleStmtFunctionDec(String type,String ID,List<SimpleParamDec> params, SimpleStmtBlock block) {
 		this.type = type;
 		this.ID = ID;
 		this.params = params;
@@ -34,20 +34,19 @@ public class SimpleStmtFunctionDec extends SimpleStmt {
 		
 		List<SemanticError> result = new LinkedList<SemanticError>();
 	
-		if(!e.containsVariable(ID))
-			result.add(new SemanticError(Strings.ErrorVariableDoesntExist + ID));
+		if(e.contains(ID))
+			result.add(new SemanticError(Strings.ErrorIDAlreadyExist + ID));
 		List<String> paramsType = new LinkedList<String>();
 		
 		e.openScope();
 		params.forEach(param -> {
 			result.addAll(param.checkSemantics(e));
-			paramsType.add(param.type);
+			paramsType.add(param.dec.type);
 		});
-		
-		result.addAll(block.checkSemantics(e));
-
-		e.closeScope();
 		e.addFunction(ID, type, paramsType);
+		result.addAll(block.checkSemantics(e));
+		e.closeScope();
+	
 		return result;
 	}
 

@@ -30,7 +30,7 @@ public class SimpleStmtDelete extends SimpleStmt {
 		List<SemanticError> result = new LinkedList<SemanticError>();
 		
 		//check for the variable
-		if(!e.containsVariable(id))
+		if(!e.containsVariableLocal(id))
 			result.add(new SemanticError(Strings.ErrorVariableDoesntExist + id));
 		
 		//if the variable does exist then delete it from the environment

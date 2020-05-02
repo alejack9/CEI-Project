@@ -3,44 +3,33 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import behavioural_analysis.BTAtom;
 import behavioural_analysis.BTBase;
+import behavioural_analysis.BTPrint;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
 import util_analysis.Strings;
 
-public class SimpleVariableRef  extends SimpleParamDef {
-	private boolean var;
-	private String id;
+public class SimpleParamDec implements SimpleElementBase{
+	 boolean var;
+	 SimpleStmtDeclaration dec;
 
 	/**
 	 * Creates a delete statement
+	 * 
 	 * @param id the variable we want to delete
 	 */
-	public SimpleVariableRef(boolean var, String id) {
+	public SimpleParamDec(boolean var, SimpleStmtDeclaration dec) {
 		this.var = var;
-		this.id = id;
+		this.dec = dec;
 	}
 
 	/*
-	 * Checks if the variable in use exists. if it doesn't then add an error, 
-	 * if it does then remove it from the current scope
+	 * Checks if the variable in use exists. if it doesn't then add an error, if it
+	 * does then remove it from the current scope
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO
-		return null;
-//		List<SemanticError> result = new LinkedList<SemanticError>();
-//		
-//		//check for the variable
-//		if(!e.containsVariable(id))
-//			result.add(new SemanticError(Strings.ErrorVariableDoesntExist + id));
-//		
-//		//if the variable does exist then delete it from the environment
-//		else
-//			e.deleteVariable(id);
-//		
-//		return result;
+		return dec.checkSemantics(e);
 	}
 
 	@Override

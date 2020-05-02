@@ -87,12 +87,11 @@ public interface SimpleVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionDec(SimpleParser.FunctionDecContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code varRefParamDef}
-	 * labeled alternative in {@link SimpleParser#paramDef}.
+	 * Visit a parse tree produced by {@link SimpleParser#paramDec}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVarRefParamDef(SimpleParser.VarRefParamDefContext ctx);
+	T visitParamDec(SimpleParser.ParamDecContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code assignParamDef}
 	 * labeled alternative in {@link SimpleParser#paramDef}.
@@ -114,12 +113,6 @@ public interface SimpleVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpParamDef(SimpleParser.ExpParamDefContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SimpleParser#variableRef}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariableRef(SimpleParser.VariableRefContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpleParser#functionCall}.
 	 * @param ctx the parse tree
@@ -165,6 +158,13 @@ public interface SimpleVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpReturn(SimpleParser.ExpReturnContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code funCallReturn}
+	 * labeled alternative in {@link SimpleParser#returnRule}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunCallReturn(SimpleParser.FunCallReturnContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code condBoolExp}
 	 * labeled alternative in {@link SimpleParser#boolExp}.

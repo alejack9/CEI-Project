@@ -1,7 +1,3 @@
 {
-	Int x;
-	{
-	Int i = 1;
-	}
-	Int x;
+	Int f (Int x) {}
 }

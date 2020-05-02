@@ -28,7 +28,7 @@ public class SimpleExpVar extends SimpleExp {
 	}
 
 	@Override
-	public STEntry getType(Environment e) {		
+	public STEntry getType(Environment e) {
 		return e.getVariableType(id);
 	}
 
