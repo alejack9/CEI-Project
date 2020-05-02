@@ -1,13 +1,10 @@
 package ast;
 
-import java.util.LinkedList;
 import java.util.List;
 
+import ast.exceptions.SemanticError;
 import behavioural_analysis.BTBase;
-import behavioural_analysis.BTPrint;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
-import util_analysis.Strings;
 
 public class SimpleParamDec implements SimpleElementBase{
 	 boolean var;
@@ -29,7 +26,11 @@ public class SimpleParamDec implements SimpleElementBase{
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		return dec.checkSemantics(e);
+		List<SemanticError> toRet = dec.checkSemantics(e);
+		
+		e.turnIntoParameter(dec.ID, var);
+		
+		return toRet;
 	}
 
 	@Override

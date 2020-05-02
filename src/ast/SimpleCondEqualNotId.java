@@ -3,9 +3,9 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.exceptions.SemanticError;
+import ast.exceptions.VariableNotExistsError;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
-import util_analysis.Strings;
 
 public class SimpleCondEqualNotId extends SimpleCond {
 
@@ -18,7 +18,7 @@ public class SimpleCondEqualNotId extends SimpleCond {
 	}
 
 	@Override
-	public STEntry getType(Environment e) {
+	public Descriptor getType(Environment e) {
 		throw new Error("Method not implemented");
 	}
 
@@ -27,7 +27,7 @@ public class SimpleCondEqualNotId extends SimpleCond {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		toRet.addAll(leftSide.checkSemantics(e));	
 		if (!e.containsVariable(ID))
-			toRet.add(new SemanticError(Strings.ErrorVariableDoesntExist));
+			toRet.add(new VariableNotExistsError(ID));
 		return toRet;
 	}
 }

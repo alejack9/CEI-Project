@@ -2,10 +2,9 @@ package ast;
 
 import java.util.List;
 
+import ast.exceptions.SemanticError;
 import behavioural_analysis.BTBase;
-import behavioural_analysis.BTPrint;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 public class SimpleStmtPrint extends SimpleStmt {
 

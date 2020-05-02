@@ -3,9 +3,9 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import util_analysis.Strings;
+import ast.exceptions.SemanticError;
+import ast.exceptions.VariableNotExistsError;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 public class SimpleExpVar extends SimpleExp {
 
@@ -22,13 +22,13 @@ public class SimpleExpVar extends SimpleExp {
 		List<SemanticError> result = new LinkedList<SemanticError>();
 		
 		if(!e.containsVariable(id))
-			result.add(new SemanticError(Strings.ErrorVariableDoesntExist + id));
+			result.add(new VariableNotExistsError(id));
 		
 		return result;
 	}
 
 	@Override
-	public STEntry getType(Environment e) {
+	public Descriptor getType(Environment e) {
 		return e.getVariableType(id);
 	}
 

@@ -3,11 +3,10 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import behavioural_analysis.BTAtom;
+import ast.exceptions.SemanticError;
+import ast.exceptions.VariableNotExistsError;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
-import util_analysis.Strings;
 
 public class SimpleStmtAssignableVar extends SimpleStmtAssignable {
 	String ID;
@@ -20,7 +19,7 @@ public class SimpleStmtAssignableVar extends SimpleStmtAssignable {
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		if (!e.containsVariable(ID))
-			toRet.add(new SemanticError(Strings.ErrorVariableDoesntExist + this.ID));
+			toRet.add(new VariableNotExistsError(ID));
 		return toRet;
 		
 	}

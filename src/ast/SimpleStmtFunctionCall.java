@@ -3,10 +3,10 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.exceptions.FunctionNotExistsError;
+import ast.exceptions.SemanticError;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
-import util_analysis.Strings;
 
 /**
  * Represents a Simple Expression
@@ -29,8 +29,8 @@ public class SimpleStmtFunctionCall extends SimpleStmt {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		if (!e.containsFunction(ID))
-			toRet.add(new SemanticError(Strings.ErrorFunctionDoesntExist));
-		
+			toRet.add(new FunctionNotExistsError(ID));
+
 		params.forEach(param -> toRet.addAll(param.checkSemantics(e)) );
 		
 		return toRet;

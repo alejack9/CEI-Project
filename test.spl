@@ -1,3 +1,21 @@
 {
-	Int f (Int x) {}
+	Int a = 3
+//	Int b = 6;
+	
+//	Int sum(var Int x, Int y) {
+//		return x+y;
+//	}
+	
+//	Int diff(var Int x, Int z) {
+//		delete z;
+//	}
+	
+//	if (a < b) then {
+//		return fuckYou;
+//	}
+//	else {
+//		return iHateYou;
+//	}
+	
+//	print(a);
 }

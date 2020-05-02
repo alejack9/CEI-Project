@@ -3,12 +3,13 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.exceptions.SemanticError;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 
 public class SimpleExpVal extends SimpleExp {
 
+	@SuppressWarnings("unused")
 	private int value;
 
 	public SimpleExpVal(int value) {
@@ -23,7 +24,7 @@ public class SimpleExpVal extends SimpleExp {
 	}
 
 	@Override
-	public STEntry getType(Environment e) {	
+	public Descriptor getType(Environment e) {	
 		return null;
 	}
 

@@ -2,8 +2,8 @@ package ast;
 
 import java.util.List;
 
+import ast.exceptions.SemanticError;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 
 public class SimpleBoolExpCond extends SimpleBoolExp {
@@ -22,7 +22,7 @@ public class SimpleBoolExpCond extends SimpleBoolExp {
 	}
 
 	@Override
-	public STEntry getType(Environment e) {
+	public Descriptor getType(Environment e) {
 		throw new Error("Method not implemented");
 	}
 

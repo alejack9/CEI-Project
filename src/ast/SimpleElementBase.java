@@ -2,8 +2,8 @@ package ast;
 
 import java.util.List;
 
+import ast.exceptions.SemanticError;
 import behavioural_analysis.BTBase;
-import util_analysis.SemanticError;
 import util_analysis.Environment;
 
 public interface SimpleElementBase {

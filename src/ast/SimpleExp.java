@@ -17,7 +17,7 @@ public abstract class SimpleExp implements SimpleElementBase {
 	 * @param e the environment that stores variable values
 	 * @return an integer which is the value of the expression
 	 */
-	public abstract STEntry getType(Environment e);
+	public abstract Descriptor getType(Environment e);
 	
 	@Override
 	public BTBase inferBehavior(Environment e) {

@@ -3,10 +3,10 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.exceptions.SemanticError;
 import behavioural_analysis.BTBase;
 import behavioural_analysis.BTBlock;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 public class SimpleStmtBlock extends SimpleStmt {
 	

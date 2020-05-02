@@ -3,9 +3,9 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.exceptions.SemanticError;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 public class SimpleStmtIfThenElse extends SimpleStmt {
 

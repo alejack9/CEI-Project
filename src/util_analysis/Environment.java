@@ -4,32 +4,34 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import ast.STEntry;
+import ast.Descriptor;
+import ast.FunctionDescriptor;
+import ast.ParameterDescriptor;
+import ast.SimpleElementBase;
+import ast.VariableDescriptor;
 
 public class Environment {
 
 	// contains the stack of scopes. the last one is always the current active scope
 	// this linked list is used as a stack with LIFO behavior
-	LinkedList<HashMap<String, STEntry>> scopes = new LinkedList<HashMap<String, STEntry>>();
+	LinkedList<HashMap<String, Descriptor>> scopes = new LinkedList<HashMap<String, Descriptor>>();
 
 	public void addVariable(String id, String type) {
-		scopes.peek().put(id, new STEntry(id, type));
+		scopes.peek().put(id, new VariableDescriptor(id, type));
 	}
 
-	public void addFunction(String id, String returnType, List<String> paramsType) {
-		StringBuilder funType = new StringBuilder();
-		funType.append("(");
+	public void addFunction(String id, String returnType) {
+		scopes.peek().put(id,
+				new FunctionDescriptor(id, returnType,
+						scopes.peek().values().stream().filter(s -> s instanceof ParameterDescriptor)
+								.map(s -> (ParameterDescriptor) s).collect(Collectors.toCollection(LinkedList::new))));
+	}
 
-		if (!paramsType.isEmpty()) {
-			paramsType.forEach(type -> funType.append(type + ","));
-			funType.deleteCharAt(funType.length() - 1);
-		}
-
-		funType.append(")->");
-		funType.append(returnType);
-
-		scopes.peek().put(id, new STEntry(id, funType.toString()));
+	public void turnIntoParameter(String id, boolean var) {
+		VariableDescriptor old = (VariableDescriptor)scopes.peek().get(id);
+		scopes.peek().put(id, new ParameterDescriptor(old, var));
 	}
 
 	/**
@@ -37,7 +39,7 @@ public class Environment {
 	 * is clone so previous defined variables still exist
 	 */
 	public void openScope() {
-		scopes.push(new HashMap<String, STEntry>());
+		scopes.push(new HashMap<String, Descriptor>());
 	}
 
 	/**
@@ -66,7 +68,7 @@ public class Environment {
 	 */
 	public boolean containsVariable(String id) {
 		return scopes.stream().anyMatch(scope -> {
-			STEntry ste = scope.get(id);
+			Descriptor ste = scope.get(id);
 			return ste != null && ste.getType().charAt(0) != '(';
 		});
 	}
@@ -79,7 +81,7 @@ public class Environment {
 	 */
 	public boolean containsFunction(String id) {
 		return scopes.stream().anyMatch(scope -> {
-			STEntry ste = scope.get(id);
+			Descriptor ste = scope.get(id);
 			return ste != null && ste.getType().charAt(0) == '(';
 		});
 	}
@@ -91,7 +93,7 @@ public class Environment {
 	 * @param id
 	 */
 	public void deleteVariable(String id) {
-		for (HashMap<String, STEntry> scope : scopes) {
+		for (HashMap<String, Descriptor> scope : scopes) {
 			if (scope.containsKey(id)) {
 				scope.remove(id);
 				return;
@@ -105,8 +107,8 @@ public class Environment {
 	 * @param id of the variable
 	 * @return variable value, null if the variable doesnt exist
 	 */
-	public STEntry getVariableType(String id) {
-		for (HashMap<String, STEntry> scope : scopes) {
+	public Descriptor getVariableType(String id) {
+		for (HashMap<String, Descriptor> scope : scopes) {
 			if (scope.containsKey(id)) {
 				return scope.get(id);
 			}
@@ -120,7 +122,7 @@ public class Environment {
 	 * @param id of the variable
 	 * @return variable value in current scope, null otherwise
 	 */
-	public STEntry getVariableValueLocal(String id) {
+	public Descriptor getVariableValueLocal(String id) {
 
 		return scopes.peek().get(id);
 

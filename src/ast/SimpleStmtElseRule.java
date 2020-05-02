@@ -2,10 +2,9 @@ package ast;
 
 import java.util.List;
 
-import behavioural_analysis.BTAtom;
+import ast.exceptions.SemanticError;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 public class SimpleStmtElseRule extends SimpleStmt {
 	SimpleStmtBlock block;

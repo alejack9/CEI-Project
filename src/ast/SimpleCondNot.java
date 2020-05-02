@@ -2,10 +2,8 @@ package ast;
 
 import java.util.List;
 
-import behavioural_analysis.BTBase;
-import behavioural_analysis.BTPrint;
+import ast.exceptions.SemanticError;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 public class SimpleCondNot extends SimpleCond {
 
@@ -21,7 +19,7 @@ public class SimpleCondNot extends SimpleCond {
 	}
 
 	@Override
-	public STEntry getType(Environment e) {
+	public Descriptor getType(Environment e) {
 		return null;
 	}
 

@@ -3,8 +3,8 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.exceptions.SemanticError;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
 
 public class SimpleCondGreatEqual extends SimpleCond {
 	
@@ -16,7 +16,7 @@ public class SimpleCondGreatEqual extends SimpleCond {
 	}
 
 	@Override
-	public STEntry getType(Environment e) {
+	public Descriptor getType(Environment e) {
 		return null;
 	}
 
