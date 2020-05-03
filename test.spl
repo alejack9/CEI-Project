@@ -1,5 +1,13 @@
 {
 	Int a;
-	Int b;
-	Int a;
+	{
+		Int a = 0;
+		delete a;
+		Int a;
+		
+		Bool f (var Int miao){
+			Int b;
+			return f(miao);
+		}
+	}
 }
