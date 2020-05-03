@@ -3,9 +3,8 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.SemanticError;
-import ast.exceptions.VariableAlreadyExistsError;
-
+import ast.errors.SemanticError;
+import ast.errors.VariableAlreadyExistsError;
 import util_analysis.Environment;
 
 public class StmtDeclaration extends Stmt {

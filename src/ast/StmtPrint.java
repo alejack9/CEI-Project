@@ -2,8 +2,7 @@ package ast;
 
 import java.util.List;
 
-import ast.exceptions.SemanticError;
-
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class StmtPrint extends Stmt {

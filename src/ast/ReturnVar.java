@@ -3,8 +3,8 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.SemanticError;
-import ast.exceptions.VariableNotExistsError;
+import ast.errors.SemanticError;
+import ast.errors.VariableNotExistsError;
 import util_analysis.Environment;
 
 public class ReturnVar extends StmtReturnRule {

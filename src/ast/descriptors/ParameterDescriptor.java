@@ -1,4 +1,4 @@
-package ast;
+package ast.descriptors;
 
 public class ParameterDescriptor extends VariableDescriptor {
 	boolean var;

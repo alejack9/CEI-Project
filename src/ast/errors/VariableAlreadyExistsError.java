@@ -1,13 +1,13 @@
-package ast.exceptions;
+package ast.errors;
 
 public class VariableAlreadyExistsError extends SemanticError {
 	private static final long serialVersionUID = 1L;
 
 	public VariableAlreadyExistsError(String variabileId) {
-		super(variabileId);
+		super(variabileId, SemanticErrorType.VARIABLEALREADYEXISTS);
 	}
 	public VariableAlreadyExistsError(String variabileId, int line, int col) {
-		super(variabileId, line, col);
+		super(variabileId, SemanticErrorType.VARIABLEALREADYEXISTS,line, col);
 	}
 	
 	@Override

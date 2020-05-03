@@ -3,9 +3,8 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.FunctionNotExistsError;
-import ast.exceptions.SemanticError;
-
+import ast.errors.FunctionNotExistsError;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class StmtFunctionCall extends Stmt {

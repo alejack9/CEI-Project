@@ -3,11 +3,11 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.LocalVariableDoesntExistsError;
-import ast.exceptions.SemanticError;
-import ast.exceptions.VariableNotExistsError;
-import ast.exceptions.VariableNotVarError;
-
+import ast.descriptors.ParameterDescriptor;
+import ast.errors.LocalVariableDoesntExistsError;
+import ast.errors.SemanticError;
+import ast.errors.VariableNotExistsError;
+import ast.errors.VariableNotVarError;
 import util_analysis.Environment;
 
 public class StmtDelete extends Stmt {

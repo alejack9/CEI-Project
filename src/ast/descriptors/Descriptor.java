@@ -1,4 +1,4 @@
-package ast;
+package ast.descriptors;
 
 public abstract class Descriptor {
 	protected String type;

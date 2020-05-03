@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-import ast.Descriptor;
-import ast.FunctionDescriptor;
-import ast.ParameterDescriptor;
-import ast.VariableDescriptor;
+import ast.descriptors.Descriptor;
+import ast.descriptors.FunctionDescriptor;
+import ast.descriptors.ParameterDescriptor;
+import ast.descriptors.VariableDescriptor;
 
 public class Environment {
 

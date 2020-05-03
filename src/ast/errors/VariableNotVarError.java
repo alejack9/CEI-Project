@@ -1,14 +1,14 @@
-package ast.exceptions;
+package ast.errors;
 
 public class VariableNotVarError extends SemanticError {
 	private static final long serialVersionUID = 1L;
 
 	public VariableNotVarError(String localId) {
-		super(localId);
+		super(localId, SemanticErrorType.VARIABLENOTVAR);
 	}
 
 	public VariableNotVarError(String localId, int line, int col) {
-		super(localId, line, col);
+		super(localId,SemanticErrorType.VARIABLENOTVAR, line, col);
 	}
 
 	@Override
