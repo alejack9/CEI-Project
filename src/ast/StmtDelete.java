@@ -23,7 +23,7 @@ public class StmtDelete extends Stmt {
 		List<SemanticError> result = new LinkedList<SemanticError>();
 
 		if (e.containsVariable(id))
-			if (e.containsVariableLocal(id))
+			if (e.containsLocalVariable(id))
 				e.deleteVariable(id);
 			else if (e.getVariableType(id) instanceof ParameterDescriptor)
 				if (((ParameterDescriptor) e.getVariableType(id)).isVar())

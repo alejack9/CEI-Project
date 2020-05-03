@@ -1,5 +1,6 @@
 package ast.descriptors;
 
+// NOTE: a parameter is a variable!
 public class ParameterDescriptor extends VariableDescriptor {
 	boolean var;
 	

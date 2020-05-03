@@ -1,7 +1,6 @@
 package ast;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import parser.SimpleBaseVisitor;
 import parser.SimpleParser.BinBoolExpContext;
@@ -38,7 +37,6 @@ import parser.SimpleParser.LessEqCondContext;
 import parser.SimpleParser.NegExpContext;
 import parser.SimpleParser.NotContext;
 import parser.SimpleParser.ParamDecContext;
-import parser.SimpleParser.ParamDefContext;
 import parser.SimpleParser.PrintContext;
 import parser.SimpleParser.StatementContext;
 import parser.SimpleParser.ValExpContext;
@@ -51,18 +49,12 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitBlock(BlockContext ctx) {
-
-		List<Stmt> children = new LinkedList<Stmt>();
-
-		for (StatementContext stmtCtx : ctx.statement())
-			children.add((Stmt) visitStatement(stmtCtx));
-
-		return new StmtBlock(children);
+		return new StmtBlock(ctx.statement().stream().map(s -> (Stmt) visitStatement(s)).collect(Collectors.toList()));
 	}
 
 	@Override
 	public ElementBase visitStatement(StatementContext ctx) {
-		ElementBase toRet = ctx.getChild(0) == null ? null : visit(ctx.getChild(0));
+		ElementBase toRet = visit(ctx.getChild(0));
 		return toRet;
 	}
 
@@ -91,17 +83,12 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitBoolExpAssignable(BoolExpAssignableContext ctx) {
-		BoolExp exp = (BoolExp) visit(ctx.boolExp());
-
-		return new StmtAssignableBoolExp(exp);
+		return new StmtAssignableBoolExp((BoolExp) visit(ctx.boolExp()));
 	}
 
 	@Override
 	public ElementBase visitFunctionCallAssignable(FunctionCallAssignableContext ctx) {
-
-		StmtFunctionCall fun = (StmtFunctionCall) visit(ctx.functionCall());
-
-		return new StmtAssignableFunctionCall(fun);
+		return new StmtAssignableFunctionCall((StmtFunctionCall) visit(ctx.functionCall()));
 	}
 
 	@Override
@@ -111,20 +98,14 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitPrint(PrintContext ctx) {
-
-		Exp exp = (Exp) visit(ctx.exp());
-		return new StmtPrint(exp);
+		return new StmtPrint((Exp) visit(ctx.exp()));
 	}
 
 	@Override
 	public ElementBase visitFunctionDec(FunctionDecContext ctx) {
-
-		List<ParamDec> params = new LinkedList<ParamDec>();
-
-		for (ParamDecContext paramCtx : ctx.paramDec())
-			params.add((ParamDec) visitParamDec(paramCtx));
-
-		return new StmtFunctionDec(ctx.type.getText(), ctx.ID().getText(), params, (StmtBlock) visit(ctx.block()));
+		return new StmtFunctionDec(ctx.type.getText(), ctx.ID().getText(),
+				ctx.paramDec().stream().map(s -> (ParamDec) visitParamDec(s)).collect(Collectors.toList()),
+				(StmtBlock) visit(ctx.block()));
 	}
 
 	@Override
@@ -149,11 +130,8 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitFunctionCall(FunctionCallContext ctx) {
-		List<ParamDef> params = new LinkedList<ParamDef>();
-		for (ParamDefContext contexes : ctx.paramDef())
-			params.add((ParamDef) visit(contexes));
-
-		return new StmtFunctionCall(ctx.ID().getText(), params);
+		return new StmtFunctionCall(ctx.ID().getText(),
+				ctx.paramDef().stream().map(s -> (ParamDef) visit(s)).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -163,15 +141,11 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitBinBoolExp(BinBoolExpContext ctx) {
-		BoolExp left = (BoolExp) visit(ctx.left);
-
-		BoolExp right = (BoolExp) visit(ctx.right);
-
 		switch (ctx.op.getText()) {
 		case "&&":
-			return new BoolExpAnd(left, right);
+			return new BoolExpAnd((BoolExp) visit(ctx.left), (BoolExp) visit(ctx.right));
 		case "||":
-			return new BoolExpOr(left, right);
+			return new BoolExpOr((BoolExp) visit(ctx.left), (BoolExp) visit(ctx.right));
 		default:
 			return null;
 		}
@@ -227,38 +201,22 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitGreatEqCond(GreatEqCondContext ctx) {
-
-		Exp left = (Exp) visit(ctx.left);
-		Exp right = (Exp) visit(ctx.right);
-
-		return new CondGreatEqual(left, right);
+		return new CondGreatEqual((Exp) visit(ctx.left), (Exp) visit(ctx.right));
 	}
 
 	@Override
 	public ElementBase visitGreatCond(GreatCondContext ctx) {
-
-		Exp left = (Exp) visit(ctx.left);
-		Exp right = (Exp) visit(ctx.right);
-
-		return new CondGreat(left, right);
+		return new CondGreat((Exp) visit(ctx.left), (Exp) visit(ctx.right));
 	}
 
 	@Override
 	public ElementBase visitLessEqCond(LessEqCondContext ctx) {
-
-		Exp left = (Exp) visit(ctx.left);
-		Exp right = (Exp) visit(ctx.right);
-
-		return new CondLessEqual(left, right);
+		return new CondLessEqual((Exp) visit(ctx.left), (Exp) visit(ctx.right));
 	}
 
 	@Override
 	public ElementBase visitLessCond(LessCondContext ctx) {
-
-		Exp left = (Exp) visit(ctx.left);
-		Exp right = (Exp) visit(ctx.right);
-
-		return new CondLess(left, right);
+		return new CondLess((Exp) visit(ctx.left), (Exp) visit(ctx.right));
 	}
 
 	@Override
@@ -293,24 +251,18 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitBinExp(BinExpContext ctx) {
-
-		Exp left = (Exp) visit(ctx.left);
-
-		Exp right = (Exp) visit(ctx.right);
-
 		switch (ctx.op.getText()) {
 		case "+":
-			return new ExpSum(left, right);
+			return new ExpSum((Exp) visit(ctx.left), (Exp) visit(ctx.right));
 		case "-":
-			return new ExpDiff(left, right);
+			return new ExpDiff((Exp) visit(ctx.left), (Exp) visit(ctx.right));
 		case "*":
-			return new ExpMult(left, right);
+			return new ExpMult((Exp) visit(ctx.left), (Exp) visit(ctx.right));
 		case "/":
-			return new ExpDiv(left, right);
+			return new ExpDiv((Exp) visit(ctx.left), (Exp) visit(ctx.right));
 		default:
 			return null;
 		}
-
 	}
 
 	@Override
@@ -322,5 +274,4 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 	public ElementBase visitVarExp(VarExpContext ctx) {
 		return new ExpVar(ctx.ID().getText());
 	}
-
 }

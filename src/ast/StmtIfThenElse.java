@@ -21,7 +21,7 @@ public class StmtIfThenElse extends Stmt {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		toRet.addAll(ifRule.checkSemantics(e));
-		toRet.addAll(elseRule.checkSemantics(e));
+		if(elseRule != null) toRet.addAll(elseRule.checkSemantics(e));
 
 		return toRet;
 	}

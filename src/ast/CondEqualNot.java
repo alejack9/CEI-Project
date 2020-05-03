@@ -20,7 +20,7 @@ public class CondEqualNot extends Cond {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		toRet.addAll(leftSide.checkSemantics(e));
-		toRet.addAll(rightSide.checkSemantics(e));
+		if(rightSide != null) toRet.addAll(rightSide.checkSemantics(e));
 			
 		return toRet;
 	}

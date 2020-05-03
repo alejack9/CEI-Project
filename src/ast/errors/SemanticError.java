@@ -1,5 +1,8 @@
 package ast.errors;
 
+/**
+ * Represents a semantic error
+ */
 public class SemanticError extends Error {
 	private static final long serialVersionUID = 1L;
 
@@ -8,19 +11,20 @@ public class SemanticError extends Error {
 	protected Integer errorColumn;
 	public final SemanticErrorType errorType;
 
-	protected SemanticError(String id, SemanticErrorType errorType) {
+	protected SemanticError(String id, SemanticErrorType errorType, Integer errorLine, Integer errorColumn) {
 		this.id = id;
 		this.errorType = errorType;
-	}
-
-	protected SemanticError(String id, SemanticErrorType errorType, int errorLine, int errorColumn) {
-		this(id, errorType);
 		this.errorLine = errorLine;
 		this.errorColumn = errorColumn;
 	}
+	
+	protected SemanticError(String id, SemanticErrorType errorType) {
+		this(id, errorType, null, null);
+	}
 
 	protected String getPosition() {
-		return (errorLine != null) ? "[" + errorLine + " , " + errorColumn + "]" : "";
+		// asserting that, if "errorLine" is set, then "errorColumn" is set
+		return (errorLine != null) ? "[" + errorLine + " : " + errorColumn + "]" : "";
 	}
 
 	public SemanticErrorType getType() {

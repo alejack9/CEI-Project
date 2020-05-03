@@ -1,5 +1,8 @@
 package ast.errors;
 
+/**
+ * Represents a semantic error, in particular the declared id is already used
+ */
 public class IdAlreadytExistsError extends SemanticError {
 	private static final long serialVersionUID = 1L;
 

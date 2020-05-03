@@ -1,5 +1,8 @@
 package ast.errors;
 
+/**
+ * Represents a semantic error, in particular the variable is not referenced
+ */
 public class VariableNotVarError extends SemanticError {
 	private static final long serialVersionUID = 1L;
 
@@ -13,7 +16,7 @@ public class VariableNotVarError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return "Variable is not referenced. Variable name: " + this.id + getPosition();
+		return "Variable is not referenced. Variable name: " + id + getPosition();
 	}
 
 }

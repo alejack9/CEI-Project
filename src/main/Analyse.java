@@ -24,12 +24,12 @@ public class Analyse {
 
 		String fileName = "test.spl";
 
+		// create console logger
+		Logger clogger = LoggerFactory.getLogger();
+
 		try {
 			FileInputStream is = new FileInputStream(fileName);
 			ANTLRInputStream input = new ANTLRInputStream(is);
-
-			// create console logger
-			Logger clogger = LoggerFactory.getLogger();
 
 			SimpleLexer lexer = new SimpleLexer(input);
 
@@ -76,6 +76,14 @@ public class Analyse {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NullPointerException e) {
+			try {
+				clogger.writeLine("Error while semantic checking");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} finally {
+				e.printStackTrace();
+			}
 		}
 
 	}

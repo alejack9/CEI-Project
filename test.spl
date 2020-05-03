@@ -6,8 +6,18 @@
 		Int a;
 		
 		Bool f (var Int miao){
-			Int b;
+			Int a;
+			delete miao;
 			return f(miao);
 		}
+		{
+			Int f(var Int ciao) {
+				if(!(ciao)) then {
+					ciao = 4;
+				}
+			}
+		}
+		a = 4;
+		delete a;
 	}
 }

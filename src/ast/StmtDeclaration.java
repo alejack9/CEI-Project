@@ -19,7 +19,7 @@ public class StmtDeclaration extends Stmt {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		if (!e.containsVariableLocal(ID))
+		if (!e.containsLocalVariable(ID))
 			e.addVariable(ID, type);
 		else
 			toRet.add(new VariableAlreadyExistsError(ID));
