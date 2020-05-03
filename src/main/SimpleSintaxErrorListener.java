@@ -19,20 +19,20 @@ public class SimpleSintaxErrorListener extends SimpleErrorListener {
 		try {
 			logger.write("SYNTAX ERROR: ");
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 		super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
 
-		// Scrittura sul file "lexErr.txt"
-//		try {
-//			errOutput.write(String.format("line %d:%d %s\n", i, i1, s));
-//		System.out.println(recognizer.getClass().getName());
-//		System.out.println(line + " " + charPositionInLine);
-//		System.out.println(msg);
-//		} catch (IOException ioEx) {
-//			System.err.println("IOException " + ioEx);
-//		}
+		
+
+
+
+
+
+
+
+
 
 	}
 }

@@ -5,16 +5,9 @@ import java.util.List;
 
 import ast.exceptions.IdAlreadytExistsError;
 import ast.exceptions.SemanticError;
-import behavioural_analysis.BTBase;
+
 import util_analysis.Environment;
 
-/**
- * Represents a Simple Expression Some child classes of this one will be
- * SimpleExpSum, SimpleExpDiff, SimpleExpDiv, SimpleExpMult and SimpleExpNeg
- * 
- * @author Abel
- *
- */
 public class StmtFunctionDec extends Stmt {
 
 	String type;
@@ -45,12 +38,6 @@ public class StmtFunctionDec extends Stmt {
 		e.closeScope();
 
 		return result;
-	}
-
-	@Override
-	public BTBase inferBehavior(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

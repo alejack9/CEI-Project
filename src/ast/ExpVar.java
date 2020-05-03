@@ -14,22 +14,15 @@ public class ExpVar extends Exp {
 	public ExpVar(String id) {
 		this.id = id;
 	}
-	
-	// Checks if the variable in use exists. if it doesn't then add an error.
-	
+
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> result = new LinkedList<SemanticError>();
-		
-		if(!e.containsVariable(id))
-			result.add(new VariableNotExistsError(id));
-		
-		return result;
-	}
 
-	@Override
-	public Descriptor getType(Environment e) {
-		return e.getVariableType(id);
+		if (!e.containsVariable(id))
+			result.add(new VariableNotExistsError(id));
+
+		return result;
 	}
 
 }

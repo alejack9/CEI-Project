@@ -16,11 +16,6 @@ public class BoolExpAnd extends BoolExp {
 	}
 
 	@Override
-	public Descriptor getType(Environment e) {
-		throw new Error("Method not implemented");
-	}
-
-	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
@@ -29,5 +24,6 @@ public class BoolExpAnd extends BoolExp {
 			
 		return toRet;
 	}
+
 
 }

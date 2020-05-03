@@ -15,11 +15,6 @@ public class ExpNeg extends Exp {
 	}
 
 	@Override
-	public Descriptor getType(Environment e) {
-		return null;
-	}
-
-	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> result = new LinkedList<SemanticError>();
 		

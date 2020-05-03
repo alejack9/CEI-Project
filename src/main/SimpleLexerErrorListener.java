@@ -23,7 +23,7 @@ public class SimpleLexerErrorListener extends SimpleErrorListener {
 		try {
 			logger.write("LEXICAL ERROR: ");
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 		super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
@@ -33,21 +33,21 @@ public class SimpleLexerErrorListener extends SimpleErrorListener {
 	@Override
 	public void reportAmbiguity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, boolean exact,
 			BitSet ambigAlts, ATNConfigSet configs) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void reportAttemptingFullContext(Parser recognizer, DFA dfa, int startIndex, int stopIndex,
 			BitSet conflictingAlts, ATNConfigSet configs) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void reportContextSensitivity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, int prediction,
 			ATNConfigSet configs) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

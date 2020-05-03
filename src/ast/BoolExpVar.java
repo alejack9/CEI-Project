@@ -15,8 +15,6 @@ public class BoolExpVar extends BoolExp {
 		this.id = id;
 	}
 	
-	// Checks if the variable in use exists. if it doesn't then add an error.
-	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -24,10 +22,5 @@ public class BoolExpVar extends BoolExp {
 			toRet.add(new VariableNotExistsError(id));
 		return toRet;
 	}
-
-	@Override
-	public Descriptor getType(Environment e) {
-		throw new Error("Method not implemented");
-	}
-
+	
 }

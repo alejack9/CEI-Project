@@ -16,11 +16,6 @@ public class CondGreatEqual extends Cond {
 	}
 
 	@Override
-	public Descriptor getType(Environment e) {
-		return null;
-	}
-
-	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		

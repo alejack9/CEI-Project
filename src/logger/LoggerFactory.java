@@ -26,7 +26,7 @@ public class LoggerFactory {
 			try {
 				filesLoggers.put(fileName, new FileOutputLogger(file));
 			} catch (FileNotFoundException e) {
-				// this will never happen
+				
 			}
 			}
 		return filesLoggers.get(fileName);

@@ -14,11 +14,6 @@ public class CondEqualNot extends Cond {
 		this.leftSide = leftSide;
 		this.rightSide = rightSide;
 	}
-	
-	@Override
-	public Descriptor getType(Environment e) {
-		throw new Error("Method not implemented");
-	}
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {

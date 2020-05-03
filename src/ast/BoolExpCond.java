@@ -13,17 +13,10 @@ public class BoolExpCond extends BoolExp {
 	public BoolExpCond(Cond value) {
 		this.value = value;
 	}
-	
-	// No semantic errors here
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		return value.checkSemantics(e);
-	}
-
-	@Override
-	public Descriptor getType(Environment e) {
-		throw new Error("Method not implemented");
 	}
 
 }

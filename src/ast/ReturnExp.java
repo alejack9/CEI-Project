@@ -3,7 +3,6 @@ package ast;
 import java.util.List;
 
 import ast.exceptions.SemanticError;
-import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 
 public class ReturnExp extends StmtReturnRule {
@@ -18,11 +17,4 @@ public class ReturnExp extends StmtReturnRule {
 		return exp.checkSemantics(e);
 		
 	}
-
-	@Override
-	public BTBase inferBehavior(Environment e) {
-		// TODO unimplemented
-		return null;
-	}
-
 }

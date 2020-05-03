@@ -14,11 +14,6 @@ public class CondEqual extends Cond {
 		this.leftExpSide = leftSide;
 		this.rightExpSide = rightSide;
 	}
-	
-	@Override
-	public Descriptor getType(Environment e) {
-		throw new Error("Method not implemented");
-	}
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
