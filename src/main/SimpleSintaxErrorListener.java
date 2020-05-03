@@ -30,16 +30,5 @@ public class SimpleSintaxErrorListener extends SimpleErrorListener {
 			e1.printStackTrace();
 		}
 		super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
-
-		
-
-
-
-
-
-
-
-
-
 	}
 }
