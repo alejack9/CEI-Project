@@ -2,14 +2,11 @@ package util_analysis;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import ast.Descriptor;
 import ast.FunctionDescriptor;
 import ast.ParameterDescriptor;
-import ast.SimpleElementBase;
 import ast.VariableDescriptor;
 
 public class Environment {
