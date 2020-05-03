@@ -49,13 +49,14 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitBlock(BlockContext ctx) {
+		//Return the children Statement list
 		return new StmtBlock(ctx.statement().stream().map(s -> (Stmt) visitStatement(s)).collect(Collectors.toList()));
 	}
 
+	
 	@Override
 	public ElementBase visitStatement(StatementContext ctx) {
-		ElementBase toRet = visit(ctx.getChild(0));
-		return toRet;
+		return visit(ctx.getChild(0));
 	}
 
 	@Override
@@ -71,9 +72,7 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitExpAssignable(ExpAssignableContext ctx) {
-		Exp exp = (Exp) visit(ctx.exp());
-
-		return new StmtAssignableExp(exp);
+		return new StmtAssignableExp((Exp) visit(ctx.exp()));
 	}
 
 	@Override
@@ -103,7 +102,9 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 
 	@Override
 	public ElementBase visitFunctionDec(FunctionDecContext ctx) {
+		
 		return new StmtFunctionDec(ctx.type.getText(), ctx.ID().getText(),
+				//return the parameters list
 				ctx.paramDec().stream().map(s -> (ParamDec) visitParamDec(s)).collect(Collectors.toList()),
 				(StmtBlock) visit(ctx.block()));
 	}
@@ -131,6 +132,7 @@ public class VisitorImpl extends SimpleBaseVisitor<ElementBase> {
 	@Override
 	public ElementBase visitFunctionCall(FunctionCallContext ctx) {
 		return new StmtFunctionCall(ctx.ID().getText(),
+				//return parameters list
 				ctx.paramDef().stream().map(s -> (ParamDef) visit(s)).collect(Collectors.toList()));
 	}
 

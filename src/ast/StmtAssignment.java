@@ -21,6 +21,7 @@ public class StmtAssignment extends Stmt {
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
+		//Check if the variable does not exists
 		if (!e.containsVariable(id))
 			toRet.add(new VariableNotExistsError(id));
 

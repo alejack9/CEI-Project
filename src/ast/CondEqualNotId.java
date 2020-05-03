@@ -20,7 +20,9 @@ public class CondEqualNotId extends Cond {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		toRet.addAll(leftSide.checkSemantics(e));	
+		toRet.addAll(leftSide.checkSemantics(e));
+		
+		//Check if the variable does not exists
 		if (!e.containsVariable(ID))
 			toRet.add(new VariableNotExistsError(ID));
 		return toRet;

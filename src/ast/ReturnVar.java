@@ -18,6 +18,7 @@ public class ReturnVar extends StmtReturnRule {
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> result = new LinkedList<SemanticError>();
 
+		//Check if the variable does not exists
 		if (!e.containsVariable(ID))
 			result.add(new VariableNotExistsError(ID));
 

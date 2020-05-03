@@ -18,10 +18,10 @@ public class StmtDeclarationAssignment extends Stmt {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
 		toRet.addAll(declaration.checkSemantics(e));
 		toRet.addAll(assign.checkSemantics(e));
 		return toRet;
-
 	}
 
 }

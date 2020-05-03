@@ -19,6 +19,8 @@ public class StmtDeclaration extends Stmt {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		//Check if the variable does not exists in local scope and add it, return error otherwise
 		if (!e.containsLocalVariable(ID))
 			e.addVariable(ID, type);
 		else

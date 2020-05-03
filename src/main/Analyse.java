@@ -25,7 +25,7 @@ public class Analyse {
 		String fileName = "test.spl";
 
 		// create console logger
-		Logger clogger = LoggerFactory.getLogger();
+		Logger clogger = LoggerFactory.getLogger(false);
 
 		try {
 			FileInputStream is = new FileInputStream(fileName);
@@ -35,7 +35,7 @@ public class Analyse {
 
 			// disable default ANTLR lexer listener (to override default behavior)
 			lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
-			lexer.addErrorListener(new SimpleLexerErrorListener(LoggerFactory.getLogger("errors.txt")));
+			lexer.addErrorListener(new SimpleLexerErrorListener(LoggerFactory.getLogger("errors.txt", false)));
 			lexer.addErrorListener(new SimpleLexerErrorListener(clogger));
 
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -44,7 +44,7 @@ public class Analyse {
 			// disable default ANTLR syntax listener (to override default behavior)
 			parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
 			// logger returned from LoggerFactory writes on errors.txt file
-			parser.addErrorListener(new SimpleSintaxErrorListener(LoggerFactory.getLogger("errors.txt")));
+			parser.addErrorListener(new SimpleSintaxErrorListener(LoggerFactory.getLogger("errors.txt", false)));
 			parser.addErrorListener(new SimpleSintaxErrorListener(clogger));
 
 			parser.setBuildParseTree(true);
@@ -82,7 +82,8 @@ public class Analyse {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} finally {
-				e.printStackTrace();
+				if(clogger.isVerbose())
+					e.printStackTrace();
 			}
 		}
 

@@ -28,12 +28,17 @@ public class StmtFunctionDec extends Stmt {
 
 		if (e.contains(ID))
 			result.add(new IdAlreadytExistsError(ID));
-
+		
+		// the function is added to the scope
 		e.addFunction(ID, type);
+		
 		e.openScope();
+		// the function is added also here to return an error if a parameter has the same id of the function
 		e.addFunction(ID, type);
 		params.forEach(param -> result.addAll(param.checkSemantics(e)));
+		// a new scope will be open
 		result.addAll(block.checkSemantics(e));
+		// all the additions will be deleted 
 		e.closeScope();
 
 		return result;

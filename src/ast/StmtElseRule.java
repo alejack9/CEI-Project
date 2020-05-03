@@ -14,7 +14,7 @@ public class StmtElseRule extends Stmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-	
+		// NOTE: a new scope will be open 
 		return block.checkSemantics(e);
 		
 	}

@@ -19,7 +19,8 @@ public class ParamDec implements ElementBase {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = dec.checkSemantics(e);
-
+		
+		//Variable declared as parameter
 		e.turnIntoParameter(dec.ID, var);
 
 		return toRet;

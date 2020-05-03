@@ -17,6 +17,8 @@ public class StmtAssignableVar extends StmtAssignable {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		//Check if the variable doese not exists
 		if (!e.containsVariable(ID))
 			toRet.add(new VariableNotExistsError(ID));
 		return toRet;

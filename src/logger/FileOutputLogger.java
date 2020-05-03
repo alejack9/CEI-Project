@@ -16,6 +16,15 @@ class FileOutputLogger extends Logger {
 	 */
 	public FileOutputLogger(File file) throws FileNotFoundException {
 		// generating a PrintStream from a generated FileOutputStream based on passed file
-		super(new PrintStream(new FileOutputStream(file)));
+		this(file, true);
+	}
+	
+	/**
+	 * @param file The file in which write
+	 * @throws FileNotFoundException
+	 */
+	public FileOutputLogger(File file, boolean verbose) throws FileNotFoundException {
+		// generating a PrintStream from a generated FileOutputStream based on passed file
+		super(new PrintStream(new FileOutputStream(file)), verbose);
 	}
 }

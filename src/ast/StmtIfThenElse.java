@@ -11,6 +11,10 @@ public class StmtIfThenElse extends Stmt {
 	StmtIfThen ifRule;
 	StmtElseRule elseRule;
 
+	/**
+	 * @param ifRule
+	 * @param elseRule Can be null
+	 */
 	public StmtIfThenElse(StmtIfThen ifRule, StmtElseRule elseRule) {
 		this.ifRule = ifRule;
 		this.elseRule = elseRule;

@@ -18,7 +18,9 @@ public class BoolExpVar extends BoolExp {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		if (!e.containsVariable(id)) 
+		
+		//Check if the variable does not exists
+		if (!e.containsVariable(id))
 			toRet.add(new VariableNotExistsError(id));
 		return toRet;
 	}
