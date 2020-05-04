@@ -3,9 +3,8 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.SemanticError;
-import ast.exceptions.VariableNotExistsError;
-import behavioural_analysis.BTBase;
+import ast.errors.SemanticError;
+import ast.errors.VariableNotExistsError;
 import util_analysis.Environment;
 
 public class ReturnVar extends StmtReturnRule {
@@ -18,18 +17,12 @@ public class ReturnVar extends StmtReturnRule {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> result = new LinkedList<SemanticError>();
-		
-		if(!e.containsVariable(ID))
+
+		//Check if the variable does not exists
+		if (!e.containsVariable(ID))
 			result.add(new VariableNotExistsError(ID));
-		
+
 		return result;
-		
-	}
 
-	@Override
-	public BTBase inferBehavior(Environment e) {
-		// TODO unimplemented
-		return null;
 	}
-
 }

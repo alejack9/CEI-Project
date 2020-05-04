@@ -10,9 +10,8 @@ import org.antlr.v4.runtime.ConsoleErrorListener;
 
 import ast.ElementBase;
 import ast.VisitorImpl;
-import ast.exceptions.IdAlreadytExistsError;
-import ast.exceptions.SemanticError;
-import ast.exceptions.VariableAlreadyExistsError;
+import ast.errors.SemanticError;
+import ast.errors.SemanticErrorType;
 import logger.Logger;
 import logger.LoggerFactory;
 import parser.SimpleLexer;
@@ -22,63 +21,100 @@ import util_analysis.Environment;
 public class Analyse {
 
 	public static void main(String[] args) {
+		String inFileName = "test.spl";
+		String outFileName = "errors.txt";
 
-		String fileName = "test.spl";
-		
+		switch (args.length) {
+		case 0:
+			break;
+		case 1:
+			inFileName = args[0];
+			break;
+		case 2:
+			inFileName = args[0];
+			outFileName = args[1];
+			break;
+		default:
+			System.out.println("Usage: \"java -jar .\\exportedJar.jar inputfile outputfile\"");
+		}
+
+		// create console logger
+		Logger clogger = LoggerFactory.getLogger(false);
 		try {
-			FileInputStream is = new FileInputStream(fileName);
+			FileInputStream is = new FileInputStream(inFileName);
 			ANTLRInputStream input = new ANTLRInputStream(is);
-			
-			Logger clogger = LoggerFactory.getLogger();
-			
-			// create lexer
+
+			clogger.writeLine("Input File: " + inFileName);
+			clogger.writeLine("Output File: " + outFileName);
+
+			clogger.writeLine();
+
 			SimpleLexer lexer = new SimpleLexer(input);
-			
+			// disable default ANTLR lexer listener (to override default behavior)
 			lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
-			lexer.addErrorListener(new SimpleLexerErrorListener(LoggerFactory.getLogger("errors.txt")));
+			lexer.addErrorListener(new SimpleLexerErrorListener(LoggerFactory.getLogger(outFileName, false)));
 			lexer.addErrorListener(new SimpleLexerErrorListener(clogger));
-			
-			// create parser
+
+			clogger.writeLine("Collecting Tokens...");
+
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+			clogger.writeLine("...Tokens collected");
+
+			clogger.writeLine();
+
 			SimpleParser parser = new SimpleParser(tokens);
-		
+			// disable default ANTLR syntax listener (to override default behavior)
 			parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
-			parser.addErrorListener(new SimpleSintaxErrorListener(LoggerFactory.getLogger("errors.txt")));
+			// logger returned from LoggerFactory writes on errors.txt file
+			parser.addErrorListener(new SimpleSintaxErrorListener(LoggerFactory.getLogger(outFileName, false)));
 			parser.addErrorListener(new SimpleSintaxErrorListener(clogger));
 
-			// tell the parser to build the AST
 			parser.setBuildParseTree(true);
 
-			// build custom visitor
 			VisitorImpl visitor = new VisitorImpl();
 
-			// visit the root, this will recursively visit the whole tree
+			clogger.writeLine("Creating AST (lexer and parser analysis)...");
+
 			ElementBase mainBlock = visitor.visitBlock(parser.block());
 
-			// check semantics
-			// give a fresh environment, no need to make it persist
+			clogger.writeLine("...AST created (lexer and parser analysis complete)");
+
+			clogger.writeLine();
+
+			clogger.writeLine("Checking semantic...");
+
+			// fill errors list with semantics errors
 			List<SemanticError> errors = mainBlock.checkSemantics(new Environment());
-			
-			clogger.writeLine("There are same ID in the same block: " + errors.stream().anyMatch(s -> s instanceof IdAlreadytExistsError || s instanceof VariableAlreadyExistsError ));
-		
-			// this means the semantic checker found some errors
+
 			if (errors.size() > 0) {
 				clogger.writeLine("Check semantics FAILED");
 				for (SemanticError err : errors)
 					clogger.writeLine(err.toString());
-			} else {
-				System.out.println();
-				clogger.writeLine("Check semantics succeded");
-//				clogger.writeLine("Calculating behavioral type");
-
-				// give a fresh environment, no need to make it persist
-//				BTBlock res = (BTBlock)mainBlock.inferBehavior(new Environment());
-//				
-//				clogger.writeLine(res.toString());
 			}
+
+			clogger.writeLine("...Semantic check done");
+
+			clogger.writeLine();
+
+			/*
+			 * EXERCISE 3: check if duplicated ID error exists in semantic errors list
+			 * (IDALREADYEXISTS to check function's ID duplicates)
+			 */
+			clogger.writeLine("Not same ID occurrences in the same block:");
+			clogger.writeLine("\t" + !errors.stream().anyMatch(s -> s.getType() == SemanticErrorType.IDALREADYEXISTS));
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NullPointerException e) {
+			try {
+				clogger.writeLine("Error while semantic checking");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} finally {
+				if (clogger.isVerbose())
+					e.printStackTrace();
+			}
 		}
 
 	}

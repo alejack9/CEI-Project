@@ -2,8 +2,7 @@ package ast;
 
 import java.util.List;
 
-import ast.exceptions.SemanticError;
-import behavioural_analysis.BTBase;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class ReturnFunCall extends StmtReturnRule {
@@ -16,12 +15,6 @@ public class ReturnFunCall extends StmtReturnRule {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		return fun.checkSemantics(e);	
-	}
-
-	@Override
-	public BTBase inferBehavior(Environment e) {
-		// TODO unimplemented
-		return null;
 	}
 
 }

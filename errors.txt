@@ -1,0 +1,2 @@
+LEXICAL ERROR: line 6:10	token recognition error at: 'è'
+SYNTAX ERROR: line 35:12	extraneous input '>' expecting {'(', '-', ID, NUMBER}

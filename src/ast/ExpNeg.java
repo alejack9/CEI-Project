@@ -3,7 +3,7 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.SemanticError;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class ExpNeg extends Exp {
@@ -12,11 +12,6 @@ public class ExpNeg extends Exp {
 
 	public ExpNeg(Exp exp) {
 		this.exp = exp;		
-	}
-
-	@Override
-	public Descriptor getType(Environment e) {
-		return null;
 	}
 
 	@Override

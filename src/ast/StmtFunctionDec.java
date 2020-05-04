@@ -3,18 +3,10 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.IdAlreadytExistsError;
-import ast.exceptions.SemanticError;
-import behavioural_analysis.BTBase;
+import ast.errors.IdAlreadytExistsError;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
-/**
- * Represents a Simple Expression Some child classes of this one will be
- * SimpleExpSum, SimpleExpDiff, SimpleExpDiv, SimpleExpMult and SimpleExpNeg
- * 
- * @author Abel
- *
- */
 public class StmtFunctionDec extends Stmt {
 
 	String type;
@@ -34,23 +26,20 @@ public class StmtFunctionDec extends Stmt {
 
 		List<SemanticError> result = new LinkedList<SemanticError>();
 
-		if (e.contains(ID))
+		if (e.containsLocal(ID))
 			result.add(new IdAlreadytExistsError(ID));
-
+		
+		// the function is added to the scope
 		e.addFunction(ID, type);
+		
 		e.openScope();
-		e.addFunction(ID, type);
 		params.forEach(param -> result.addAll(param.checkSemantics(e)));
+		// a new scope will be open
 		result.addAll(block.checkSemantics(e));
+		// all the additions will be deleted 
 		e.closeScope();
 
 		return result;
-	}
-
-	@Override
-	public BTBase inferBehavior(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

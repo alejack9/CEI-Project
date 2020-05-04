@@ -3,8 +3,8 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.SemanticError;
-import ast.exceptions.VariableNotExistsError;
+import ast.errors.SemanticError;
+import ast.errors.VariableNotExistsError;
 import util_analysis.Environment;
 
 public class CondEqualIdNot extends Cond {
@@ -16,11 +16,6 @@ public class CondEqualIdNot extends Cond {
 		this.rightSide = rightSide;
 		this.ID = id;
 	}
-	
-	@Override
-	public Descriptor getType(Environment e) {
-		throw new Error("Method not implemented");
-	}
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
@@ -28,6 +23,7 @@ public class CondEqualIdNot extends Cond {
 		
 		toRet.addAll(rightSide.checkSemantics(e));
 		
+		//Check if the variable does not exists
 		if (!e.containsVariable(ID)) 
 			toRet.add(new VariableNotExistsError(ID));
 

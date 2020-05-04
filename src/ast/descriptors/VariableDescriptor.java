@@ -1,4 +1,4 @@
-package ast;
+package ast.descriptors;
 
 public class VariableDescriptor extends Descriptor {
 	public VariableDescriptor(String id, String type) {

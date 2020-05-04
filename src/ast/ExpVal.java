@@ -3,9 +3,8 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.SemanticError;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
-
 
 public class ExpVal extends Exp {
 
@@ -16,16 +15,9 @@ public class ExpVal extends Exp {
 		this.value = value;
 	}
 
-	// No semantic errors here
-
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		return new LinkedList<SemanticError>();
-	}
-
-	@Override
-	public Descriptor getType(Environment e) {	
-		return null;
 	}
 
 }

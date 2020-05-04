@@ -2,8 +2,7 @@ package ast;
 
 import java.util.List;
 
-import ast.exceptions.SemanticError;
-import behavioural_analysis.BTBase;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class StmtElseRule extends Stmt {
@@ -15,15 +14,9 @@ public class StmtElseRule extends Stmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-	
+		// NOTE: a new scope will be open 
 		return block.checkSemantics(e);
 		
-	}
-
-	@Override
-	public BTBase inferBehavior(Environment e) {
-		// TODO unimplemented
-		return null;
 	}
 
 }

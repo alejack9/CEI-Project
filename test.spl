@@ -1,13 +1,42 @@
 {
-	Int a;
+	Int num1 = 3;
+	Bool value;
+	
+	// lexical error here
+	Bool valuè;
+
+	// There are same ID in the same block here
 	{
-		Int a = 0;
-		delete a;
-		Int a;
-		
-		Bool f (var Int miao){
-			Int b;
-			return f(miao);
+		Int num2 = 5;
+		// Uncomment next line in order to declare num2 again 
+		// delete num2;
+		Int num2 = 3;
+	}
+	
+	Int fun1(){
+		Int num3 = 0;
+		if (num3 > num1 && !(value)) then {
+			return num3;
+		} else {
+			return num1;
 		}
 	}
+	
+	// try to delete a variable that not exists
+	delete bool1;
+	
+	void fun2(Int par1, var Int par2){
+		delete par1;
+		delete par2;
+		Int par2 = fun1();
+		print (par1 + par2);
+		
+		// syntactic error here (>>)
+		if (par1 >> par2) then {}
+	}
+	
+	// ID fun2 already exists
+	Bool fun2(){ }
+	
+	return fun2(num1, notExistingVar);
 }

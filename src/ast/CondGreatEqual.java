@@ -3,7 +3,7 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.SemanticError;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class CondGreatEqual extends Cond {
@@ -13,11 +13,6 @@ public class CondGreatEqual extends Cond {
 	public CondGreatEqual(Exp leftSide, Exp rightSide) {
 		this.leftSide = leftSide;
 		this.rightSide = rightSide;
-	}
-
-	@Override
-	public Descriptor getType(Environment e) {
-		return null;
 	}
 
 	@Override

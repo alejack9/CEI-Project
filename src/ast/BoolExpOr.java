@@ -3,7 +3,7 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.exceptions.SemanticError;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class BoolExpOr extends BoolExp {
@@ -13,11 +13,6 @@ public class BoolExpOr extends BoolExp {
 	public BoolExpOr(BoolExp leftSide, BoolExp rightSide) {
 		this.leftSide = leftSide;
 		this.rightSide = rightSide;
-	}
-
-	@Override
-	public Descriptor getType(Environment e) {
-		throw new Error("Method not implemented");
 	}
 
 	@Override
