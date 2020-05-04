@@ -101,8 +101,8 @@ public class Analyse {
 			 * EXERCISE 3: check if duplicated ID error exists in semantic errors list
 			 * (IDALREADYEXISTS to check function's ID duplicates)
 			 */
-			clogger.writeLine("Same ID in the same block:");
-			clogger.writeLine("\t" + errors.stream().anyMatch(s -> s.getType() == SemanticErrorType.IDALREADYEXISTS));
+			clogger.writeLine("Not same ID occurrences in the same block:");
+			clogger.writeLine("\t" + !errors.stream().anyMatch(s -> s.getType() == SemanticErrorType.IDALREADYEXISTS));
 
 		} catch (IOException e) {
 			e.printStackTrace();
