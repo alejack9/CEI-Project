@@ -21,12 +21,25 @@ import util_analysis.Environment;
 public class Analyse {
 
 	public static void main(String[] args) {
-
 		String inFileName = "test.spl";
 		String outFileName = "errors.txt";
+
+		switch (args.length) {
+		case 0:
+			break;
+		case 1:
+			inFileName = args[0];
+			break;
+		case 2:
+			inFileName = args[0];
+			outFileName = args[1];
+			break;
+		default:
+			System.out.println("Usage: \"java -jar .\\exportedJar.jar inputfile outputfile\"");
+		}
+
 		// create console logger
 		Logger clogger = LoggerFactory.getLogger(false);
-
 		try {
 			FileInputStream is = new FileInputStream(inFileName);
 			ANTLRInputStream input = new ANTLRInputStream(is);
@@ -46,7 +59,7 @@ public class Analyse {
 
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-			clogger.writeLine("...Tokens collected ");
+			clogger.writeLine("...Tokens collected");
 
 			clogger.writeLine();
 
@@ -57,15 +70,15 @@ public class Analyse {
 			parser.addErrorListener(new SimpleSintaxErrorListener(LoggerFactory.getLogger(outFileName, false)));
 			parser.addErrorListener(new SimpleSintaxErrorListener(clogger));
 
-			clogger.writeLine("Creating AST (lexer and parser analysis)...");
-
 			parser.setBuildParseTree(true);
 
 			VisitorImpl visitor = new VisitorImpl();
 
+			clogger.writeLine("Creating AST (lexer and parser analysis)...");
+
 			ElementBase mainBlock = visitor.visitBlock(parser.block());
 
-			clogger.writeLine("... AST created (lexer and parser analysis complete)");
+			clogger.writeLine("...AST created (lexer and parser analysis complete)");
 
 			clogger.writeLine();
 
@@ -89,7 +102,7 @@ public class Analyse {
 			 * (IDALREADYEXISTS to check function's ID duplicates)
 			 */
 			clogger.writeLine("Same ID in the same block:");
-            clogger.writeLine("\t" + errors.stream().anyMatch(s -> s.getType() == SemanticErrorType.IDALREADYEXISTS));
+			clogger.writeLine("\t" + errors.stream().anyMatch(s -> s.getType() == SemanticErrorType.IDALREADYEXISTS));
 
 		} catch (IOException e) {
 			e.printStackTrace();
