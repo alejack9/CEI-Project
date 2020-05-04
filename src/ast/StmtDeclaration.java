@@ -5,7 +5,6 @@ import java.util.List;
 
 import ast.errors.IdAlreadytExistsError;
 import ast.errors.SemanticError;
-import ast.errors.VariableAlreadyExistsError;
 import util_analysis.Environment;
 
 public class StmtDeclaration extends Stmt {

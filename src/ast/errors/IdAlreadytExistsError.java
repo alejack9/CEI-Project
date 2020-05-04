@@ -16,6 +16,6 @@ public class IdAlreadytExistsError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return "ID already exists. ID: " + this.id + getPosition();
+		return "Function or variable already exists with the same ID: " + this.id + getPosition();
 	}
 }
