@@ -1,0 +1,68 @@
+Progetto 2020
+
+1) Realizzare un sistema di ANALISI SEMANTICA per il linguaggio SimplePlus in allegato.
+In  particolare, il sistema deve controllare l'assenza
+
+* di variabili/funzioni non dichiarate
+* di variabili dichiarate piu` volte nello stesso ambiente (in questa analisi e`
+  corretto il codice int x = 4 ; delete x ; int x = 5 ;)
+* parametri attuali non conformi ai parametri formali (inclusa la verifica sui 
+  parametri passati per var)
+* di errori nei tipi 
+
+Inoltre deve controllare gli accessi a identificatori "cancellati" con particolare
+attenzione all'aliasing implementando il sistema visto a lezione
+
+2) Definire un linguaggio bytecode per eseguire programmi in SimplePlus, scrivere 
+la compilazione e implementare l'interprete. In particolare:
+
+A. Il bytecode deve avere istruzioni per una macchina a pila che memorizza in un 
+   apposito registro il valore dell'ultima istruzione calcolata [vedi slide delle lezioni]
+B. Implementare l'interprete per il bytecode.
+C. Compilare ed eseguire i programmi del linguaggio ad alto livello.
+
+CONSEGNA: Occorre consegnare il pacchetto completo di tutte le fasi della compilazione.
+E` possibile anche modificare i file dell' assegnamento precedente, se necessario.
+Allegare anche una breve descrizione/analisi delle scelte fatte e su come 
+istallare/eseguire in Eclipse il vostro compilatore. In caso di problemi, chiamero`
+in aiuto qualcuno di voi.
+
+Il pacchetto dovra` essere chiamato Cognome1_Cognome2.zip (dove il Cognome1, Cognome2,
+etc sono i cognomi dei componenti del gruppo). Potete consegnarlo QUANDO VOLETE caricandolo 
+su google drive e inviandomi l'indirizzo. Tenete
+conto che io ho bisogno di qualche giorno per correggerlo e fare l'orale.
+
+
+
+CODICI DA VERIFICARE:
+=====
+ int x = 4 ; delete x ; int x = 5 ;   // questo codice e` corretto!
+=====
+f(var int x, var int y){ delete x; delete y; } 
+    //  cosa accade in {int x = 3 ; f(x,x) ;} 
+=====
+f(var int x, int y){if (y== 0) delete x; else x=x+y ; } 
+=====
+h(var int x, var int y){ if (y==0) delete x ; else { x = x-1; h(x,y) ;}
+=====
+g(var int x, var int y){ if (y==0) delete x ; else { x = x-1; g(x,y) ; delete x ;}
+=====
+int x = 1;
+f(int y){ if (y == 0) then { print(x);} else { f(y-1) ; }
+f(54) ;
+=====
+int u = 1 ;
+f(var int x, int n){ 
+	if (n == 0) then { print(x) ;}
+	else { int y = x*n ; f(y,n-1) ; }
+	delete x ;
+}
+f(u,6) ;
+=====
+f(int m, int n){
+	if (m>n) { print(m+n) ;}
+	else { int x = 1 ; f(m+1,n+1) ; }
+}
+f(5,4) ;
+// cosa succede se la invoco con f(4,5)?
+=====
