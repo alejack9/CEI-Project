@@ -2,6 +2,8 @@ package ast;
 
 import java.util.List;
 
+import ast.errors.TypeError;
+import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTAtom;
 import behavioural_analysis.BTBase;
@@ -10,6 +12,7 @@ import util_analysis.SemanticError;
 
 public class SPStmtAssignment extends SPStmt{
 	String id;
+	STEntry idEntry;
 	SPExp exp;
 
 	public SPStmtAssignment(String id, SPExp exp) {
@@ -19,6 +22,7 @@ public class SPStmtAssignment extends SPStmt{
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
+		// TODO populate idEntry
 		
 		List<SemanticError> res = exp.checkSemantics(e);
 		
@@ -44,8 +48,11 @@ public class SPStmtAssignment extends SPStmt{
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		Type expType = exp.inferType(); 
+		if(expType.getType().equalsTo(idEntry.getType()))
+			throw new TypeError("Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType +")");
+		
+		return EType.VOID.getType();
 	}
 
 }

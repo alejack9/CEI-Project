@@ -3,6 +3,7 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
@@ -30,8 +31,7 @@ public class SPExpVal extends SPExp {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		return EType.INT.getType();
 	}
 
 }

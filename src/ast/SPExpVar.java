@@ -11,6 +11,8 @@ import util_analysis.SemanticError;
 public class SPExpVar extends SPExp {
 
 	private String id;
+	private STEntry idEntry;
+	
 
 	public SPExpVar(String id) {
 		this.id = id;
@@ -20,10 +22,16 @@ public class SPExpVar extends SPExp {
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
+		
+
+		// TODO Populate idEntry
+		
+		
+		
 		List<SemanticError> result = new LinkedList<SemanticError>();
 		
-		if(!e.containsVariable(id))
-			result.add(new SemanticError(Strings.ErrorVariableDoesntExist + id));
+//		if(!e.containsVariable(id))
+//			result.add(new SemanticError(Strings.ErrorVariableDoesntExist + id));
 		
 		return result;
 	}
@@ -35,9 +43,8 @@ public class SPExpVar extends SPExp {
 	}
 
 	@Override
-	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+	public Type inferType() {		
+		return this.idEntry.getType();
 	}
 
 }

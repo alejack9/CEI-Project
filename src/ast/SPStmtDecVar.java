@@ -35,9 +35,13 @@ public class SPStmtDecVar extends SPStmtDec {
 
 	@Override
 	public Type inferType() {
-		if (EType.VOID.compareTo(this.type)) throw new TypeError("Variable type cannot be void");
+		if (EType.VOID.equalsTo(this.type))
+			throw new TypeError("Variable type cannot be void");
+		
 		Type expType = this.exp.inferType();
-		if (this.exp != null && !expType.getType().compareTo(this.type)) throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + this.type +  ")");
+		if (this.exp != null && !expType.getType().equalsTo(this.type))
+			throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + this.type + ")");
+		
 		return EType.VOID.getType();
 	}
 	

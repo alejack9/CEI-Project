@@ -2,6 +2,8 @@ package ast;
 
 import java.util.List;
 
+import ast.errors.TypeError;
+import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
@@ -28,8 +30,11 @@ public class SPExpNot extends SPExp {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		Type expT = this.exp.inferType();
+		if(!EType.BOOL.equalsTo(expT))
+			throw new TypeError("Expression type is \"" + expT + "\" but it must be bool.");
+		
+		return EType.BOOL.getType();
 	}
 
 }

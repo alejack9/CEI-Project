@@ -6,13 +6,10 @@ import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
 
-public class SPExpAnd extends SPExp {
-
-	SPExp left, right;
+public class SPExpAnd extends SPExpBinBoolAllIn {
 
 	public SPExpAnd(SPExp left, SPExp right) {
-		this.left = left;
-		this.right = right;
+		super(left, right);
 	}
 	
 	@Override
@@ -28,9 +25,7 @@ public class SPExpAnd extends SPExp {
 	}
 
 	@Override
-	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+	protected String getOp() {
+		return "&&";
 	}
-
 }

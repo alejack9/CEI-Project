@@ -3,6 +3,8 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.errors.TypeError;
+import ast.types.EType;
 import ast.types.Type;
 import util_analysis.SemanticError;
 import util_analysis.Environment;
@@ -31,8 +33,11 @@ public class SPExpNeg extends SPExp {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		Type expT = this.exp.inferType();
+		if(!EType.INT.equalsTo(expT))
+			throw new TypeError("Expression type is \"" + expT + "\" but it must be int.");
+		
+		return EType.INT.getType();
 	}
 
 }

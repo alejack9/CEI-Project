@@ -28,8 +28,7 @@ public class SPExpCall extends SPExp {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.call.inferType();
 	}
 
 }

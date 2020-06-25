@@ -2,9 +2,7 @@ package ast.types;
 
 class TypeFactory {
 	
-	private TypeFactory() {
-		
-	}
+	private TypeFactory() {}
 	
 	public static Type getType(EType type) {
 		switch (type) {

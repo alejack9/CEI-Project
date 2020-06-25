@@ -16,12 +16,17 @@ public enum EType {
 		return this.type;
 	}
 	
-	public boolean compareTo(String type) {
+	public boolean equalsTo(String type) {
 		return this.type.equals(type);
+	}
+
+	public boolean equalsTo(Type type) {
+		return this.compareTo(type.getType()) == 0;
 	}
 
 	public Type getType() {
 		return TypeFactory.getType(this);
 	}
+
 }
 

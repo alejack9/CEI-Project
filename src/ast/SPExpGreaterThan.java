@@ -2,17 +2,13 @@ package ast;
 
 import java.util.List;
 
-import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
 
-public class SPExpGreaterThan extends SPExp {
+public class SPExpGreaterThan extends SPExpBinBoolIntIn {
 
-	SPExp left, right;
-
-	public SPExpGreaterThan(SPExp left, SPExp right) {
-		this.left = left;
-		this.right = right;
+	public SPExpGreaterThan(SPExp leftSide, SPExp rightSide) {
+		super(leftSide, rightSide);
 	}
 	
 	@Override
@@ -26,11 +22,9 @@ public class SPExpGreaterThan extends SPExp {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
-	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+	protected String getOp() {
+		return ">";
 	}
-
 }

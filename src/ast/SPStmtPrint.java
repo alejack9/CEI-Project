@@ -2,6 +2,8 @@ package ast;
 
 import java.util.List;
 
+import ast.errors.TypeError;
+import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import behavioural_analysis.BTPrint;
@@ -29,8 +31,9 @@ public class SPStmtPrint extends SPStmt {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		if(EType.VOID.equalsTo(exp.inferType()))
+			throw new TypeError("Cannot print void expression");
+		return EType.VOID.getType();
 	}
 
 }

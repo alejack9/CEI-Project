@@ -8,4 +8,11 @@ public abstract class Type {
 		return this.getType().toString();
 	}
 	
+	@Override
+	public boolean equals(Object e) {
+		if(!(e instanceof Type)) return false;
+		if(this.getType() != ((Type)e).getType()) return false;
+		return true;
+	}
+	
 }

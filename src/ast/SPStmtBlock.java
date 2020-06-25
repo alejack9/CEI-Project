@@ -3,6 +3,7 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import behavioural_analysis.BTBlock;
@@ -64,8 +65,14 @@ public class SPStmtBlock extends SPStmt {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		Type toRet = EType.VOID.getType();
+		
+		// assignment is not an heavy operation and we should
+		// make further checks using another approaches
+		for (SPStmt c : children)
+			toRet = c.inferType();
+		
+		return toRet;
 	}
 
 }

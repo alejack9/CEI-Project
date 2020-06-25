@@ -2,6 +2,7 @@ package ast;
 
 import java.util.List;
 
+import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
@@ -29,8 +30,10 @@ public class SPStmtRet extends SPStmt {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		Type toRet = this.exp == null ?
+				EType.VOID.getType()
+				: exp.inferType();
+				
+		return toRet;
 	}
-
 }

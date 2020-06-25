@@ -2,6 +2,8 @@ package ast;
 
 import java.util.List;
 
+import ast.errors.TypeError;
+import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
@@ -32,8 +34,17 @@ public class SPStmtIte extends SPStmt {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		if(!EType.BOOL.equalsTo(exp.inferType()))
+			throw new TypeError("Condition must be bool type");
+		
+		Type thenT = this.thenStmt.inferType();
+		
+		if(this.elseStmt != null) {
+			Type elseT = this.elseStmt.inferType();
+			if(!elseT.getType().equalsTo(thenT))
+				throw new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")");
+		}
+		return thenT;
 	}
 
 }

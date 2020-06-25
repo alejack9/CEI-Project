@@ -7,12 +7,6 @@ public class ArrowType extends Type {
 	private Type retType;
 
 	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public EType getType() {
 		return EType.FUNCTION;
 	}
@@ -20,13 +14,14 @@ public class ArrowType extends Type {
 	public List<Type> getParamTypes() {
 		return paramTypes;
 	}
+	
+	public Type getReturnType() {
+		return retType;
+	}
+
 
 	public void setParamTypes(List<Type> paramTypes) {
 		this.paramTypes = paramTypes;
-	}
-
-	public Type getRetType() {
-		return retType;
 	}
 
 	public void setRetType(Type retType) {

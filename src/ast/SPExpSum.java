@@ -7,13 +7,10 @@ import ast.types.Type;
 import util_analysis.SemanticError;
 import util_analysis.Environment;
 
-public class SPExpSum extends SPExp {
+public class SPExpSum extends SPExpArithm {
 	
-	SPExp leftSide, rightSide;
-
 	public SPExpSum(SPExp leftSide, SPExp rightSide) {
-		this.leftSide = leftSide;
-		this.rightSide = rightSide;
+		super(leftSide, rightSide);
 	}
 
 	@Override
@@ -32,9 +29,7 @@ public class SPExpSum extends SPExp {
 	}
 
 	@Override
-	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+	protected String getOp() {
+		return "+";
 	}
-
 }

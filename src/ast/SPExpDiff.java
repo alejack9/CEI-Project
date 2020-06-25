@@ -3,17 +3,13 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
 
-public class SPExpDiff extends SPExp {
-	
-	SPExp leftSide, rightSide;
+public class SPExpDiff extends SPExpArithm {
 
 	public SPExpDiff(SPExp leftSide, SPExp rightSide) {
-		this.leftSide = leftSide;
-		this.rightSide = rightSide;
+		super(leftSide, rightSide);
 	}
 
 	@Override
@@ -32,9 +28,7 @@ public class SPExpDiff extends SPExp {
 	}
 
 	@Override
-	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+	protected String getOp() {
+		return "-";
 	}
-
 }

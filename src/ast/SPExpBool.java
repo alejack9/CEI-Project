@@ -2,6 +2,7 @@ package ast;
 
 import java.util.List;
 
+import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
@@ -28,8 +29,7 @@ public class SPExpBool extends SPExp {
 
 	@Override
 	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+		return EType.BOOL.getType();
 	}
 
 }

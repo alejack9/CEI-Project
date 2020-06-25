@@ -2,17 +2,13 @@ package ast;
 
 import java.util.List;
 
-import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
 
-public class SPExpEqual extends SPExp {
-
-	SPExp left, right;
+public class SPExpEqual extends SPExpBinBoolAllIn {
 
 	public SPExpEqual(SPExp left, SPExp right) {
-		this.left = left;
-		this.right = right;
+		super(left,right);
 	}
 	
 	@Override
@@ -28,9 +24,7 @@ public class SPExpEqual extends SPExp {
 	}
 
 	@Override
-	public Type inferType() {
-		// TODO Auto-generated method stub
-		return null;
+	protected String getOp() {
+		return "==";
 	}
-
 }
