@@ -2,6 +2,7 @@ package ast;
 
 import java.util.List;
 
+import ast.types.Type;
 import behavioural_analysis.BTAtom;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
@@ -36,13 +37,13 @@ public class SPStmtAssignment extends SPStmt{
 		else cost = 0 ;
 		
 		//put the variable in the current scope with the current value
-		e.addVariable(id, exp.getValue(e));
+		// e.addVariable(id, exp.getValue(e));
 		
 		return new BTAtom(cost);
 	}
 
 	@Override
-	public SPElementBase inferType(Environment e) {
+	public Type inferType(Environment e) {
 		// TODO Auto-generated method stub
 		return null;
 	}

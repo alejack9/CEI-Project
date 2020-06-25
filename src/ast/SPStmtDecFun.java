@@ -2,6 +2,7 @@ package ast;
 
 import java.util.List;
 
+import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import util_analysis.SemanticError;
@@ -33,7 +34,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	}
 
 	@Override
-	public SPElementBase inferType(Environment e) {
+	public Type inferType(Environment e) {
 		// TODO Auto-generated method stub
 		return null;
 	}

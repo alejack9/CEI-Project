@@ -3,6 +3,7 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.types.Type;
 import util_analysis.SemanticError;
 import util_analysis.Environment;
 
@@ -31,7 +32,7 @@ public class SPExpSum extends SPExp {
 	}
 
 	@Override
-	public SPElementBase inferType(Environment e) {
+	public Type inferType(Environment e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
