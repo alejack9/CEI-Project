@@ -1,17 +1,19 @@
 package ast;
 
+import ast.types.Type;
+
 public class STEntry {
-	private SPElementBase type;
+	private Type type;
 	private int nestingLevel;
 	private int offset;
 	
-	public STEntry(SPElementBase type, int nestingLevel, int offset) {
+	public STEntry(Type type, int nestingLevel, int offset) {
 		this.type = type;
 		this.nestingLevel = nestingLevel;
 		this.offset = offset;
 	}
 	
-	public SPElementBase getType() {
+	public Type getType() {
 		return type;
 	}
 	public int getNestingLevel() {

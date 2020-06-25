@@ -14,7 +14,7 @@ public class ListOfMapEnv implements Environment {
 	 * @param id
 	 * @param symTableEntry
 	 */
-	public void addVariable(String id, STEntry symTableEntry) {
+	public void addID(String id, STEntry symTableEntry) {
 		scopes.peek().put(id, symTableEntry);
 	}
 	
@@ -42,13 +42,12 @@ public class ListOfMapEnv implements Environment {
 	 * this is to check the scopes from inner to outer looking for the variable
 	 * @param id
 	 */
-	public boolean containsVariable(String id) {
-		for(HashMap<String, STEntry> scope:scopes){
-			if(scope.containsKey(id))
-				return true;
-		}
-		
-		return false;
+	public boolean containsID(String id) {
+		return getIDEntry(id) != null;
+	}
+	
+	public boolean containsIDLocal(String id) {
+		return getLocalIDEntry(id) != null;
 	}
 	
 	/**
@@ -90,6 +89,11 @@ public class ListOfMapEnv implements Environment {
 	public STEntry getLocalIDEntry(String id) {
 		return scopes.peek().get(id);		
 		
+	}
+
+	@Override
+	public int getNestingLevel() {
+		return scopes.size() - 1;
 	}
 
 }

@@ -2,6 +2,7 @@ package ast;
 
 import java.util.List;
 
+import ast.errors.TypeError;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.SemanticError;
@@ -15,7 +16,7 @@ public interface SPElementBase {
 	 */
 	public List<SemanticError> checkSemantics(Environment e);
 	
-	public Type inferType(Environment e) throws SemanticError;
+	public Type inferType() throws TypeError;
 	
 	/**
 	 * performs behavioral type inference for Simple programs

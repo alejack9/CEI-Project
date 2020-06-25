@@ -2,7 +2,7 @@ package ast.types;
 
 import java.util.List;
 
-class ArrowType extends Type {
+public class ArrowType extends Type {
 	private List<Type> paramTypes;
 	private Type retType;
 

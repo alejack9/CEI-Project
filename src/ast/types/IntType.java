@@ -1,6 +1,6 @@
 package ast.types;
 
-class IntType extends Type {
+public class IntType extends Type {
 
 	@Override
 	public String toString() {

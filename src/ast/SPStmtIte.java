@@ -31,7 +31,7 @@ public class SPStmtIte extends SPStmt {
 	}
 
 	@Override
-	public Type inferType(Environment e) {
+	public Type inferType() {
 		// TODO Auto-generated method stub
 		return null;
 	}

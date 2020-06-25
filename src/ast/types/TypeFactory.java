@@ -1,12 +1,12 @@
 package ast.types;
 
-public class TypeFactory {
+class TypeFactory {
 	
 	private TypeFactory() {
 		
 	}
 	
-	public Type getType(EType type) {
+	public static Type getType(EType type) {
 		switch (type) {
 		case INT: return new IntType();
 		case BOOL: return new BoolType();

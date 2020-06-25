@@ -28,7 +28,7 @@ public class SPExpEqual extends SPExp {
 	}
 
 	@Override
-	public Type inferType(Environment e) {
+	public Type inferType() {
 		// TODO Auto-generated method stub
 		return null;
 	}

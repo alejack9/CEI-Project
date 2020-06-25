@@ -1,6 +1,6 @@
 package ast.types;
 
-class BoolType extends Type {
+public class BoolType extends Type {
 
 	@Override
 	public String toString() {

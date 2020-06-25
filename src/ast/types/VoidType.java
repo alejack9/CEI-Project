@@ -1,6 +1,6 @@
 package ast.types;
 
-class VoidType extends Type {
+public class VoidType extends Type {
 
 	@Override
 	public String toString() {

@@ -4,5 +4,8 @@ public abstract class Type {
 	public abstract EType getType();
 	
 	@Override
-	public abstract String toString();	
+	public String toString() {
+		return this.getType().toString();
+	}
+	
 }
