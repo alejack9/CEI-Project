@@ -5,11 +5,11 @@ import java.util.List;
 import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPExpBool extends SPExp {
 
-	boolean value;
+	private boolean value;
 	
 	public SPExpBool(boolean value) {
 		this.value = value;

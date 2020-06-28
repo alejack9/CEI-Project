@@ -1,6 +1,7 @@
 package ast.types;
 
 public enum EType {
+	
 	INT("int"),
 	BOOL("bool"),
 	VOID("void"),
@@ -16,17 +17,20 @@ public enum EType {
 		return this.type;
 	}
 	
-	public boolean equalsTo(String type) {
-		return this.type.equals(type);
-	}
-
 	public boolean equalsTo(Type type) {
 		return this.compareTo(type.getType()) == 0;
 	}
 
-	public Type getType() {
-		return TypeFactory.getType(this);
+	public Type getType(boolean isParameter, boolean isRef) {
+		return TypeFactory.getType(this, isParameter, isRef);
 	}
-
+	
+	public Type getType(boolean isParameter) {
+		return this.getType(isParameter, false);
+	}
+	
+	public Type getType() {
+		return this.getType(false);
+	}
 }
 

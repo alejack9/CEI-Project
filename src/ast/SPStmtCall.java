@@ -8,13 +8,13 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPStmtCall extends SPStmt {
 
-	List<SPExp> exps;
-	String ID;
-	STEntry idEntry;
+	private List<SPExp> exps;
+	private String ID;
+	private STEntry idEntry;
 
 	public SPStmtCall(String ID, List<SPExp> exps) {
 		this.ID = ID;

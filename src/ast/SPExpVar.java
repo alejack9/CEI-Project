@@ -4,9 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ast.types.Type;
-import util_analysis.Strings;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPExpVar extends SPExp {
 

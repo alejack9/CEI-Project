@@ -7,22 +7,23 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPArg implements SPElementBase {
 
-	String type, ID;
-	boolean ref;
+	private Type type;
+	private String ID;
+	private boolean ref;
 	
 	public SPArg(String type, String ID, boolean ref) {
-		this.type = type;
+		this.type = EType.valueOf(type).getType(true, ref);
 		this.ID = ID;
 		this.ref = ref;
 	}
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
+		// Checked by "SPStmtDecFun"
 		return null;
 	}
 
@@ -31,11 +32,19 @@ public class SPArg implements SPElementBase {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Type getType() {
+		return type;
+	}
 
 	@Override
 	public Type inferType() {
-		if (EType.valueOf(this.type.toUpperCase()).equals(EType.VOID)) throw new TypeError("Parameter type cannot be void");
+		if (EType.VOID.equalsTo(type)) throw new TypeError("Parameter type cannot be void");
 		return EType.VOID.getType();
+	}
+
+	public String getId() {
+		return ID;
 	}
 
 }

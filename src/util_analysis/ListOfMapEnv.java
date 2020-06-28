@@ -14,8 +14,9 @@ public class ListOfMapEnv implements Environment {
 	 * @param id
 	 * @param symTableEntry
 	 */
-	public void addID(String id, STEntry symTableEntry) {
-		scopes.peek().put(id, symTableEntry);
+	@Override
+	public boolean addID(String id, STEntry symTableEntry) {
+		return scopes.peek().put(id, symTableEntry) == null;
 	}
 	
 	
@@ -24,6 +25,7 @@ public class ListOfMapEnv implements Environment {
 	 * When a scope is inserted old scope is clone so previous defined
 	 * variables still exist
 	 */
+	@Override
 	public void openScope(){
 		scopes.push(new HashMap<String, STEntry>());
 	}
@@ -33,6 +35,7 @@ public class ListOfMapEnv implements Environment {
 	 * Drops the current scope and returns to the outer scope
 	 * removing all changes and additions done within this scope 
 	 */
+	@Override
 	public void closeScope(){
 		scopes.pop();
 	}
@@ -42,10 +45,12 @@ public class ListOfMapEnv implements Environment {
 	 * this is to check the scopes from inner to outer looking for the variable
 	 * @param id
 	 */
+	@Override
 	public boolean containsID(String id) {
 		return getIDEntry(id) != null;
 	}
-	
+
+	@Override
 	public boolean containsIDLocal(String id) {
 		return getLocalIDEntry(id) != null;
 	}
@@ -56,13 +61,13 @@ public class ListOfMapEnv implements Environment {
 	 * that value
 	 * @param id
 	 */
-	public void deleteVariable(String id){
-		for(HashMap<String, STEntry> scope:scopes){
+	@Override
+	public STEntry deleteVariable(String id){
+		for(HashMap<String, STEntry> scope:scopes)
 			if(scope.containsKey(id)){
-				scope.remove(id);
-				return;
+				return scope.remove(id);
 			}
-		}
+		return null;
 	}
 	
 	/**
@@ -70,6 +75,7 @@ public class ListOfMapEnv implements Environment {
 	 * @param id of the variable/function
 	 * @return STEntry associated with the variable/function, null if it is not declared
 	 */
+	@Override
 	public STEntry getIDEntry(String id){
 		for(HashMap<String, STEntry> scope:scopes){
 			if(scope.containsKey(id)){
@@ -86,6 +92,7 @@ public class ListOfMapEnv implements Environment {
 	 * @param id of the variable/function
 	 * @return STEntry associated with the variable/function in current scope, null otherwise
 	 */
+	@Override
 	public STEntry getLocalIDEntry(String id) {
 		return scopes.peek().get(id);		
 		
@@ -94,6 +101,13 @@ public class ListOfMapEnv implements Environment {
 	@Override
 	public int getNestingLevel() {
 		return scopes.size() - 1;
+	}
+
+
+	@Override
+	public int getOffset() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

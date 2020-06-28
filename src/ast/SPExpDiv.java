@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
-public class SPExpDiv extends SPExpArithm {
+public class SPExpDiv extends SPExpBinArithm {
 
 	public SPExpDiv(SPExp leftSide, SPExp rightSide) {
 		super(leftSide, rightSide);

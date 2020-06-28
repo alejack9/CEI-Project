@@ -2,11 +2,10 @@ package ast;
 
 import java.util.List;
 
-import ast.types.Type;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
-public class SPExpAnd extends SPExpBinBoolAllIn {
+public class SPExpAnd extends SPExpBinBoolBoolIn {
 
 	public SPExpAnd(SPExp left, SPExp right) {
 		super(left, right);

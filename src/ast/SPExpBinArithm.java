@@ -4,13 +4,11 @@ import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
 
-public abstract class SPExpArithm extends SPExpBin {
+public abstract class SPExpBinArithm extends SPExpBin {
 	
-	protected SPExpArithm(SPExp left, SPExp right) {
+	protected SPExpBinArithm(SPExp left, SPExp right) {
 		super(left, right);
 	}
-
-	protected abstract String getOp();
 	
 	@Override
 	public final Type inferType() throws TypeError {

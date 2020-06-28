@@ -8,11 +8,11 @@ import ast.types.Type;
 import behavioural_analysis.BTBase;
 import behavioural_analysis.BTBlock;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPStmtBlock extends SPStmt {
 	
-	List<SPStmt> children;
+	private List<SPStmt> children;
 
 	public SPStmtBlock(List<SPStmt> children) {
 		this.children = children;
@@ -25,11 +25,11 @@ public class SPStmtBlock extends SPStmt {
 	 * After finishing drop the newly created scope
 	 */
 	public List<SemanticError> checkSemantics(Environment e) {
-		//create scope for inner elements
-		e.openScope();
-		
 		//initialize result variable
 		LinkedList<SemanticError> result = new LinkedList<SemanticError>();
+		
+		//create scope for inner elements
+		e.openScope();
 		
 		//check children semantics
 		if(children!=null)

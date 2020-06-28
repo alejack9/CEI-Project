@@ -7,12 +7,12 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPStmtIte extends SPStmt {
 
-	SPExp exp;
-	SPStmt thenStmt, elseStmt;
+	private SPExp exp;
+	private SPStmt thenStmt, elseStmt;
 
 	public SPStmtIte(SPExp exp, SPStmt thenStmt, SPStmt elseStmt) {
 		this.exp = exp;

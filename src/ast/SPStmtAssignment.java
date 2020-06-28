@@ -1,19 +1,22 @@
 package ast;
 
+import java.util.Collections;
 import java.util.List;
 
 import ast.errors.TypeError;
+import ast.errors.VariableNotExistsError;
 import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTAtom;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPStmtAssignment extends SPStmt{
-	String id;
-	STEntry idEntry;
-	SPExp exp;
+	
+	private String id;
+	private STEntry idEntry;
+	private SPExp exp;
 
 	public SPStmtAssignment(String id, SPExp exp) {
 		this.id = id;
@@ -22,13 +25,15 @@ public class SPStmtAssignment extends SPStmt{
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO populate idEntry
-		
-		List<SemanticError> res = exp.checkSemantics(e);
-		
-//		e.addVariable(id, exp.getValue(e));
-		return res;
-		
+		List<SemanticError> toRet = Collections.emptyList();
+
+		idEntry = e.getIDEntry(id);
+		if(idEntry == null)
+			toRet.add(new VariableNotExistsError(id));
+				
+		toRet.addAll(exp.checkSemantics(e));
+
+		return toRet;		
 	}
 
 	@Override

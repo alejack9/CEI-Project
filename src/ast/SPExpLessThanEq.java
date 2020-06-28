@@ -3,9 +3,9 @@ package ast;
 import java.util.List;
 
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
-public class SPExpLessThanEq extends SPExpArithm {
+public class SPExpLessThanEq extends SPExpBinArithm {
 	
 	public SPExpLessThanEq(SPExp left, SPExp right) {
 		super(left, right);

@@ -8,7 +8,7 @@ import ast.types.Type;
 import behavioural_analysis.BTBase;
 import behavioural_analysis.BTPrint;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPStmtPrint extends SPStmt {
 

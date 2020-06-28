@@ -3,10 +3,10 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
-public class SPExpMult extends SPExpArithm {
+public class SPExpMult extends SPExpBinArithm {
 	
 	public SPExpMult(SPExp leftSide, SPExp rightSide) {
 		super(leftSide, rightSide);

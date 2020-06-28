@@ -6,11 +6,11 @@ import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPExpNot extends SPExp {
 
-	SPExp exp;
+	private SPExp exp;
 
 	public SPExpNot(SPExp exp) {
 		this.exp = exp;

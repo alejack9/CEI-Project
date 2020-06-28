@@ -6,11 +6,11 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPStmtRet extends SPStmt {
 
-	SPExp exp;
+	private SPExp exp;
 
 	public SPStmtRet(SPExp exp) {
 		this.exp = exp;

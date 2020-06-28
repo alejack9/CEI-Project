@@ -1,25 +1,27 @@
 package ast;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+import ast.errors.IdAlreadytExistsError;
 import ast.errors.TypeError;
 import ast.types.ArrowType;
 import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPStmtDecFun extends SPStmtDec {
 
-	String type;
-	String ID;
-	List<SPArg> args;
-	SPStmtBlock block;
+	private Type type;
+	private String ID;
+	private List<SPArg> args;
+	private SPStmtBlock block;
 	
-	public SPStmtDecFun(String type, String ID, List<SPArg> args, SPStmtBlock block) {
+	public SPStmtDecFun(Type type, String ID, List<SPArg> args, SPStmtBlock block) {
 		this.type = type;
 		this.ID = ID;
 		this.args = args;
@@ -28,18 +30,30 @@ public class SPStmtDecFun extends SPStmtDec {
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		if (e.containsIDLocal(ID)) throw new SemanticError("ID already used in current scope");
+		List<SemanticError> toRet = Collections.emptyList();
+		if (e.containsIDLocal(ID))
+			toRet.add(new IdAlreadytExistsError(ID));
 		
 		e.openScope();
-		// environment is modified in each iteration because it's passed by reference
-		List<Type> typeArgs = this.args.stream().map(SPArg::inferType).collect(Collectors.toList());
-		this.block.inferType();
+		List<Type> argsT = Collections.emptyList();
+		int paroffset = 1;
+		for (SPArg arg : args) {
+	    	  argsT.add(arg.getType());
+	    	  
+	    	  STEntry toAdd = new STEntry(arg.getType(), e.getNestingLevel(), paroffset++);
+	    	  
+	    	  if(!e.addID(arg.getId(), toAdd))
+	    		  toRet.add(new IdAlreadytExistsError(arg.getId()));
+		}
+		toRet.addAll(this.block.checkSemantics(e));
 		e.closeScope();
 		
-		ArrowType t = (ArrowType) EType.FUNCTION.getType(); 
-		t.setParamTypes(typeArgs);
-		e.addID(ID, new STEntry(t, e.getNestingLevel(), 0));
-		return null;
+		ArrowType t = (ArrowType) EType.FUNCTION.getType();
+		t.setParamTypes(argsT);
+		t.setRetType(type);
+		
+		e.addID(ID, new STEntry(t, e.getNestingLevel(), e.getOffset()));
+		return toRet;
 	}
 
 
@@ -47,9 +61,9 @@ public class SPStmtDecFun extends SPStmtDec {
 	public Type inferType() {
 		this.args.stream().map(SPArg::inferType);
 		
-		Type t = this.block.inferType();
-		if (!t.getType().equals(EType.valueOf(this.type.toUpperCase())))
-			throw new TypeError("Block return type (" + t + ") not equals to function return type (" + this.type + ")"); 
+		Type blockT = this.block.inferType();
+		if(!blockT.equals(type))
+			throw new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")"); 
 		return EType.VOID.getType();
 	}
 	

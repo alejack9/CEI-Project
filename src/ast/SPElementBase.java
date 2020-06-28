@@ -2,10 +2,10 @@ package ast;
 
 import java.util.List;
 
+import ast.errors.SemanticError;
 import ast.errors.TypeError;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
-import util_analysis.SemanticError;
 import util_analysis.Environment;
 
 public interface SPElementBase {

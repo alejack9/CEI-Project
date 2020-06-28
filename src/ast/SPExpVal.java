@@ -6,7 +6,7 @@ import java.util.List;
 import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 
 public class SPExpVal extends SPExp {

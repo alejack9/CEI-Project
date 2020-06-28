@@ -4,11 +4,11 @@ import java.util.List;
 
 import ast.types.Type;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPExpCall extends SPExp {
 
-	SPStmtCall call;
+	private SPStmtCall call;
 	
 	public SPExpCall(SPStmtCall call) {
 		this.call = call;

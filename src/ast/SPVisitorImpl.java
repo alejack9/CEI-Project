@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ast.types.EType;
 import parser.SimplePlusBaseVisitor;
 import parser.SimplePlusParser.ArgContext;
 import parser.SimplePlusParser.AssignmentContext;
@@ -136,7 +137,7 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	public SPStmtDecFun visitDecFun(DecFunContext ctx) {
 		List<SPArg> args = ctx.arg() == null ? Collections.emptyList() : ctx.arg().stream().map(this::visitArg).collect(Collectors.toList());
 		return new SPStmtDecFun(
-				ctx.type().getText(),
+				EType.valueOf(ctx.type().getText()).getType(),
 				ctx.ID().getText(),
 				args,
 				visitBlock(ctx.block()));
@@ -144,13 +145,16 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	
 	@Override
 	public SPArg visitArg(ArgContext ctx) {
-		return new SPArg(ctx.type().getText(), ctx.ID().getText(), ctx.ref() != null);
+		return new SPArg(
+				ctx.type().getText(),
+				ctx.ID().getText(),
+				ctx.ref() != null);
 	}
 	
 	@Override
 	public SPStmtDecVar visitDecVar(DecVarContext ctx) {
 		return new SPStmtDecVar(
-				ctx.type().getText(),
+				EType.valueOf(ctx.type().getText()).getType(),
 				ctx.ID().getText(),
 				ctx.exp() == null ? null :
 				(SPExp)visit(ctx.exp()));

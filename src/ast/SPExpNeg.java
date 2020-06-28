@@ -6,12 +6,12 @@ import java.util.List;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class SPExpNeg extends SPExp {
 	
-	SPExp exp;
+	private SPExp exp;
 
 	public SPExpNeg(SPExp exp) {
 		this.exp = exp;		

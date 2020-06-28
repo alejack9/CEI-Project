@@ -1,19 +1,21 @@
 package ast;
 
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTAtom;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import util_analysis.SemanticError;
-import util_analysis.Strings;
+import ast.errors.SemanticError;
+import ast.errors.TypeError;
+import ast.errors.VariableNotExistsError;
+import ast.errors.VariableNotVarError;
 
 public class SPStmtDelete extends SPStmt {
 
 	private String id;
+	private STEntry idEntry;
 
 	/**
 	 * Creates a delete statement
@@ -29,17 +31,24 @@ public class SPStmtDelete extends SPStmt {
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> result = new LinkedList<SemanticError>();
+		List<SemanticError> toRet = Collections.emptyList();
+
+		STEntry candidate = e.getLocalIDEntry(id);
+		if(candidate != null && !candidate.getType().IsParameter())
+			idEntry = e.deleteVariable(id);
+		else {
+			candidate = e.getIDEntry(id);
+			if(candidate == null)
+				toRet.add(new VariableNotExistsError(id));
+			else if(!candidate.getType().IsParameter() || !candidate.getType().IsRef())
+				toRet.add(new VariableNotVarError(id));
+			else
+				// the deletion of referenced variables is handled by "inferBehaviour"
+				// e.deleteVariable(id);
+				idEntry = candidate;
+		}
 		
-		//check for the variable
-//		if(!e.containsVariable(id))
-//			result.add(new SemanticError(Strings.ErrorVariableDoesntExist + id));
-		
-		//if the variable does exist then delete it from the environment
-//		else
-//			e.deleteVariable(id);
-//		
-		return result;
+		return toRet;
 	}
 
 	@Override
@@ -59,6 +68,8 @@ public class SPStmtDelete extends SPStmt {
 
 	@Override
 	public Type inferType() {
+		if(!EType.FUNCTION.equalsTo(idEntry.getType()))
+			throw new TypeError("Cannot delete a function");
 		return EType.VOID.getType();
 	}
 

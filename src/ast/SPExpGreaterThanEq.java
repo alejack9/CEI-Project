@@ -3,7 +3,7 @@ package ast;
 import java.util.List;
 
 import util_analysis.Environment;
-import util_analysis.SemanticError;
+import ast.errors.SemanticError;
 
 public class SPExpGreaterThanEq extends SPExpBinBoolIntIn {
 
