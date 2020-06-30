@@ -22,8 +22,7 @@ public class SPExpCall extends SPExp {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
+		return call.checkSemantics(e);
 	}
 
 	@Override

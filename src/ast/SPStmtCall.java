@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Collections;
 import java.util.List;
 
 import ast.errors.TypeError;
@@ -8,6 +9,8 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
+import ast.errors.FunctionNotExistsError;
+import ast.errors.ParametersMismatchError;
 import ast.errors.SemanticError;
 
 public class SPStmtCall extends SPStmt {
@@ -23,8 +26,24 @@ public class SPStmtCall extends SPStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
+		List<SemanticError> toRet = Collections.emptyList();
+		
+		idEntry = e.getIDEntry(ID);
+		
+		Type funT = idEntry.getType();
+		
+		if(idEntry == null || !EType.FUNCTION.equalsTo(funT))
+			toRet.add(new FunctionNotExistsError(ID));
+		else {
+			int params = ((ArrowType) funT).getParamTypes().size();
+			if(exps.size() != params)
+				toRet.add(new ParametersMismatchError(params, exps.size()));
+		}
+		
+		for (SPExp exp : exps)
+			toRet.addAll(exp.checkSemantics(e));
+		
+		return toRet;
 	}
 
 	@Override

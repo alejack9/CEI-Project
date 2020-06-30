@@ -16,12 +16,6 @@ public class SPExpGreaterThan extends SPExpBinBoolIntIn {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	protected String getOp() {

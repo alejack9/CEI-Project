@@ -24,11 +24,11 @@ public class SPExpNeg extends SPExp {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> result = new LinkedList<SemanticError>();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
-		result.addAll(exp.checkSemantics(e));
+		toRet.addAll(exp.checkSemantics(e));
 			
-		return result;
+		return toRet;
 	}
 
 	@Override

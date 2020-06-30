@@ -1,11 +1,13 @@
 package ast;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import ast.types.Type;
 import util_analysis.Environment;
 import ast.errors.SemanticError;
+import ast.errors.VariableNotExistsError;
 
 public class SPExpVar extends SPExp {
 
@@ -21,18 +23,14 @@ public class SPExpVar extends SPExp {
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
+		List<SemanticError> toRet = Collections.emptyList();
 		
-
-		// TODO Populate idEntry
+		idEntry = e.getIDEntry(id);
 		
+		if(idEntry == null) 
+			toRet.add(new VariableNotExistsError(id));
 		
-		
-		List<SemanticError> result = new LinkedList<SemanticError>();
-		
-//		if(!e.containsVariable(id))
-//			result.add(new SemanticError(Strings.ErrorVariableDoesntExist + id));
-		
-		return result;
+		return toRet;
 	}
 
 	@Override

@@ -16,16 +16,6 @@ public class SPExpDiv extends SPExpBinArithm {
 	public int getValue(Environment e) {
 		return leftSide.getValue(e) / rightSide.getValue(e);
 	}
-
-	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> result = new LinkedList<SemanticError>();
-		
-		result.addAll(leftSide.checkSemantics(e));
-		result.addAll(rightSide.checkSemantics(e));
-		
-		return result;
-	}
 	
 	@Override
 	protected String getOp() {

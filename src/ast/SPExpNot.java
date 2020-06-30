@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ast.errors.TypeError;
@@ -24,8 +25,11 @@ public class SPExpNot extends SPExp {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		toRet.addAll(exp.checkSemantics(e));
+			
+		return toRet;
 	}
 
 	@Override

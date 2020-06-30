@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,11 +18,9 @@ public class SPExpVal extends SPExp {
 		this.value = value;
 	}
 
-	// No semantic errors here
-
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		return new LinkedList<SemanticError>();
+		return Collections.emptyList();
 	}
 
 	@Override

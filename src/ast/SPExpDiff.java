@@ -18,16 +18,6 @@ public class SPExpDiff extends SPExpBinArithm {
 	}
 
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> result = new LinkedList<SemanticError>();
-		
-		result.addAll(leftSide.checkSemantics(e));
-		result.addAll(rightSide.checkSemantics(e));
-		
-		return result;
-	}
-
-	@Override
 	protected String getOp() {
 		return "-";
 	}

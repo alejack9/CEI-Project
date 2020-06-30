@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Collections;
 import java.util.List;
 
 import ast.errors.TypeError;
@@ -22,8 +23,15 @@ public class SPStmtIte extends SPStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
+		List<SemanticError> toRet = Collections.emptyList();
+		
+		toRet.addAll(exp.checkSemantics(e));
+		toRet.addAll(thenStmt.checkSemantics(e));
+		
+		if(elseStmt != null)
+			toRet.addAll(elseStmt.checkSemantics(e));
+		
+		return toRet;
 	}
 
 	@Override

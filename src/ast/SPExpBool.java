@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Collections;
 import java.util.List;
 
 import ast.types.EType;
@@ -23,8 +24,7 @@ public class SPExpBool extends SPExp {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override

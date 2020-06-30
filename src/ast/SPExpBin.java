@@ -1,5 +1,11 @@
 package ast;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import ast.errors.SemanticError;
+import util_analysis.Environment;
+
 public abstract class SPExpBin extends SPExp {
 	
 	protected SPExp leftSide, rightSide;
@@ -9,5 +15,15 @@ public abstract class SPExpBin extends SPExp {
 	protected SPExpBin(SPExp left, SPExp right) {
 		this.leftSide = left;
 		this.rightSide = right;
+	}
+	
+	@Override
+	public final List<SemanticError> checkSemantics(Environment e) {
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		
+		toRet.addAll(leftSide.checkSemantics(e));
+		toRet.addAll(rightSide.checkSemantics(e));
+			
+		return toRet;
 	}
 }

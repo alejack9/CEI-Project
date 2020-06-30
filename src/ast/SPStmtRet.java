@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Collections;
 import java.util.List;
 
 import ast.types.EType;
@@ -18,8 +19,12 @@ public class SPStmtRet extends SPStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		// TODO Auto-generated method stub
-		return null;
+		List<SemanticError> toRet = Collections.emptyList();
+		
+		if(exp != null)
+			toRet.addAll(exp.checkSemantics(e));
+		
+		return toRet;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,20 +27,20 @@ public class SPStmtBlock extends SPStmt {
 	 */
 	public List<SemanticError> checkSemantics(Environment e) {
 		//initialize result variable
-		LinkedList<SemanticError> result = new LinkedList<SemanticError>();
+		List<SemanticError> toRet = Collections.emptyList();
 		
 		//create scope for inner elements
 		e.openScope();
 		
 		//check children semantics
-		if(children!=null)
-			for(SPStmt el:children)
-				result.addAll(el.checkSemantics(e));
+		if(children != null)
+			for(SPStmt el : children)
+				toRet.addAll(el.checkSemantics(e));
 		
 		//close scope for this block
 		e.closeScope();
 		
-		return result;
+		return toRet;
 	}
 
 	@Override
