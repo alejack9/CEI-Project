@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import ast.errors.TypeError;
@@ -11,6 +12,7 @@ import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import ast.errors.FunctionNotExistsError;
 import ast.errors.ParametersMismatchError;
+import ast.errors.PassedReferenceNotVarError;
 import ast.errors.SemanticError;
 
 public class SPStmtCall extends SPStmt {
@@ -26,7 +28,7 @@ public class SPStmtCall extends SPStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		idEntry = e.getIDEntry(ID);
 		
@@ -35,9 +37,14 @@ public class SPStmtCall extends SPStmt {
 		if(idEntry == null || !EType.FUNCTION.equalsTo(funT))
 			toRet.add(new FunctionNotExistsError(ID));
 		else {
-			int params = ((ArrowType) funT).getParamTypes().size();
-			if(exps.size() != params)
-				toRet.add(new ParametersMismatchError(params, exps.size()));
+			List<Type> params = ((ArrowType) funT).getParamTypes();
+			if(exps.size() != params.size())
+				toRet.add(new ParametersMismatchError(params.size(), exps.size()));
+			for(int i = 0; i < Math.min(exps.size(), params.size()); i++) {
+				if(params.get(i).IsRef() && !(exps.get(i) instanceof SPExpVar)) {
+					toRet.add(new PassedReferenceNotVarError(i+1, ID));
+				}
+			}
 		}
 		
 		for (SPExp exp : exps)
@@ -59,16 +66,13 @@ public class SPStmtCall extends SPStmt {
 		
 		ArrowType funT = (ArrowType) idEntry.getType();
 		
-//		// TODO IN CHECKSEMANTICS
-//		if(funT.getParamTypes().size() != exps.size()) {}
-		
 		List<Type> parTs = funT.getParamTypes();
 		
 		for(int i = 0; i < parTs.size(); i++) {
 			Type parT = parTs.get(i);
 			Type expT = exps.get(i).inferType(); 
 			if(!parT.equals(expT))
-				throw new TypeError("#" + i + " parameter type (" + parT + ") is not equal to expression type (" + expT + ")");
+				throw new TypeError("#" + (i + 1) + " parameter type (" + parT + ") is not equal to expression type (" + expT + ")");
 		}
 		
 		return funT.getReturnType();

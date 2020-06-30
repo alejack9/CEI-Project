@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,12 +31,12 @@ public class SPStmtDecFun extends SPStmtDec {
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		if (e.containsIDLocal(ID))
 			toRet.add(new IdAlreadytExistsError(ID));
 		
 		e.openScope();
-		List<Type> argsT = Collections.emptyList();
+		List<Type> argsT = new LinkedList<Type>();
 		int paroffset = 1;
 		for (SPArg arg : args) {
 	    	  argsT.add(arg.getType());

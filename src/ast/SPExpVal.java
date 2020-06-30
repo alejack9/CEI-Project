@@ -20,7 +20,7 @@ public class SPExpVal extends SPExp {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		return Collections.emptyList();
+		return new LinkedList<SemanticError>();
 	}
 
 	@Override

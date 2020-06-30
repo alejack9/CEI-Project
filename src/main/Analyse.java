@@ -2,15 +2,19 @@ package main;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import ast.SPStmtBlock;
 import ast.SPVisitorImpl;
+import ast.errors.SemanticError;
+import ast.errors.TypeError;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import parser.SimplePlusLexer;
 import parser.SimplePlusParser;
+import util_analysis.ListOfMapEnv;
 
 public class Analyse {
 
@@ -37,6 +41,23 @@ public class Analyse {
 			
 			//visit the root, this will recursively visit the whole tree
 			SPStmtBlock mainBlock = (SPStmtBlock) visitor.visitBlock(parser.block());
+			
+			List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv());
+			
+			if (errors.size() > 0) {
+				System.out.println("Check semantics FAILED");			
+				for(SemanticError err: errors)
+					System.out.println(err);
+			}else{
+				System.out.println("Check semantics succeded");
+				
+				try {
+					mainBlock.inferType();
+				}
+				catch (TypeError e) {
+					System.out.println(e);
+				}
+			}
 			
 			/*
 			//check semantics

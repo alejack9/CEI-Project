@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import ast.errors.TypeError;
@@ -25,7 +26,7 @@ public class SPStmtDecVar extends SPStmtDec {
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		// add or replace ID (inferBehavior checks that the ID has been deleted before the second declaration)
 		e.addID(ID, new STEntry(type, e.getNestingLevel(), e.getOffset()));
@@ -47,10 +48,12 @@ public class SPStmtDecVar extends SPStmtDec {
 		if (EType.VOID.equalsTo(type))
 			throw new TypeError("Variable type cannot be void");
 		
-		Type expType = exp.inferType();
-		if (this.exp != null && !expType.getType().equalsTo(type))
-			throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")");
-		
+		if(exp != null) {
+			Type expType = exp.inferType();
+			if (!expType.getType().equalsTo(type))
+				throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")");
+		}
+				
 		return EType.VOID.getType();
 	}
 	

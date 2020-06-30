@@ -16,7 +16,7 @@ public class SPArg implements SPElementBase {
 	private boolean ref;
 	
 	public SPArg(String type, String ID, boolean ref) {
-		this.type = EType.valueOf(type).getType(true, ref);
+		this.type = EType.getEnum(type).getType(true, ref);
 		this.ID = ID;
 		this.ref = ref;
 	}

@@ -27,7 +27,7 @@ public class SPStmtBlock extends SPStmt {
 	 */
 	public List<SemanticError> checkSemantics(Environment e) {
 		//initialize result variable
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		//create scope for inner elements
 		e.openScope();

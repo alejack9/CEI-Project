@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import ast.errors.TypeError;
@@ -23,7 +24,7 @@ public class SPStmtIte extends SPStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		toRet.addAll(exp.checkSemantics(e));
 		toRet.addAll(thenStmt.checkSemantics(e));

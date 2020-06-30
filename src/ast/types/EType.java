@@ -32,5 +32,13 @@ public enum EType {
 	public Type getType() {
 		return this.getType(false);
 	}
+	
+	public static EType getEnum(String value) {
+		for (EType v : values())
+			if(v.toString().equalsIgnoreCase(value))
+				return v;
+		
+		throw new IllegalArgumentException();
+	}
 }
 

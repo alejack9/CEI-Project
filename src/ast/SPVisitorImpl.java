@@ -137,7 +137,7 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	public SPStmtDecFun visitDecFun(DecFunContext ctx) {
 		List<SPArg> args = ctx.arg() == null ? Collections.emptyList() : ctx.arg().stream().map(this::visitArg).collect(Collectors.toList());
 		return new SPStmtDecFun(
-				EType.valueOf(ctx.type().getText()).getType(),
+				EType.getEnum(ctx.type().getText()).getType(),
 				ctx.ID().getText(),
 				args,
 				visitBlock(ctx.block()));
@@ -154,7 +154,7 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	@Override
 	public SPStmtDecVar visitDecVar(DecVarContext ctx) {
 		return new SPStmtDecVar(
-				EType.valueOf(ctx.type().getText()).getType(),
+				EType.getEnum(ctx.type().getText()).getType(),
 				ctx.ID().getText(),
 				ctx.exp() == null ? null :
 				(SPExp)visit(ctx.exp()));

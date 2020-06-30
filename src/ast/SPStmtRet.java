@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import ast.types.EType;
@@ -19,7 +20,7 @@ public class SPStmtRet extends SPStmt {
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		if(exp != null)
 			toRet.addAll(exp.checkSemantics(e));

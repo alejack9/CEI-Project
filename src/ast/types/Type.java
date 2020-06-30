@@ -10,6 +10,7 @@ public abstract class Type {
 
 	protected Type(boolean isParameter, boolean isRef) {
 		this.isParameter = isParameter;
+		this.isRef = isRef;
 	}
 	
 	protected Type() {

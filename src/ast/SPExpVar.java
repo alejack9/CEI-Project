@@ -23,7 +23,7 @@ public class SPExpVar extends SPExp {
 	
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		idEntry = e.getIDEntry(id);
 		

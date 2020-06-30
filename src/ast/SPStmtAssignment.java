@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import ast.errors.TypeError;
@@ -25,7 +26,7 @@ public class SPStmtAssignment extends SPStmt{
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		idEntry = e.getIDEntry(id);
 		if(idEntry == null)
@@ -54,7 +55,7 @@ public class SPStmtAssignment extends SPStmt{
 	@Override
 	public Type inferType() {
 		Type expType = exp.inferType(); 
-		if(expType.getType().equalsTo(idEntry.getType()))
+		if(!expType.getType().equalsTo(idEntry.getType()))
 			throw new TypeError("Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType +")");
 		
 		return EType.VOID.getType();

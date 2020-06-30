@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import ast.types.EType;
@@ -31,7 +32,7 @@ public class SPStmtDelete extends SPStmt {
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
-		List<SemanticError> toRet = Collections.emptyList();
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		STEntry candidate = e.getLocalIDEntry(id);
 		if(candidate != null && !candidate.getType().IsParameter())
@@ -43,9 +44,8 @@ public class SPStmtDelete extends SPStmt {
 			else if(!candidate.getType().IsParameter() || !candidate.getType().IsRef())
 				toRet.add(new VariableNotVarError(id));
 			else
-				// the deletion of referenced variables is handled by "inferBehaviour"
-				// e.deleteVariable(id);
-				idEntry = candidate;
+				// TODO the deletion of referenced variables is handled by "inferBehaviour"
+				idEntry = e.deleteVariable(id);
 		}
 		
 		return toRet;
@@ -68,7 +68,7 @@ public class SPStmtDelete extends SPStmt {
 
 	@Override
 	public Type inferType() {
-		if(!EType.FUNCTION.equalsTo(idEntry.getType()))
+		if(EType.FUNCTION.equalsTo(idEntry.getType()))
 			throw new TypeError("Cannot delete a function");
 		return EType.VOID.getType();
 	}
