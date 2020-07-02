@@ -1,10 +1,7 @@
 package ast;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import ast.errors.IdAlreadytExistsError;
 import ast.errors.TypeError;
@@ -45,7 +42,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	    	  STEntry toAdd = new STEntry(arg.getType(), e.getNestingLevel(), paroffset++);
 	    	  
 	    	  if(!e.addID(arg.getId(), toAdd))
-	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), line, column));
+	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
 		}
 		toRet.addAll(this.block.checkSemantics(e));
 		e.closeScope();
@@ -64,7 +61,7 @@ public class SPStmtDecFun extends SPStmtDec {
 		
 		Type blockT = this.block.inferType();
 		if(!blockT.equals(type))
-			throw new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")", line, column); 
+			throw new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")", this.block.line, this.block.column); 
 		return EType.VOID.getType();
 	}
 	

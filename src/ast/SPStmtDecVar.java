@@ -52,7 +52,7 @@ public class SPStmtDecVar extends SPStmtDec {
 		if(exp != null) {
 			Type expType = exp.inferType();
 			if (!expType.getType().equalsTo(type))
-				throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")", line, column);
+				throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")", this.exp.line, this.exp.column);
 		}
 				
 		return EType.VOID.getType();

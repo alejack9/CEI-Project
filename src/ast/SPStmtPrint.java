@@ -33,7 +33,7 @@ public class SPStmtPrint extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(EType.VOID.equalsTo(exp.inferType()))
-			throw new TypeError("Cannot print void expression", line, column);
+			throw new TypeError("Cannot print void expression", this.exp.line, this.exp.column);
 		return EType.VOID.getType();
 	}
 

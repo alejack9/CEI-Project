@@ -43,7 +43,7 @@ public class SPStmtCall extends SPStmt {
 				toRet.add(new ParametersMismatchError(params.size(), exps.size(), line, column));
 			for(int i = 0; i < Math.min(exps.size(), params.size()); i++) {
 				if(params.get(i).IsRef() && !(exps.get(i) instanceof SPExpVar)) {
-					toRet.add(new PassedReferenceNotVarError(i+1, ID, exps.get(i).getLine(), exps.get(i).getColumn()));
+					toRet.add(new PassedReferenceNotVarError(i+1, ID, exps.get(i).line, exps.get(i).column));
 				}
 			}
 		}

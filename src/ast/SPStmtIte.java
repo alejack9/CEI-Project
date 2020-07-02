@@ -45,14 +45,14 @@ public class SPStmtIte extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(!EType.BOOL.equalsTo(exp.inferType()))
-			throw new TypeError("Condition must be bool type", line, column);
+			throw new TypeError("Condition must be bool type", this.exp.line, this.exp.column);
 		
 		Type thenT = this.thenStmt.inferType();
 		
 		if(this.elseStmt != null) {
 			Type elseT = this.elseStmt.inferType();
 			if(!elseT.getType().equalsTo(thenT))
-				throw new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")", line, column);
+				throw new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")", this.thenStmt.line, this.thenStmt.column);
 		}
 		return thenT;
 	}
