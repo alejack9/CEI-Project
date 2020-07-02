@@ -7,6 +7,7 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 import ast.errors.SemanticError;
 
 public class SPArg extends SPElementBase {
@@ -40,7 +41,8 @@ public class SPArg extends SPElementBase {
 
 	@Override
 	public Type inferType() {
-		if (EType.VOID.equalsTo(type)) throw new TypeError("Parameter type cannot be void", line, column);
+		if (EType.VOID.equalsTo(type)) 
+			TypeErrorsStorage.addError(new TypeError("Parameter type cannot be void", line, column));
 		return EType.VOID.getType();
 	}
 

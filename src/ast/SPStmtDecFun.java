@@ -10,6 +10,7 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 import ast.errors.SemanticError;
 
 public class SPStmtDecFun extends SPStmtDec {
@@ -61,7 +62,7 @@ public class SPStmtDecFun extends SPStmtDec {
 		
 		Type blockT = this.block.inferType();
 		if(!blockT.equals(type))
-			throw new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")", this.block.line, this.block.column); 
+			TypeErrorsStorage.addError(new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")", this.block.line, this.block.column)); 
 		return EType.VOID.getType();
 	}
 	

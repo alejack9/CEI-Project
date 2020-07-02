@@ -3,6 +3,7 @@ package ast;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
+import util_analysis.TypeErrorsStorage;
 
 public abstract class SPExpBinArithm extends SPExpBin {
 	
@@ -11,13 +12,13 @@ public abstract class SPExpBinArithm extends SPExpBin {
 	}
 	
 	@Override
-	public final Type inferType() throws TypeError {
+	public final Type inferType() {
 		Type leftSideT = leftSide.inferType();
 		if(!EType.INT.equalsTo(leftSideT))
-			throw new TypeError("Left expression in operation \"" + this.getOp() + "\" must return int. It returns \"" + leftSideT + "\" instead", leftSide.line, leftSide.column);
+			TypeErrorsStorage.addError(new TypeError("Left expression in operation \"" + this.getOp() + "\" must return int. It returns \"" + leftSideT + "\" instead", leftSide.line, leftSide.column));
 		Type rightSideT = rightSide.inferType();
 		if(!EType.INT.equalsTo(rightSideT))
-			throw new TypeError("Right expression in operation \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead", rightSide.line, rightSide.column);
+			TypeErrorsStorage.addError(new TypeError("Right expression in operation \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead", rightSide.line, rightSide.column));
 		
 		return EType.INT.getType();
 	}

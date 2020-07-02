@@ -8,6 +8,7 @@ import ast.types.EType;
 import ast.types.Type;
 import ast.errors.SemanticError;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 
 public class SPExpNeg extends SPExp {
 	
@@ -36,7 +37,7 @@ public class SPExpNeg extends SPExp {
 	public Type inferType() {
 		Type expT = this.exp.inferType();
 		if(!EType.INT.equalsTo(expT))
-			throw new TypeError("Expression type is \"" + expT + "\" but it must be int.", exp.line, exp.column);
+			TypeErrorsStorage.addError(new TypeError("Expression type is \"" + expT + "\" but it must be int.", exp.line, exp.column));
 		
 		return EType.INT.getType();
 	}

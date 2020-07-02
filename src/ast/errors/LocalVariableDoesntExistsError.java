@@ -12,7 +12,7 @@ public class LocalVariableDoesntExistsError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return this.getPosition() + " - Variable doesn't exist in local scope. Variable name: " + this.id;
+		return this.getPosition() + " - Variable \"" + id + "\" doesn't exist in local scope.";
 	}
 
 }

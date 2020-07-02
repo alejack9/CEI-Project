@@ -3,6 +3,7 @@ package ast;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
+import util_analysis.TypeErrorsStorage;
 
 /**
  * Represents boolean expressions that require all type of input (except VOID)
@@ -14,15 +15,15 @@ public abstract class SPExpBinBoolAllIn extends SPExpBin {
 	}
 	
 	@Override
-	public final Type inferType() throws TypeError {
+	public final Type inferType() {
 		Type leftSideT = this.leftSide.inferType();
 		Type rightSideT = this.rightSide.inferType();
 		
 		if(!leftSideT.equals(rightSideT))
-			throw new TypeError("In condition \"" + this.getOp() + "\", left expression's type (" + leftSideT + ") does not equal to the right's type (" + rightSideT + ")", line, column);
+			TypeErrorsStorage.addError(new TypeError("In condition \"" + this.getOp() + "\", left expression's type (" + leftSideT + ") does not equal to the right's type (" + rightSideT + ")", line, column));
 
 		if(EType.VOID.equalsTo(leftSideT))
-			throw new TypeError("Expressions must not be \"void\" type in operation \"" + this.getOp() + "\"", line, column);
+			TypeErrorsStorage.addError(new TypeError("Expressions must not be \"void\" type in operation \"" + this.getOp() + "\"", line, column));
 		
 		return EType.BOOL.getType();
 	}

@@ -4,7 +4,12 @@
 	
 	bool z;
 	z = 2;
+	z = 3;
 	
-	delete y;
-	print 3+3;
+	if (z == true){
+		if (z == 1) {
+			delete z;
+		}
+	}
+	print true;
 }

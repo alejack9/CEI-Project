@@ -7,6 +7,7 @@ import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 import ast.errors.SemanticError;
 
 public class SPExpNot extends SPExp {
@@ -37,7 +38,7 @@ public class SPExpNot extends SPExp {
 	public Type inferType() {
 		Type expT = this.exp.inferType();
 		if(!EType.BOOL.equalsTo(expT))
-			throw new TypeError("Expression type is \"" + expT + "\" but it must be bool.", exp.line, exp.column);
+			TypeErrorsStorage.addError(new TypeError("Expression type is \"" + expT + "\" but it must be bool.", exp.line, exp.column));
 		
 		return EType.BOOL.getType();
 	}

@@ -10,6 +10,7 @@ import ast.types.Type;
 import behavioural_analysis.BTAtom;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 import ast.errors.SemanticError;
 
 public class SPStmtAssignment extends SPStmt{
@@ -56,7 +57,7 @@ public class SPStmtAssignment extends SPStmt{
 	public Type inferType() {
 		Type expType = exp.inferType(); 
 		if(!expType.getType().equalsTo(idEntry.getType()))
-			throw new TypeError("Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType +")", line, column);
+			TypeErrorsStorage.addError(new TypeError("Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType +")", line, column));
 		
 		return EType.VOID.getType();
 	}

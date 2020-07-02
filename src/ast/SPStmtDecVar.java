@@ -8,6 +8,7 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 import ast.errors.SemanticError;
 
 public class SPStmtDecVar extends SPStmtDec {
@@ -45,12 +46,12 @@ public class SPStmtDecVar extends SPStmtDec {
 	@Override
 	public Type inferType() {
 		if (EType.VOID.equalsTo(type))
-			throw new TypeError("Variable type cannot be void", line, column);
+			TypeErrorsStorage.addError(new TypeError("Variable type cannot be void", line, column));
 		
 		if(exp != null) {
 			Type expType = exp.inferType();
 			if (!expType.getType().equalsTo(type))
-				throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")", this.exp.line, this.exp.column);
+				TypeErrorsStorage.addError(new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")", this.exp.line, this.exp.column));
 		}
 				
 		return EType.VOID.getType();

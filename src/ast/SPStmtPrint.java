@@ -8,6 +8,7 @@ import ast.types.Type;
 import behavioural_analysis.BTBase;
 import behavioural_analysis.BTPrint;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 import ast.errors.SemanticError;
 
 public class SPStmtPrint extends SPStmt {
@@ -33,7 +34,7 @@ public class SPStmtPrint extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(EType.VOID.equalsTo(exp.inferType()))
-			throw new TypeError("Cannot print void expression", this.exp.line, this.exp.column);
+			TypeErrorsStorage.addError(new TypeError("Cannot print void expression", this.exp.line, this.exp.column));
 		return EType.VOID.getType();
 	}
 

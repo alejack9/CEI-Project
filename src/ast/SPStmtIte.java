@@ -8,6 +8,7 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 import ast.errors.SemanticError;
 
 public class SPStmtIte extends SPStmt {
@@ -44,14 +45,14 @@ public class SPStmtIte extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(!EType.BOOL.equalsTo(exp.inferType()))
-			throw new TypeError("Condition must be bool type", this.exp.line, this.exp.column);
+			TypeErrorsStorage.addError(new TypeError("Condition must be bool type", this.exp.line, this.exp.column));
 		
 		Type thenT = this.thenStmt.inferType();
 		
 		if(this.elseStmt != null) {
 			Type elseT = this.elseStmt.inferType();
 			if(!elseT.getType().equalsTo(thenT))
-				throw new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")", this.thenStmt.line, this.thenStmt.column);
+				TypeErrorsStorage.addError(new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")", this.thenStmt.line, this.thenStmt.column));
 		}
 		return thenT;
 	}

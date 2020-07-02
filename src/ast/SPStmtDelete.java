@@ -7,6 +7,8 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
+import ast.errors.LocalVariableDoesntExistsError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
 import ast.errors.VariableNotExistsError;
@@ -41,8 +43,11 @@ public class SPStmtDelete extends SPStmt {
 			candidate = e.getIDEntry(id);
 			if(candidate == null)
 				toRet.add(new VariableNotExistsError(id, line, column));
-			else if(!candidate.getType().IsParameter() || !candidate.getType().IsRef())
-				toRet.add(new VariableNotVarError(id, line, column));
+			else if(!candidate.getType().IsRef())
+				if (candidate.getType().IsParameter())
+					toRet.add(new VariableNotVarError(id, line, column));
+				else 
+					toRet.add(new LocalVariableDoesntExistsError(id, line, column));
 			else
 				// TODO the deletion of referenced variables is handled by "inferBehaviour"
 				idEntry = e.deleteVariable(id);
@@ -69,7 +74,7 @@ public class SPStmtDelete extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(EType.FUNCTION.equalsTo(idEntry.getType()))
-			throw new TypeError("Cannot delete a function", line, column);
+			TypeErrorsStorage.addError(new TypeError("Cannot delete a function", line, column));
 		return EType.VOID.getType();
 	}
 

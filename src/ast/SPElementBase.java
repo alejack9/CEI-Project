@@ -23,12 +23,12 @@ public abstract class SPElementBase {
 	 */
 	public abstract List<SemanticError> checkSemantics(Environment e);
 	
-	public abstract Type inferType() throws TypeError;
+	public abstract Type inferType();
 	
 	/**
 	 * performs behavioral type inference for Simple programs
 	 * @param e is the current environment where the information about existent variables is stored
 	 * @return the behavior of the expression
 	 */
-	public abstract BTBase inferBehavior(Environment e) throws SemanticError;
+	public abstract BTBase inferBehavior(Environment e);
 }

@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import parser.SimplePlusLexer;
 import parser.SimplePlusParser;
 import util_analysis.ListOfMapEnv;
+import util_analysis.TypeErrorsStorage;
 
 public class Analyse {
 
@@ -51,12 +52,11 @@ public class Analyse {
 			}else{
 				System.out.println("Check semantics succeded");
 				
-				try {
-					mainBlock.inferType();
+				mainBlock.inferType();
+				if (TypeErrorsStorage.getTypeErrors().size() > 0) {
+					TypeErrorsStorage.getTypeErrors().forEach(System.out::println);
 				}
-				catch (TypeError e) {
-					System.out.println(e);
-				}
+				
 			}
 			
 			/*
