@@ -19,10 +19,10 @@ public abstract class SPExpBinArithm extends SPExpBin {
 	public final Type inferType() throws TypeError {
 		Type leftSideT = leftSide.inferType();
 		if(!EType.INT.equalsTo(leftSideT))
-			throw new TypeError("Left expression in operation \"" + this.getOp() + "\" must return int. It returns \"" + leftSideT + "\" instead", line, column);
+			throw new TypeError("Left expression in operation \"" + this.getOp() + "\" must return int. It returns \"" + leftSideT + "\" instead", leftSide.line, leftSide.column);
 		Type rightSideT = rightSide.inferType();
 		if(!EType.INT.equalsTo(rightSideT))
-			throw new TypeError("Right expression in operation \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead", line, column);
+			throw new TypeError("Right expression in operation \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead", rightSide.line, rightSide.column);
 		
 		return EType.INT.getType();
 	}
