@@ -4,19 +4,5 @@
 	int z;
 	z = 2;
 	
-	void f(int var x, int y) {
-		int z;
-		delete x;
-		y = 5;
-	}
-	
-	f(1+1, 1+1);
-	z = 5;
-	
-	int x = 4;
-	x = true;
-	
-	bool y = true;
-	y = 4;
-	
+	delete y;
 }

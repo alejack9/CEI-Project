@@ -1,13 +1,8 @@
 package ast;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import ast.errors.SemanticError;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
-import util_analysis.Environment;
 
 public abstract class SPExpBinArithm extends SPExpBin {
 	

@@ -1,6 +1,5 @@
 package ast;
 
-import java.util.List;
 
 import util_analysis.Environment;
 import ast.errors.SemanticError;

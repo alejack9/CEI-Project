@@ -1,10 +1,6 @@
 package ast;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import util_analysis.Environment;
-import ast.errors.SemanticError;
 
 public class SPExpDiff extends SPExpBinArithm {
 
