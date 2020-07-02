@@ -31,12 +31,4 @@ public abstract class SPElementBase {
 	 * @return the behavior of the expression
 	 */
 	public abstract BTBase inferBehavior(Environment e) throws SemanticError;
-
-	public int getLine() {
-		return line;
-	}
-	
-	public int getColumn() {
-		return column;
-	}
 }
