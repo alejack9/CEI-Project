@@ -17,10 +17,10 @@ public abstract class SPExpBinBoolIntIn extends SPExpBin {
 	public final Type inferType() throws TypeError {
 		Type leftSideT = this.leftSide.inferType();
 		if(!EType.INT.equalsTo(leftSideT))
-			throw new TypeError("Left expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + leftSideT + "\" instead", line, column);
+			throw new TypeError("Left expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + leftSideT + "\" instead", leftSide.line, leftSide.column);
 		Type rightSideT = this.rightSide.inferType();
 		if(!EType.INT.equalsTo(rightSideT))
-			throw new TypeError("Right expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead", line, column);
+			throw new TypeError("Right expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead", rightSide.line, rightSide.column);
 		
 		return EType.BOOL.getType();
 	}
