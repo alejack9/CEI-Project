@@ -36,7 +36,7 @@ public class SPExpNeg extends SPExp {
 	public Type inferType() {
 		Type expT = this.exp.inferType();
 		if(!EType.INT.equalsTo(expT))
-			throw new TypeError("Expression type is \"" + expT + "\" but it must be int.", line, column);
+			throw new TypeError("Expression type is \"" + expT + "\" but it must be int.", exp.line, exp.column);
 		
 		return EType.INT.getType();
 	}

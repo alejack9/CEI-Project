@@ -37,7 +37,7 @@ public class SPExpNot extends SPExp {
 	public Type inferType() {
 		Type expT = this.exp.inferType();
 		if(!EType.BOOL.equalsTo(expT))
-			throw new TypeError("Expression type is \"" + expT + "\" but it must be bool.", line, column);
+			throw new TypeError("Expression type is \"" + expT + "\" but it must be bool.", exp.line, exp.column);
 		
 		return EType.BOOL.getType();
 	}
