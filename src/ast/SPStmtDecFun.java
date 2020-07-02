@@ -31,8 +31,6 @@ public class SPStmtDecFun extends SPStmtDec {
 	@Override
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		if (e.containsIDLocal(ID))
-			toRet.add(new IdAlreadytExistsError(ID, line, column));
 		
 		e.openScope();
 		List<Type> argsT = new LinkedList<Type>();
@@ -42,17 +40,20 @@ public class SPStmtDecFun extends SPStmtDec {
 	    	  
 	    	  STEntry toAdd = new STEntry(arg.getType(), e.getNestingLevel(), paroffset++);
 	    	  
-	    	  if(!e.addID(arg.getId(), toAdd))
+	    	  if(!e.addOrUpdate(arg.getId(), toAdd))
 	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
 		}
+		
 		toRet.addAll(this.block.checkSemantics(e));
 		e.closeScope();
-		
+	
 		ArrowType t = (ArrowType) EType.FUNCTION.getType();
 		t.setParamTypes(argsT);
 		t.setRetType(type);
 		
-		e.addID(ID, new STEntry(t, e.getNestingLevel(), e.getOffset()));
+		if (!e.add(ID, new STEntry(t, e.getNestingLevel(), e.getOffset())))
+			toRet.add(new IdAlreadytExistsError(ID, line, column));
+		
 		return toRet;
 	}
 

@@ -29,7 +29,7 @@ public class SPStmtDecVar extends SPStmtDec {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		// add or replace ID (inferBehavior checks that the ID has been deleted before the second declaration)
-		e.addID(ID, new STEntry(type, e.getNestingLevel(), e.getOffset()));
+		e.addOrUpdate(ID, new STEntry(type, e.getNestingLevel(), e.getOffset()));
 
 		if(exp != null)
 			toRet.addAll(exp.checkSemantics(e));
