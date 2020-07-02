@@ -9,13 +9,14 @@ import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import ast.errors.SemanticError;
 
-public class SPArg implements SPElementBase {
+public class SPArg extends SPElementBase {
 
 	private Type type;
 	private String ID;
 	private boolean ref;
 	
-	public SPArg(String type, String ID, boolean ref) {
+	public SPArg(String type, String ID, boolean ref, int line, int column) {
+		super(line, column);
 		this.type = EType.getEnum(type).getType(true, ref);
 		this.ID = ID;
 		this.ref = ref;
@@ -39,7 +40,7 @@ public class SPArg implements SPElementBase {
 
 	@Override
 	public Type inferType() {
-		if (EType.VOID.equalsTo(type)) throw new TypeError("Parameter type cannot be void");
+		if (EType.VOID.equalsTo(type)) throw new TypeError("Parameter type cannot be void", line, column);
 		return EType.VOID.getType();
 	}
 

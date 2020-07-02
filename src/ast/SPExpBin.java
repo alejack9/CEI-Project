@@ -12,7 +12,8 @@ public abstract class SPExpBin extends SPExp {
 
 	protected abstract String getOp();
 	
-	protected SPExpBin(SPExp left, SPExp right) {
+	protected SPExpBin(SPExp left, SPExp right, int line, int column) {
+		super(line, column);
 		this.leftSide = left;
 		this.rightSide = right;
 	}

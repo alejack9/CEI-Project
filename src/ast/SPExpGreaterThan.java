@@ -7,8 +7,8 @@ import ast.errors.SemanticError;
 
 public class SPExpGreaterThan extends SPExpBinBoolIntIn {
 
-	public SPExpGreaterThan(SPExp leftSide, SPExp rightSide) {
-		super(leftSide, rightSide);
+	public SPExpGreaterThan(SPExp leftSide, SPExp rightSide, int line, int column) {
+		super(leftSide, rightSide, line, column);
 	}
 	
 	@Override

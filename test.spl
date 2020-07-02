@@ -12,4 +12,10 @@
 	
 	f(1+1, 1+1);
 	z = 5;
+	
+	int x = 4;
+	x = true;
+	
+	bool y = true;
+	y = 4;
 }

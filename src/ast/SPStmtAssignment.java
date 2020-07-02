@@ -19,7 +19,8 @@ public class SPStmtAssignment extends SPStmt{
 	private STEntry idEntry;
 	private SPExp exp;
 
-	public SPStmtAssignment(String id, SPExp exp) {
+	public SPStmtAssignment(String id, SPExp exp, int line, int column) {
+		super(line, column);
 		this.id = id;
 		this.exp = exp;
 	}
@@ -30,7 +31,7 @@ public class SPStmtAssignment extends SPStmt{
 
 		idEntry = e.getIDEntry(id);
 		if(idEntry == null)
-			toRet.add(new VariableNotExistsError(id));
+			toRet.add(new VariableNotExistsError(id, line, column));
 				
 		toRet.addAll(exp.checkSemantics(e));
 
@@ -56,7 +57,7 @@ public class SPStmtAssignment extends SPStmt{
 	public Type inferType() {
 		Type expType = exp.inferType(); 
 		if(!expType.getType().equalsTo(idEntry.getType()))
-			throw new TypeError("Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType +")");
+			throw new TypeError("Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType +")", line, column);
 		
 		return EType.VOID.getType();
 	}

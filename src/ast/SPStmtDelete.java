@@ -22,7 +22,8 @@ public class SPStmtDelete extends SPStmt {
 	 * Creates a delete statement
 	 * @param id the variable we want to delete
 	 */
-	public SPStmtDelete(String id) {
+	public SPStmtDelete(String id, int line, int column) {
+		super(line, column);
 		this.id = id;
 	}
 
@@ -40,9 +41,9 @@ public class SPStmtDelete extends SPStmt {
 		else {
 			candidate = e.getIDEntry(id);
 			if(candidate == null)
-				toRet.add(new VariableNotExistsError(id));
+				toRet.add(new VariableNotExistsError(id, line, column));
 			else if(!candidate.getType().IsParameter() || !candidate.getType().IsRef())
-				toRet.add(new VariableNotVarError(id));
+				toRet.add(new VariableNotVarError(id, line, column));
 			else
 				// TODO the deletion of referenced variables is handled by "inferBehaviour"
 				idEntry = e.deleteVariable(id);
@@ -69,7 +70,7 @@ public class SPStmtDelete extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(EType.FUNCTION.equalsTo(idEntry.getType()))
-			throw new TypeError("Cannot delete a function");
+			throw new TypeError("Cannot delete a function", line, column);
 		return EType.VOID.getType();
 	}
 

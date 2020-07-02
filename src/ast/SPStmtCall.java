@@ -21,7 +21,8 @@ public class SPStmtCall extends SPStmt {
 	private String ID;
 	private STEntry idEntry;
 
-	public SPStmtCall(String ID, List<SPExp> exps) {
+	public SPStmtCall(String ID, List<SPExp> exps, int line, int column) {
+		super(line, column);
 		this.ID = ID;
 		this.exps = exps;
 	}
@@ -35,14 +36,14 @@ public class SPStmtCall extends SPStmt {
 		Type funT = idEntry.getType();
 		
 		if(idEntry == null || !EType.FUNCTION.equalsTo(funT))
-			toRet.add(new FunctionNotExistsError(ID));
+			toRet.add(new FunctionNotExistsError(ID, line, column));
 		else {
 			List<Type> params = ((ArrowType) funT).getParamTypes();
 			if(exps.size() != params.size())
-				toRet.add(new ParametersMismatchError(params.size(), exps.size()));
+				toRet.add(new ParametersMismatchError(params.size(), exps.size(), line, column));
 			for(int i = 0; i < Math.min(exps.size(), params.size()); i++) {
 				if(params.get(i).IsRef() && !(exps.get(i) instanceof SPExpVar)) {
-					toRet.add(new PassedReferenceNotVarError(i+1, ID));
+					toRet.add(new PassedReferenceNotVarError(i+1, ID, exps.get(i).getLine(), exps.get(i).getColumn()));
 				}
 			}
 		}
@@ -62,7 +63,7 @@ public class SPStmtCall extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(!EType.FUNCTION.equalsTo(idEntry.getType()))
-			throw new TypeError("Called ID must be a function (actual type: " + idEntry.getType() + ")");
+			throw new TypeError("Called ID must be a function (actual type: " + idEntry.getType() + ")", line, column);
 		
 		ArrowType funT = (ArrowType) idEntry.getType();
 		
@@ -72,7 +73,7 @@ public class SPStmtCall extends SPStmt {
 			Type parT = parTs.get(i);
 			Type expT = exps.get(i).inferType(); 
 			if(!parT.equals(expT))
-				throw new TypeError("#" + (i + 1) + " parameter type (" + parT + ") is not equal to expression type (" + expT + ")");
+				throw new TypeError("#" + (i + 1) + " parameter type (" + parT + ") is not equal to expression type (" + expT + ")", line, column);
 		}
 		
 		return funT.getReturnType();

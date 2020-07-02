@@ -22,7 +22,8 @@ public class SPStmtDecFun extends SPStmtDec {
 	private List<SPArg> args;
 	private SPStmtBlock block;
 	
-	public SPStmtDecFun(Type type, String ID, List<SPArg> args, SPStmtBlock block) {
+	public SPStmtDecFun(Type type, String ID, List<SPArg> args, SPStmtBlock block, int line, int column) {
+		super(line, column);
 		this.type = type;
 		this.ID = ID;
 		this.args = args;
@@ -33,7 +34,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		if (e.containsIDLocal(ID))
-			toRet.add(new IdAlreadytExistsError(ID));
+			toRet.add(new IdAlreadytExistsError(ID, line, column));
 		
 		e.openScope();
 		List<Type> argsT = new LinkedList<Type>();
@@ -44,7 +45,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	    	  STEntry toAdd = new STEntry(arg.getType(), e.getNestingLevel(), paroffset++);
 	    	  
 	    	  if(!e.addID(arg.getId(), toAdd))
-	    		  toRet.add(new IdAlreadytExistsError(arg.getId()));
+	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), line, column));
 		}
 		toRet.addAll(this.block.checkSemantics(e));
 		e.closeScope();
@@ -57,14 +58,13 @@ public class SPStmtDecFun extends SPStmtDec {
 		return toRet;
 	}
 
-
 	@Override
 	public Type inferType() {
 		this.args.stream().map(SPArg::inferType);
 		
 		Type blockT = this.block.inferType();
 		if(!blockT.equals(type))
-			throw new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")"); 
+			throw new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")", line, column); 
 		return EType.VOID.getType();
 	}
 	

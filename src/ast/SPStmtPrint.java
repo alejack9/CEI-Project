@@ -14,7 +14,8 @@ public class SPStmtPrint extends SPStmt {
 
 	private SPExp exp;
 
-	public SPStmtPrint(SPExp exp) {
+	public SPStmtPrint(SPExp exp, int line, int column) {
+		super(line, column);
 		this.exp = exp;
 	}
 
@@ -32,7 +33,7 @@ public class SPStmtPrint extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(EType.VOID.equalsTo(exp.inferType()))
-			throw new TypeError("Cannot print void expression");
+			throw new TypeError("Cannot print void expression", line, column);
 		return EType.VOID.getType();
 	}
 

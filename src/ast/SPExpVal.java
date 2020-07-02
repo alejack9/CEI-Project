@@ -14,7 +14,8 @@ public class SPExpVal extends SPExp {
 
 	private int value;
 
-	public SPExpVal(int value) {
+	public SPExpVal(int value, int line, int column) {
+		super(line, column);
 		this.value = value;
 	}
 

@@ -5,12 +5,6 @@ public class PassedReferenceNotVarError extends SemanticError {
 	private int parNumber;
 	private String id;
 	
-	public PassedReferenceNotVarError(int parNumber, String id) {
-		super(null, SemanticErrorType.PASSEDREFERENCENOTVAR);
-		this.parNumber = parNumber;
-		this.id = id;
-	}
-
 	public PassedReferenceNotVarError(int parNumber, String id, int line, int col) {
 		super(null, SemanticErrorType.PASSEDREFERENCENOTVAR, line, col);
 		this.parNumber = parNumber;
@@ -19,6 +13,6 @@ public class PassedReferenceNotVarError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return "#" + parNumber + " parameter of "+ id +" call must be a variable reference.";
+		return this.getPosition() + " - #" + parNumber + " parameter of "+ id +" call must be a variable reference.";
 	}
 }

@@ -10,7 +10,8 @@ public class SPExpCall extends SPExp {
 
 	private SPStmtCall call;
 	
-	public SPExpCall(SPStmtCall call) {
+	public SPExpCall(SPStmtCall call, int line, int column) {
+		super(line, column);
 		this.call = call;
 	}
 

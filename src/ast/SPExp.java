@@ -10,7 +10,11 @@ import util_analysis.Environment;
  * @author Abel
  *
  */
-public abstract class SPExp implements SPElementBase {
+public abstract class SPExp extends SPElementBase {
+
+	protected SPExp(int line, int column) {
+		super(line, column);
+	}
 
 	/**
 	 * Calculates the value of an expression

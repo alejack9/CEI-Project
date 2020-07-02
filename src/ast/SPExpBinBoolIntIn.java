@@ -9,18 +9,18 @@ import ast.types.Type;
 
 public abstract class SPExpBinBoolIntIn extends SPExpBin {
 	
-	protected SPExpBinBoolIntIn(SPExp left, SPExp right) {
-		super(left, right);
+	protected SPExpBinBoolIntIn(SPExp left, SPExp right, int line, int column) {
+		super(left, right, line, column);
 	}
 	
 	@Override
 	public final Type inferType() throws TypeError {
 		Type leftSideT = this.leftSide.inferType();
 		if(!EType.INT.equalsTo(leftSideT))
-			throw new TypeError("Left expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + leftSideT + "\" instead");
+			throw new TypeError("Left expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + leftSideT + "\" instead", line, column);
 		Type rightSideT = this.rightSide.inferType();
 		if(!EType.INT.equalsTo(rightSideT))
-			throw new TypeError("Right expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead");
+			throw new TypeError("Right expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead", line, column);
 		
 		return EType.BOOL.getType();
 	}

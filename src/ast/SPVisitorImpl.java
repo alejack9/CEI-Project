@@ -41,40 +41,40 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	
 	@Override
 	public SPStmtAssignment visitAssignment(AssignmentContext ctx) {
-		return new SPStmtAssignment(ctx.ID().getText(),(SPExp) visit(ctx.exp())) ;
+		return new SPStmtAssignment(ctx.ID().getText(),(SPExp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPStmtDelete visitDeletion(DeletionContext ctx) {
-		return new SPStmtDelete(ctx.ID().getText());
+		return new SPStmtDelete(ctx.ID().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPStmtPrint visitPrint(PrintContext ctx) {
-		return new SPStmtPrint((SPExp) visit(ctx.exp()));
+		return new SPStmtPrint((SPExp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPStmtRet visitRet(RetContext ctx) {
-		return new SPStmtRet(ctx.exp() == null ? null : (SPExp) visit(ctx.exp()));
+		return new SPStmtRet(ctx.exp() == null ? null : (SPExp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPStmtIte visitIte(IteContext ctx) {
-		return new SPStmtIte((SPExp) visit(ctx.exp()), visitStatement(ctx.statement(0)), ctx.statement(1) == null ? null : visitStatement(ctx.statement(1)));
+		return new SPStmtIte((SPExp) visit(ctx.exp()), visitStatement(ctx.statement(0)), ctx.statement(1) == null ? null : visitStatement(ctx.statement(1)), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPStmtCall visitCall(CallContext ctx) {
 		List<SPExp> exps = ctx.exp() == null ? Collections.emptyList() : ctx.exp().stream().map(p->(SPExp)visit(p)).collect(Collectors.toList());
-		return new SPStmtCall(ctx.ID().getText(), exps);
+		return new SPStmtCall(ctx.ID().getText(), exps, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPStmtBlock visitBlock(BlockContext ctx) {
 		List<SPStmt> children =
 			ctx.statement().stream().map(this::visitStatement).collect(Collectors.toList());
-		return new SPStmtBlock(children);
+		return new SPStmtBlock(children, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
@@ -84,12 +84,12 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	
 	@Override
 	public SPExpNeg visitNegExp(NegExpContext ctx) {
-		return new SPExpNeg((SPExp) visit(ctx.exp()));
+		return new SPExpNeg((SPExp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPExpNot visitNotExp(NotExpContext ctx) {
-		return new SPExpNot((SPExp) visit(ctx.exp()));
+		return new SPExpNot((SPExp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
@@ -97,40 +97,40 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 		SPExp left = (SPExp) visit(ctx.left);
 		SPExp right = (SPExp) visit(ctx.right);
 		switch (ctx.op.getText()) {
-			case "+": return new SPExpSum(left, right);
-			case "-": return new SPExpDiff(left, right);
-			case "*": return new SPExpMult(left, right);
-			case "/": return new SPExpDiv(left, right);
-			case "<": return new SPExpLessThan(left, right);
-			case "<=": return new SPExpLessThanEq(left, right);
-			case ">": return new SPExpGreaterThan(left, right);
-			case ">=": return new SPExpGreaterThanEq(left, right);
-			case "==": return new SPExpEqual(left, right);
-			case "!=": return new SPExpNotEqual(left, right);
-			case "&&": return new SPExpAnd(left, right);
-			case "||": return new SPExpOr(left, right);
+			case "+": return new SPExpSum(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "-": return new SPExpDiff(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "*": return new SPExpMult(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "/": return new SPExpDiv(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "<": return new SPExpLessThan(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "<=": return new SPExpLessThanEq(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case ">": return new SPExpGreaterThan(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case ">=": return new SPExpGreaterThanEq(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "==": return new SPExpEqual(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "!=": return new SPExpNotEqual(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "&&": return new SPExpAnd(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			case "||": return new SPExpOr(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 			default: return null; //this should not happen
 		}
 	}
 	
 	@Override
 	public SPExpCall visitCallExp(CallExpContext ctx) {
-		return new SPExpCall(visitCall(ctx.call()));
+		return new SPExpCall(visitCall(ctx.call()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPExpBool visitBoolExp(BoolExpContext ctx) {
-		return new SPExpBool(ctx.getText().equals("true"));
+		return new SPExpBool(ctx.getText().equals("true"), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
 	public SPExpVar visitVarExp(VarExpContext ctx) {
-		return new SPExpVar(ctx.ID().getText());
+		return new SPExpVar(ctx.ID().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
 	@Override
 	public SPExpVal visitValExp(ValExpContext ctx) {
-		return new SPExpVal(Integer.parseInt(ctx.NUMBER().getText()));
+		return new SPExpVal(Integer.parseInt(ctx.NUMBER().getText()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
 	@Override
@@ -140,7 +140,9 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 				EType.getEnum(ctx.type().getText()).getType(),
 				ctx.ID().getText(),
 				args,
-				visitBlock(ctx.block()));
+				visitBlock(ctx.block()),
+				ctx.start.getLine(),
+				ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
@@ -148,7 +150,9 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 		return new SPArg(
 				ctx.type().getText(),
 				ctx.ID().getText(),
-				ctx.ref() != null);
+				ctx.ref() != null,
+				ctx.start.getLine(),
+				ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
@@ -157,6 +161,8 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 				EType.getEnum(ctx.type().getText()).getType(),
 				ctx.ID().getText(),
 				ctx.exp() == null ? null :
-				(SPExp)visit(ctx.exp()));
+				(SPExp)visit(ctx.exp()),
+				ctx.start.getLine(),
+				ctx.start.getCharPositionInLine());
 	}
 }

@@ -7,24 +7,20 @@ public class SemanticError extends Error {
 	private static final long serialVersionUID = 1L;
 
 	protected String id;
-	protected Integer errorLine;
-	protected Integer errorColumn;
+	protected int errorLine;
+	protected int errorColumn;
 	public final SemanticErrorType errorType;
 
-	protected SemanticError(String id, SemanticErrorType errorType, Integer errorLine, Integer errorColumn) {
+	protected SemanticError(String id, SemanticErrorType errorType, int errorLine, int errorColumn) {
 		this.id = id;
 		this.errorType = errorType;
 		this.errorLine = errorLine;
 		this.errorColumn = errorColumn;
 	}
 	
-	protected SemanticError(String id, SemanticErrorType errorType) {
-		this(id, errorType, null, null);
-	}
-
 	protected String getPosition() {
 		// asserting that, if "errorLine" is set, then "errorColumn" is set
-		return (errorLine != null) ? "[" + errorLine + " : " + errorColumn + "]" : "";
+		return "[ "+ errorLine + " : " + errorColumn +" ]";
 	}
 
 	public SemanticErrorType getType() {

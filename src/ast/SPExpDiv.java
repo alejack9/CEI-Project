@@ -8,8 +8,8 @@ import ast.errors.SemanticError;
 
 public class SPExpDiv extends SPExpBinArithm {
 
-	public SPExpDiv(SPExp leftSide, SPExp rightSide) {
-		super(leftSide, rightSide);
+	public SPExpDiv(SPExp leftSide, SPExp rightSide, int line, int column) {
+		super(leftSide, rightSide, line, column);
 	}
 
 	@Override

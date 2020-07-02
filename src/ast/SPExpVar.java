@@ -15,7 +15,8 @@ public class SPExpVar extends SPExp {
 	private STEntry idEntry;
 	
 
-	public SPExpVar(String id) {
+	public SPExpVar(String id, int line, int column) {
+		super(line, column);
 		this.id = id;
 	}
 	
@@ -28,7 +29,7 @@ public class SPExpVar extends SPExp {
 		idEntry = e.getIDEntry(id);
 		
 		if(idEntry == null) 
-			toRet.add(new VariableNotExistsError(id));
+			toRet.add(new VariableNotExistsError(id, line, column));
 		
 		return toRet;
 	}

@@ -15,7 +15,8 @@ public class SPStmtBlock extends SPStmt {
 	
 	private List<SPStmt> children;
 
-	public SPStmtBlock(List<SPStmt> children) {
+	public SPStmtBlock(List<SPStmt> children, int line, int column) {
+		super(line, column);
 		this.children = children;
 	}
 

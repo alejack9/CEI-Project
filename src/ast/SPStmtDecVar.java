@@ -18,7 +18,8 @@ public class SPStmtDecVar extends SPStmtDec {
 	private String ID;
 	private SPExp exp;
 	
-	public SPStmtDecVar(Type type, String ID, SPExp exp) {
+	public SPStmtDecVar(Type type, String ID, SPExp exp, int line, int column) {
+		super(line, column);
 		this.type = type;
 		this.ID = ID;
 		this.exp = exp;
@@ -46,12 +47,12 @@ public class SPStmtDecVar extends SPStmtDec {
 	@Override
 	public Type inferType() {
 		if (EType.VOID.equalsTo(type))
-			throw new TypeError("Variable type cannot be void");
+			throw new TypeError("Variable type cannot be void", line, column);
 		
 		if(exp != null) {
 			Type expType = exp.inferType();
 			if (!expType.getType().equalsTo(type))
-				throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")");
+				throw new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")", line, column);
 		}
 				
 		return EType.VOID.getType();

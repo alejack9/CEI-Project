@@ -16,7 +16,8 @@ public class SPStmtIte extends SPStmt {
 	private SPExp exp;
 	private SPStmt thenStmt, elseStmt;
 
-	public SPStmtIte(SPExp exp, SPStmt thenStmt, SPStmt elseStmt) {
+	public SPStmtIte(SPExp exp, SPStmt thenStmt, SPStmt elseStmt, int line, int column) {
+		super(line, column);
 		this.exp = exp;
 		this.thenStmt = thenStmt;
 		this.elseStmt = elseStmt;
@@ -44,14 +45,14 @@ public class SPStmtIte extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(!EType.BOOL.equalsTo(exp.inferType()))
-			throw new TypeError("Condition must be bool type");
+			throw new TypeError("Condition must be bool type", line, column);
 		
 		Type thenT = this.thenStmt.inferType();
 		
 		if(this.elseStmt != null) {
 			Type elseT = this.elseStmt.inferType();
 			if(!elseT.getType().equalsTo(thenT))
-				throw new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")");
+				throw new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")", line, column);
 		}
 		return thenT;
 	}

@@ -13,7 +13,8 @@ public class SPExpBool extends SPExp {
 
 	private boolean value;
 	
-	public SPExpBool(boolean value) {
+	public SPExpBool(boolean value, int line, int column) {
+		super(line, column);
 		this.value = value;
 	}
 

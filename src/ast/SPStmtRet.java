@@ -14,7 +14,8 @@ public class SPStmtRet extends SPStmt {
 
 	private SPExp exp;
 
-	public SPStmtRet(SPExp exp) {
+	public SPStmtRet(SPExp exp, int line, int column) {
+		super(line, column);
 		this.exp = exp;
 	}
 

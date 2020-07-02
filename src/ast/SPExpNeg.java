@@ -13,7 +13,8 @@ public class SPExpNeg extends SPExp {
 	
 	private SPExp exp;
 
-	public SPExpNeg(SPExp exp) {
+	public SPExpNeg(SPExp exp, int line, int column) {
+		super(line, column);
 		this.exp = exp;		
 	}
 
@@ -35,7 +36,7 @@ public class SPExpNeg extends SPExp {
 	public Type inferType() {
 		Type expT = this.exp.inferType();
 		if(!EType.INT.equalsTo(expT))
-			throw new TypeError("Expression type is \"" + expT + "\" but it must be int.");
+			throw new TypeError("Expression type is \"" + expT + "\" but it must be int.", line, column);
 		
 		return EType.INT.getType();
 	}

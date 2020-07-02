@@ -9,8 +9,8 @@ import ast.types.Type;
  */
 public abstract class SPExpBinBoolAllIn extends SPExpBin {
 	
-	protected SPExpBinBoolAllIn(SPExp left, SPExp right) {
-		super(left, right);
+	protected SPExpBinBoolAllIn(SPExp left, SPExp right, int line, int column) {
+		super(left, right, line, column);
 	}
 	
 	@Override
@@ -19,10 +19,10 @@ public abstract class SPExpBinBoolAllIn extends SPExpBin {
 		Type rightSideT = this.rightSide.inferType();
 		
 		if(!leftSideT.equals(rightSideT))
-			throw new TypeError("In condition \"" + this.getOp() + "\", left expression's type (" + leftSideT + ") does not equal to the right's type (" + rightSideT + ")");
+			throw new TypeError("In condition \"" + this.getOp() + "\", left expression's type (" + leftSideT + ") does not equal to the right's type (" + rightSideT + ")", line, column);
 
 		if(EType.VOID.equalsTo(leftSideT))
-			throw new TypeError("Expressions must not be \"void\" type in operation \"" + this.getOp() + "\"");
+			throw new TypeError("Expressions must not be \"void\" type in operation \"" + this.getOp() + "\"", line, column);
 		
 		return EType.BOOL.getType();
 	}
