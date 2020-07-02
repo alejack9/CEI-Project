@@ -1,8 +1,10 @@
 {
 	int z;
 	delete z;
-	int z;
+	
+	bool z;
 	z = 2;
 	
 	delete y;
+	print 3+3;
 }

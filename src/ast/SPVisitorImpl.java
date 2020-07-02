@@ -46,7 +46,7 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	
 	@Override
 	public SPStmtDelete visitDeletion(DeletionContext ctx) {
-		return new SPStmtDelete(ctx.ID().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+		return new SPStmtDelete(ctx.ID().getText(), ctx.ID().getSymbol().getLine(), ctx.ID().getSymbol().getCharPositionInLine());
 	}
 	
 	@Override

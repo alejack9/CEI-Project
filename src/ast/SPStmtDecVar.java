@@ -1,6 +1,5 @@
 package ast;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
-import ast.errors.IdAlreadytExistsError;
 import ast.errors.SemanticError;
 
 public class SPStmtDecVar extends SPStmtDec {

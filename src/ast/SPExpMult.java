@@ -1,9 +1,5 @@
 package ast;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import ast.errors.SemanticError;
 import util_analysis.Environment;
 
 public class SPExpMult extends SPExpBinArithm {

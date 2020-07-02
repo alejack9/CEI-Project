@@ -2,7 +2,6 @@ package ast;
 
 
 import util_analysis.Environment;
-import ast.errors.SemanticError;
 
 public class SPExpGreaterThanEq extends SPExpBinBoolIntIn {
 
