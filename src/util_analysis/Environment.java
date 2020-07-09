@@ -3,7 +3,6 @@ package util_analysis;
 import ast.STEntry;
 
 public interface Environment {
-	public boolean addOrUpdate(String id, STEntry symTableEntry);
 	public boolean add(String id, STEntry symTableEntry);
 	public void openScope();
 	public void closeScope();

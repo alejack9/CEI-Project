@@ -49,7 +49,6 @@ public class SPStmtDelete extends SPStmt {
 				else 
 					toRet.add(new LocalVariableDoesntExistsError(id, line, column));
 			else
-				// TODO the deletion of referenced variables is handled by "inferBehaviour"
 				idEntry = e.deleteVariable(id);
 		}
 		

@@ -40,7 +40,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	    	  
 	    	  STEntry toAdd = new STEntry(arg.getType(), e.getNestingLevel(), paroffset++);
 	    	  
-	    	  if(!e.addOrUpdate(arg.getId(), toAdd))
+	    	  if(!e.add(arg.getId(), toAdd))
 	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
 		}
 		

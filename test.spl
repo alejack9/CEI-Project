@@ -1,42 +1,14 @@
+//CODICE SBAGLIATO:
 {
-  int num1 = 3;
-  bool value;
-  
-  // lexical error here
-  bool value;
-
-  // There are same ID in the same block here
-  {
-    int num2 = 5;
-    // Uncomment next line in order to declare num2 again 
-    // delete num2;
-    int num2 = 3;
-  }
-  
-  int fun1(){
-    int num3 = 0;
-    if (num3 > num1 && !(value))   {
-      return num3;
-    } else {
-      return num1;
-    }
-  }
-  
-  // try to delete a variable that not exists
-  delete bool1;
-  
-  void fun2(int par1,  int var par2){
-    delete par1;
-    delete par2;
-    int par2 = fun1();
-    print (par1 + par2);
-    
-    // syntactic error here (>>)
-    if (par1 > par2)   {}
-  }
-  
-  // ID fun2 already exists
-  bool fun2(){ }
-  
-  return fun2(num1, notExistingVar);
+	int x;
+	void f(int var y) {
+		int z;
+		delete z;
+	   	delete y;
+	}
+	f(x);
+	
+	delete x;
+	bool x;
+	delete f;
 }

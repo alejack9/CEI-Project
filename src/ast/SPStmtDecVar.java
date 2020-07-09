@@ -9,6 +9,7 @@ import ast.types.Type;
 import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import ast.errors.IdAlreadytExistsError;
 import ast.errors.SemanticError;
 
 public class SPStmtDecVar extends SPStmtDec {
@@ -28,8 +29,8 @@ public class SPStmtDecVar extends SPStmtDec {
 	public List<SemanticError> checkSemantics(Environment e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
-		// add or replace ID (inferBehavior checks that the ID has been deleted before the second declaration)
-		e.addOrUpdate(ID, new STEntry(type, e.getNestingLevel(), e.getOffset()));
+		if (!e.add(ID, new STEntry(type, e.getNestingLevel(), e.getOffset())))
+			toRet.add(new IdAlreadytExistsError(ID, line, column));
 
 		if(exp != null)
 			toRet.addAll(exp.checkSemantics(e));

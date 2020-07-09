@@ -15,16 +15,6 @@ public class ListOfMapEnv implements Environment {
 	 * @param symTableEntry
 	 */
 	@Override
-	public boolean addOrUpdate(String id, STEntry symTableEntry) {
-		return scopes.peek().put(id, symTableEntry) == null;
-	}
-	
-	/**
-	 * 
-	 * @param id
-	 * @param symTableEntry
-	 */
-	@Override
 	public boolean add(String id, STEntry symTableEntry) {
 		return scopes.peek().putIfAbsent(id, symTableEntry) == null;
 	}
