@@ -5,9 +5,8 @@ import java.util.List;
 
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
-import behavioural_analysis.BTBlock;
 import util_analysis.Environment;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 public class SPStmtBlock extends SPStmt {
@@ -44,25 +43,22 @@ public class SPStmtBlock extends SPStmt {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		//initialize result variable
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+		
 		//create scope for inner elements
 		e.openScope();
 		
-		BTBlock current = null;
-		
-		LinkedList<BTBase> behaviors = new LinkedList<BTBase>();
-		
-		for(SPStmt el:children)
-			behaviors.push(el.inferBehavior(e));
-		
-		for(BTBase b:behaviors){
-			current = BTBase.add(b,current);
-		}
+		//check children semantics
+		if(children != null)
+			for(SPStmt el : children)
+				toRet.addAll(el.inferBehaviour(e));
 		
 		//close scope for this block
 		e.closeScope();
 		
-		return current;
+		return toRet;
 	}
 
 	@Override

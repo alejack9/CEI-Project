@@ -6,20 +6,23 @@ import java.util.List;
 
 import ast.SPStmtBlock;
 import ast.SPVisitorImpl;
+import ast.STEntry;
 import ast.errors.SemanticError;
+import ast.types.EType;
+import ast.types.Type;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import parser.SimplePlusLexer;
 import parser.SimplePlusParser;
+import util_analysis.Environment;
 import util_analysis.ListOfMapEnv;
 import util_analysis.TypeErrorsStorage;
 
 public class Analyse {
 
 	public static void main(String[] args) {
-		
 		String fileName = "test.spl";
 		
 		try{   

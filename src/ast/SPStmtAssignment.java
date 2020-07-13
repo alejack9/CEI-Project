@@ -2,15 +2,16 @@ package ast;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import ast.errors.TypeError;
 import ast.errors.VariableNotExistsError;
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTAtom;
-import behavioural_analysis.BTBase;
+import behavioural_analysis.BTHelper;
+import behavioural_analysis.EEffect;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import ast.errors.BehaviourError;
+import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
 
 public class SPStmtAssignment extends SPStmt{
@@ -30,6 +31,7 @@ public class SPStmtAssignment extends SPStmt{
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		idEntry = e.getIDEntry(id);
+		
 		if(idEntry == null)
 			toRet.add(new VariableNotExistsError(id, line, column));
 				
@@ -39,18 +41,17 @@ public class SPStmtAssignment extends SPStmt{
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
-		int cost ;
-		//if the variable doesn't exist in the current scope then 
-		//it has a cost equals to 1
-		if(e.getLocalIDEntry(id) == null)
-			cost = 1;
-		else cost = 0 ;
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+	
+		toRet.addAll(exp.inferBehaviour(e));
 		
-		//put the variable in the current scope with the current value
-		// e.addVariable(id, exp.getValue(e));
+		e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id), new BTEntry(EEffect.RW))));
 		
-		return new BTAtom(cost);
+		if(e.getIDEntry(id).getEffect().equals(EEffect.T))
+			toRet.add(new DeletedVariableError(id, line, column));
+		
+		return toRet;
 	}
 
 	@Override

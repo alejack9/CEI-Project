@@ -2,13 +2,14 @@ package ast;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
+import behavioural_analysis.BTHelper;
+import behavioural_analysis.EEffect;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import ast.errors.BehaviourError;
 import ast.errors.IdAlreadytExistsError;
 import ast.errors.SemanticError;
 
@@ -39,9 +40,20 @@ public class SPStmtDecVar extends SPStmtDec {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+		
+		// Should be added after the exp check (if any) but this needs two "exp == null" controls instead of one
+		// "checkSemantics" checks the correct usage of the variable so we can skip the check
+		e.add(ID, new BTEntry());
+		
+		if(exp != null) {
+			toRet.addAll(exp.inferBehaviour(e));
+			// "exp" cannot change the value of ID, so seq(bottom, rw) is always rw
+			e.update(ID, new BTEntry(EEffect.RW));
+		}
+		
+		return toRet;
 	}
 
 	@Override

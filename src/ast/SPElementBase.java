@@ -1,11 +1,9 @@
 package ast;
 
 import java.util.List;
-
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
-import ast.errors.TypeError;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 
 public abstract class SPElementBase {
@@ -30,5 +28,5 @@ public abstract class SPElementBase {
 	 * @param e is the current environment where the information about existent variables is stored
 	 * @return the behavior of the expression
 	 */
-	public abstract BTBase inferBehavior(Environment<BTEntry> e);
+	public abstract List<BehaviourError> inferBehaviour(Environment<BTEntry> e);
 }

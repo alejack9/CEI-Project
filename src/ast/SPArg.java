@@ -1,13 +1,12 @@
 package ast;
 
 import java.util.List;
-
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 public class SPArg extends SPElementBase {
@@ -30,7 +29,7 @@ public class SPArg extends SPElementBase {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -3,7 +3,7 @@ package util_analysis;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class ListOfMapEnv<T> implements Environment<T> {
+public class ListOfMapEnv<T> extends Environment<T> {
 	
 	Stack<HashMap<String, T>> scopes = new Stack<HashMap<String,T>>();
 	
@@ -108,4 +108,9 @@ public class ListOfMapEnv<T> implements Environment<T> {
 		return 0;
 	}
 
+
+	@Override
+	public boolean update(String id, T entry) {
+		return scopes.peek().computeIfPresent(id, (k,v) -> entry) != null;
+	}
 }

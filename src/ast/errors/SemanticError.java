@@ -3,7 +3,7 @@ package ast.errors;
 /**
  * Represents a semantic error
  */
-public class SemanticError extends Error {
+public abstract class SemanticError extends Error {
 	private static final long serialVersionUID = 1L;
 
 	protected String id;
@@ -33,7 +33,5 @@ public class SemanticError extends Error {
 	}
 
 	@Override
-	public String toString() {
-		return id;
-	}
+	public abstract String toString();
 }

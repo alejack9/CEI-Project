@@ -1,14 +1,12 @@
 package ast;
 
 import java.util.List;
-
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
-import behavioural_analysis.BTPrint;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 public class SPStmtPrint extends SPStmt {
@@ -26,9 +24,8 @@ public class SPStmtPrint extends SPStmt {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
-		
-		return new BTPrint(exp.getValue(e));
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		return exp.inferBehaviour(e);
 	}
 
 	@Override

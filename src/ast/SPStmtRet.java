@@ -2,11 +2,10 @@ package ast;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
 import util_analysis.Environment;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 public class SPStmtRet extends SPStmt {
@@ -29,9 +28,13 @@ public class SPStmtRet extends SPStmt {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+		
+		if(exp != null)
+			toRet.addAll(exp.inferBehaviour(e));
+		
+		return toRet;
 	}
 
 	@Override

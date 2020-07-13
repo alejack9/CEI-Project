@@ -1,6 +1,7 @@
 package ast;
 
-import behavioural_analysis.BTBase;
+import java.util.List;
+import ast.errors.BehaviourError;
 import util_analysis.Environment;
 
 /**
@@ -24,7 +25,7 @@ public abstract class SPExp extends SPElementBase {
 	public abstract int getValue(Environment e);
 	
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		
 		return null;
 	}

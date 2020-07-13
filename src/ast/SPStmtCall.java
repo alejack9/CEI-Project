@@ -7,9 +7,9 @@ import ast.errors.TypeError;
 import ast.types.ArrowType;
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import ast.errors.BehaviourError;
 import ast.errors.FunctionNotExistsError;
 import ast.errors.ParametersMismatchError;
 import ast.errors.PassedReferenceNotVarError;
@@ -55,7 +55,7 @@ public class SPStmtCall extends SPStmt {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		// TODO Auto-generated method stub
 		return null;
 	}

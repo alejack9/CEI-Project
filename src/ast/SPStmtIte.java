@@ -2,13 +2,12 @@ package ast;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 public class SPStmtIte extends SPStmt {
@@ -28,18 +27,29 @@ public class SPStmtIte extends SPStmt {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		toRet.addAll(exp.checkSemantics(e));
-		toRet.addAll(thenStmt.checkSemantics(e));
 		
-		if(elseStmt != null)
-			toRet.addAll(elseStmt.checkSemantics(e));
+		try {
+			Environment<STEntry> tempE = (Environment<STEntry>) e.clone();
+			
+			toRet.addAll(thenStmt.checkSemantics(e));
+			
+			if(elseStmt != null)
+				toRet.addAll(elseStmt.checkSemantics(tempE));
+			
+		} catch(Exception exc) {
+			System.out.println("Error");
+		}
 		
 		return toRet;
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+		
+		toRet.addAll(exp.inferBehaviour(e));
+		
+		return toRet;
 	}
 
 	@Override

@@ -2,12 +2,14 @@ package ast;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import ast.types.EType;
 import ast.types.Type;
-import behavioural_analysis.BTBase;
+import behavioural_analysis.BTHelper;
+import behavioural_analysis.EEffect;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import ast.errors.BehaviourError;
+import ast.errors.DeletedVariableError;
 import ast.errors.LocalVariableDoesntExistsError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
@@ -56,18 +58,15 @@ public class SPStmtDelete extends SPStmt {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment<BTEntry> e) {
-//		int cost ;
-		//if the variable exist this will have a cost of -1
-//		if(e.containsVariable(id))
-//			cost = -1;
-//		else cost = 0 ;
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
-		//put the variable in the current scope with the current value
-		e.deleteVariable(id);
+		e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id), new BTEntry(EEffect.D))));
 		
-		return null;
-//		return new BTAtom(cost);
+		if(e.getIDEntry(id).getEffect().equals(EEffect.T))
+			toRet.add(new DeletedVariableError(id, line, column));
+		
+		return toRet;
 	}
 
 	@Override
