@@ -26,7 +26,7 @@ public class SPStmtAssignment extends SPStmt{
 	}
 
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		idEntry = e.getIDEntry(id);
@@ -39,7 +39,7 @@ public class SPStmtAssignment extends SPStmt{
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment e) {
+	public BTBase inferBehavior(Environment<BTEntry> e) {
 		int cost ;
 		//if the variable doesn't exist in the current scope then 
 		//it has a cost equals to 1

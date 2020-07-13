@@ -25,7 +25,7 @@ public class SPStmtBlock extends SPStmt {
 	 * Each element may add new elements to the environment inside the current scope
 	 * After finishing drop the newly created scope
 	 */
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		//initialize result variable
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
@@ -44,13 +44,14 @@ public class SPStmtBlock extends SPStmt {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment e) {
+	public BTBase inferBehavior(Environment<BTEntry> e) {
 		//create scope for inner elements
 		e.openScope();
 		
 		BTBlock current = null;
 		
 		LinkedList<BTBase> behaviors = new LinkedList<BTBase>();
+		
 		for(SPStmt el:children)
 			behaviors.push(el.inferBehavior(e));
 		

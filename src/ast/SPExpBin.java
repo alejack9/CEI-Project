@@ -19,7 +19,7 @@ public abstract class SPExpBin extends SPExp {
 	}
 	
 	@Override
-	public final List<SemanticError> checkSemantics(Environment e) {
+	public final List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		toRet.addAll(leftSide.checkSemantics(e));

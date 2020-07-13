@@ -33,7 +33,7 @@ public class SPStmtDelete extends SPStmt {
 	 * if it does then remove it from the current scope
 	 */
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		STEntry candidate = e.getLocalIDEntry(id);
@@ -56,7 +56,7 @@ public class SPStmtDelete extends SPStmt {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment e) {
+	public BTBase inferBehavior(Environment<BTEntry> e) {
 //		int cost ;
 		//if the variable exist this will have a cost of -1
 //		if(e.containsVariable(id))

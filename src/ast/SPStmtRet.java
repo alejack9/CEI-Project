@@ -19,7 +19,7 @@ public class SPStmtRet extends SPStmt {
 	}
 
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		if(exp != null)
@@ -29,7 +29,7 @@ public class SPStmtRet extends SPStmt {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment e) {
+	public BTBase inferBehavior(Environment<BTEntry> e) {
 		// TODO Auto-generated method stub
 		return null;
 	}

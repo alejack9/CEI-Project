@@ -22,7 +22,7 @@ public class SPExpCall extends SPExp {
 	}
 
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		return call.checkSemantics(e);
 	}
 

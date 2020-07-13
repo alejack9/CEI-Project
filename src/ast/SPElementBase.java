@@ -21,7 +21,7 @@ public abstract class SPElementBase {
 	 * @param e is the current environment where the information about existent variables is stored
 	 * @return a list of the semantic problems found
 	 */
-	public abstract List<SemanticError> checkSemantics(Environment e);
+	public abstract List<SemanticError> checkSemantics(Environment<STEntry> e);
 	
 	public abstract Type inferType();
 	
@@ -30,5 +30,5 @@ public abstract class SPElementBase {
 	 * @param e is the current environment where the information about existent variables is stored
 	 * @return the behavior of the expression
 	 */
-	public abstract BTBase inferBehavior(Environment e);
+	public abstract BTBase inferBehavior(Environment<BTEntry> e);
 }

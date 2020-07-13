@@ -7,7 +7,6 @@ import java.util.List;
 import ast.SPStmtBlock;
 import ast.SPVisitorImpl;
 import ast.errors.SemanticError;
-import ast.errors.TypeError;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;

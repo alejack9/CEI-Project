@@ -1,16 +1,14 @@
 package util_analysis;
 
-import ast.STEntry;
-
-public interface Environment {
-	public boolean add(String id, STEntry symTableEntry);
+public interface Environment<T> {
+	public boolean add(String id, T entry);
 	public void openScope();
 	public void closeScope();
 	public boolean containsID(String id);
 	public boolean containsIDLocal(String id);
-	public STEntry deleteVariable(String id);
-	public STEntry getIDEntry(String id);
-	public STEntry getLocalIDEntry(String id);
+	public T deleteVariable(String id);
+	public T getIDEntry(String id);
+	public T getLocalIDEntry(String id);
 	public int getNestingLevel();
 	public int getOffset();
 }

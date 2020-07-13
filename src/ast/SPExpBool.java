@@ -24,7 +24,7 @@ public class SPExpBool extends SPExp {
 	}
 
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		return new LinkedList<SemanticError>();
 	}
 

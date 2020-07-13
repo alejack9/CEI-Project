@@ -3,11 +3,9 @@ package util_analysis;
 import java.util.HashMap;
 import java.util.Stack;
 
-import ast.STEntry;
-
-public class ListOfMapEnv implements Environment {
+public class ListOfMapEnv<T> implements Environment<T> {
 	
-	Stack<HashMap<String, STEntry>> scopes = new Stack<HashMap<String,STEntry>>();
+	Stack<HashMap<String, T>> scopes = new Stack<HashMap<String,T>>();
 	
 	/**
 	 * 
@@ -15,7 +13,7 @@ public class ListOfMapEnv implements Environment {
 	 * @param symTableEntry
 	 */
 	@Override
-	public boolean add(String id, STEntry symTableEntry) {
+	public boolean add(String id, T symTableEntry) {
 		return scopes.peek().putIfAbsent(id, symTableEntry) == null;
 	}
 	
@@ -27,7 +25,7 @@ public class ListOfMapEnv implements Environment {
 	 */
 	@Override
 	public void openScope(){
-		scopes.push(new HashMap<String, STEntry>());
+		scopes.push(new HashMap<String, T>());
 	}
 	
 	
@@ -62,8 +60,8 @@ public class ListOfMapEnv implements Environment {
 	 * @param id
 	 */
 	@Override
-	public STEntry deleteVariable(String id){
-		for(HashMap<String, STEntry> scope:scopes)
+	public T deleteVariable(String id){
+		for(HashMap<String, T> scope:scopes)
 			if(scope.containsKey(id)){
 				return scope.remove(id);
 			}
@@ -73,11 +71,11 @@ public class ListOfMapEnv implements Environment {
 	/**
 	 * Check for variable/function
 	 * @param id of the variable/function
-	 * @return STEntry associated with the variable/function, null if it is not declared
+	 * @return T associated with the variable/function, null if it is not declared
 	 */
 	@Override
-	public STEntry getIDEntry(String id){
-		for(HashMap<String, STEntry> scope:scopes){
+	public T getIDEntry(String id){
+		for(HashMap<String, T> scope:scopes){
 			if(scope.containsKey(id)){
 				return scope.get(id);				
 			}
@@ -90,10 +88,10 @@ public class ListOfMapEnv implements Environment {
 	/**
 	 * Check local scope for variable/function
 	 * @param id of the variable/function
-	 * @return STEntry associated with the variable/function in current scope, null otherwise
+	 * @return T associated with the variable/function in current scope, null otherwise
 	 */
 	@Override
-	public STEntry getLocalIDEntry(String id) {
+	public T getLocalIDEntry(String id) {
 		return scopes.peek().get(id);		
 		
 	}

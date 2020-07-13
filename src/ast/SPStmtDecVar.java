@@ -26,7 +26,7 @@ public class SPStmtDecVar extends SPStmtDec {
 	}
 	
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		if (!e.add(ID, new STEntry(type, e.getNestingLevel(), e.getOffset())))
@@ -39,7 +39,7 @@ public class SPStmtDecVar extends SPStmtDec {
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment e) {
+	public BTBase inferBehavior(Environment<BTEntry> e) {
 		// TODO Auto-generated method stub
 		return null;
 	}

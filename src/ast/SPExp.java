@@ -24,7 +24,7 @@ public abstract class SPExp extends SPElementBase {
 	public abstract int getValue(Environment e);
 	
 	@Override
-	public BTBase inferBehavior(Environment e) {
+	public BTBase inferBehavior(Environment<BTEntry> e) {
 		
 		return null;
 	}

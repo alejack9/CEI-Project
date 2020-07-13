@@ -21,12 +21,12 @@ public class SPStmtPrint extends SPStmt {
 	}
 
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		return exp.checkSemantics(e);
 	}
 
 	@Override
-	public BTBase inferBehavior(Environment e) {
+	public BTBase inferBehavior(Environment<BTEntry> e) {
 		
 		return new BTPrint(exp.getValue(e));
 	}

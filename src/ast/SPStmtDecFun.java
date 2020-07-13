@@ -29,7 +29,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	}
 	
 	@Override
-	public List<SemanticError> checkSemantics(Environment e) {
+	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		e.openScope();
@@ -68,7 +68,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	}
 	
 	@Override
-	public BTBase inferBehavior(Environment e) {
+	public BTBase inferBehavior(Environment<BTEntry> e) {
 		// TODO Auto-generated method stub
 		return null;
 	}
