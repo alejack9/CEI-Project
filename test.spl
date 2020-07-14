@@ -1,9 +1,8 @@
-
 {
 	int x;
 	
 	if( x == 3 ) {}
 	else delete x;
 	
-	int x;
+	bool x;
 }

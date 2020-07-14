@@ -1,6 +1,6 @@
 package ast.types;
 
-public abstract class Type {
+public abstract class Type implements Cloneable {
 	
 	public abstract EType getType();
 
@@ -33,6 +33,11 @@ public abstract class Type {
 		if(!(e instanceof Type)) return false;
 		if(this.getType() != ((Type)e).getType()) return false;
 		return true;
+	}
+	
+	@Override
+	public final Object clone() {
+		return getType().getType(isParameter, isRef);
 	}
 	
 }

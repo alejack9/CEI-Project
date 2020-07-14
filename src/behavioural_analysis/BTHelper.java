@@ -4,6 +4,7 @@ import ast.BTEntry;
 import util_analysis.Environment;
 
 public class BTHelper {
+	
 	private BTHelper() {
 		
 	}
@@ -45,10 +46,9 @@ public class BTHelper {
 
 	public static void maxModifyEnv(Environment<BTEntry> e, Environment<BTEntry> tempE) {
 		e.getAllVariables().forEach((k,v) ->
-								e.update(k, new BTEntry(BTHelper.max(
-										v.getEffect(),
-										tempE.getIDEntry(k).getEffect()
-										))));
-		
+			e.update(k, new BTEntry(BTHelper.max(
+				v.getEffect(),
+				tempE.getIDEntry(k).getEffect()
+		))));
 	}
 }

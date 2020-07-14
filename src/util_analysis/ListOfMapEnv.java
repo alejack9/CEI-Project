@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class ListOfMapEnv<T> implements Environment<T> {
+import support.MyCloneable;
+
+public class ListOfMapEnv<T extends MyCloneable> implements Environment<T> {
+	
 	LinkedList<HashMap<String, T>> scopes = new LinkedList<HashMap<String,T>>();
 	
 	public void setScopes(LinkedList<HashMap<String, T>> s) {
@@ -132,15 +135,24 @@ public class ListOfMapEnv<T> implements Environment<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object clone() {
-		ListOfMapEnv<T> e = null;
+		ListOfMapEnv<T> clonedEnv = null;
 		
 		try {
-			e = (ListOfMapEnv<T>) super.clone();
-			e.setScopes((LinkedList<HashMap<String, T>>) scopes.clone());
-		} catch (CloneNotSupportedException exc) {
-			exc.printStackTrace();
+			clonedEnv = (ListOfMapEnv<T>) super.clone();
+			LinkedList<HashMap<String, T>> clonedScopes = new LinkedList<HashMap<String,T>>();
+			
+			scopes.descendingIterator().forEachRemaining(scope -> {
+				clonedScopes.push(new HashMap<String, T>());
+				scope.forEach((k, v) ->
+					clonedScopes.peek().put(k, (T) v.clone())
+				);
+			});
+			
+			clonedEnv.setScopes(clonedScopes);
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
 		}
 		
-		return e;
+		return clonedEnv;
 	}
 }

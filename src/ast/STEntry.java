@@ -1,8 +1,9 @@
 package ast;
 
 import ast.types.Type;
+import support.MyCloneable;
 
-public class STEntry {
+public class STEntry implements MyCloneable {
 	private Type type;
 	private int nestingLevel;
 	private int offset;
@@ -21,5 +22,8 @@ public class STEntry {
 	}
 	public int getOffset() {
 		return offset;
+	}
+	public Object clone() {
+		return new STEntry((Type) type.clone(), nestingLevel, offset);
 	}
 }

@@ -2,7 +2,7 @@ package util_analysis;
 
 import java.util.Map;
 
-public interface Environment<T> extends Cloneable {
+public interface Environment<T extends Cloneable> extends Cloneable {
 	public boolean add(String id, T entry);
 	public boolean update(String id, T entry);
 	public void openScope();

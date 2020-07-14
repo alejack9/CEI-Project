@@ -31,10 +31,7 @@ public class SPStmtIte extends SPStmt {
 		toRet.addAll(exp.checkSemantics(e));
 		
 		if(elseStmt != null) {
-			Environment<STEntry> tempE = null;
-			try {
-				tempE = (Environment<STEntry>) e.clone();
-			} catch (CloneNotSupportedException e1) { /* Cannot happen */}
+			Environment<STEntry> tempE = (Environment<STEntry>) e.clone();
 			
 			toRet.addAll(elseStmt.checkSemantics(tempE));
 		}
@@ -54,16 +51,14 @@ public class SPStmtIte extends SPStmt {
 		Environment<BTEntry> tempE = null;
 		
 		if (elseStmt != null) {
-			try {
-				tempE = (Environment<BTEntry>) e.clone();
-			} catch (CloneNotSupportedException e1) { /* Cannot happen */}
-			
+			tempE = (Environment<BTEntry>) e.clone();
 			toRet.addAll(elseStmt.inferBehaviour(tempE));
 		}
 		
 		toRet.addAll(thenStmt.inferBehaviour(e));
 		
-		BTHelper.maxModifyEnv(e, tempE);
+		if(tempE != null)
+			BTHelper.maxModifyEnv(e, tempE);
 			
 		return toRet;
 	}
@@ -71,7 +66,7 @@ public class SPStmtIte extends SPStmt {
 	@Override
 	public Type inferType() {
 		if(!EType.BOOL.equalsTo(exp.inferType()))
-			TypeErrorsStorage.addError(new TypeError("Condition must be bool type", this.exp.line, this.exp.column));
+			TypeErrorsStorage.addError(new TypeError("Condition must be bool type", exp.line, exp.column));
 		
 		Type thenT = this.thenStmt.inferType();
 		
