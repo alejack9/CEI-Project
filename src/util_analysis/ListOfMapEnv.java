@@ -1,11 +1,15 @@
 package util_analysis;
 
 import java.util.HashMap;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Map;
 
-public class ListOfMapEnv<T> extends Environment<T> {
+public class ListOfMapEnv<T> implements Environment<T> {
+	LinkedList<HashMap<String, T>> scopes = new LinkedList<HashMap<String,T>>();
 	
-	Stack<HashMap<String, T>> scopes = new Stack<HashMap<String,T>>();
+	public void setScopes(LinkedList<HashMap<String, T>> s) {
+		scopes = s;
+	}
 	
 	/**
 	 * 
@@ -14,7 +18,7 @@ public class ListOfMapEnv<T> extends Environment<T> {
 	 */
 	@Override
 	public boolean add(String id, T symTableEntry) {
-		return scopes.peek().putIfAbsent(id, symTableEntry) == null;
+		return scopes.get(0).putIfAbsent(id, symTableEntry) == null;
 	}
 	
 	
@@ -112,5 +116,31 @@ public class ListOfMapEnv<T> extends Environment<T> {
 	@Override
 	public boolean update(String id, T entry) {
 		return scopes.peek().computeIfPresent(id, (k,v) -> entry) != null;
+	}
+
+
+	@Override
+	public Map<String, T> getAllVariables() {
+		Map<String, T> toRet = new HashMap<String, T>();
+		
+		scopes.descendingIterator().forEachRemaining(scope -> toRet.putAll(scope));
+		
+		return toRet;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Object clone() {
+		ListOfMapEnv<T> e = null;
+		
+		try {
+			e = (ListOfMapEnv<T>) super.clone();
+			e.setScopes((LinkedList<HashMap<String, T>>) scopes.clone());
+		} catch (CloneNotSupportedException exc) {
+			exc.printStackTrace();
+		}
+		
+		return e;
 	}
 }

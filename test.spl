@@ -2,12 +2,8 @@
 {
 	int x;
 	
-	void f(int var y, int var z) {
-		delete y;
-		delete z;
-	}
-	f(x, x);
+	if( x == 3 ) {}
+	else delete x;
 	
-	delete x;
-	bool x;
+	int x;
 }

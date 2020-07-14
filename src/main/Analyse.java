@@ -7,6 +7,7 @@ import java.util.List;
 import ast.SPStmtBlock;
 import ast.SPVisitorImpl;
 import ast.STEntry;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 import ast.types.EType;
 import ast.types.Type;
@@ -51,12 +52,20 @@ public class Analyse {
 				System.out.println("Check semantics FAILED");			
 				for(SemanticError err: errors)
 					System.out.println(err);
-			}else{
+			} else {
 				System.out.println("Check semantics succeded");
 				
 				mainBlock.inferType();
 				if (TypeErrorsStorage.getTypeErrors().size() > 0) {
 					TypeErrorsStorage.getTypeErrors().forEach(System.out::println);
+				} else {
+					List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv());
+					
+					if (bErrors.size() > 0) {
+						System.out.println("Behavioural Analysis FAILED");			
+						for(SemanticError bErr: bErrors)
+							System.out.println(bErr);
+					}
 				}
 				
 			}

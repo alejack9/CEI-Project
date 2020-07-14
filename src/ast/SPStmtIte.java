@@ -5,6 +5,7 @@ import java.util.List;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
+import behavioural_analysis.BTHelper;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import ast.errors.BehaviourError;
@@ -22,33 +23,48 @@ public class SPStmtIte extends SPStmt {
 		this.elseStmt = elseStmt;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		toRet.addAll(exp.checkSemantics(e));
 		
-		try {
-			Environment<STEntry> tempE = (Environment<STEntry>) e.clone();
+		if(elseStmt != null) {
+			Environment<STEntry> tempE = null;
+			try {
+				tempE = (Environment<STEntry>) e.clone();
+			} catch (CloneNotSupportedException e1) { /* Cannot happen */}
 			
-			toRet.addAll(thenStmt.checkSemantics(e));
-			
-			if(elseStmt != null)
-				toRet.addAll(elseStmt.checkSemantics(tempE));
-			
-		} catch(Exception exc) {
-			System.out.println("Error");
+			toRet.addAll(elseStmt.checkSemantics(tempE));
 		}
+		
+		toRet.addAll(thenStmt.checkSemantics(e));
 		
 		return toRet;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
 		toRet.addAll(exp.inferBehaviour(e));
 		
+		Environment<BTEntry> tempE = null;
+		
+		if (elseStmt != null) {
+			try {
+				tempE = (Environment<BTEntry>) e.clone();
+			} catch (CloneNotSupportedException e1) { /* Cannot happen */}
+			
+			toRet.addAll(elseStmt.inferBehaviour(tempE));
+		}
+		
+		toRet.addAll(thenStmt.inferBehaviour(e));
+		
+		BTHelper.maxModifyEnv(e, tempE);
+			
 		return toRet;
 	}
 
