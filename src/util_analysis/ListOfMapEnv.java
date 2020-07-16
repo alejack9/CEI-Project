@@ -3,8 +3,8 @@ package util_analysis;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import support.MyCloneable;
 import util_analysis.entries.Entry;
 
 public class ListOfMapEnv<T extends Entry> implements Environment<T> {
@@ -13,6 +13,10 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 
 	public ListOfMapEnv(HashMap<String, T> startingScope) {
 		scopes.push(startingScope);
+	}
+	
+	public ListOfMapEnv(LinkedList<HashMap<String, T>> existingScopes) {
+		this.scopes = existingScopes;
 	}
 
 	public ListOfMapEnv() {	}
@@ -160,7 +164,34 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	}
 
 	@Override
-	public Environment<T> getCurrentScope() {
+	public Environment<T> getCurrentScopeEnv() {
 		return new ListOfMapEnv<T>(scopes.peek());
 	}
+
+	@Override
+	public void addScope(Map<String, T> currentScope) {
+		scopes.push((HashMap<String, T>) currentScope);
+	}
+
+	@Override
+	public Map<String,T> getCurrentScope() {	
+		return scopes.peek();
+	}
+
+	@Override
+	public LinkedList<HashMap<String, T>> getAllFunctions() {
+		LinkedList<HashMap<String, T>> toRet = new LinkedList<HashMap<String, T>>();
+		scopes.descendingIterator().forEachRemaining(s -> {
+			HashMap<String, T> toAdd = new HashMap<String, T>();
+			toAdd.putAll(s.entrySet().stream().filter(e -> isFun(e.getValue())).collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue())));
+			toRet.push(toAdd);
+		});
+		return toRet;
+	}
+
+	private boolean isFun(T entry) {
+		return entry != null &&
+				(entry.IsFunction());
+	}
+
 }

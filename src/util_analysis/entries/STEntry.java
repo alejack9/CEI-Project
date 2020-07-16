@@ -31,4 +31,5 @@ public class STEntry implements Entry {
 	public boolean IsFunction() {
 		return type.getType().compareTo(EType.FUNCTION) == 0;
 	}
+
 }

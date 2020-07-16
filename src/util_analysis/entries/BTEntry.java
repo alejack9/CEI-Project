@@ -32,6 +32,7 @@ public class BTEntry implements Entry {
 	public boolean IsFunction() {
 		return e0 != null;
 	}
+	
 
 	public Environment<BTEntry> getE0() {
 		return e0;

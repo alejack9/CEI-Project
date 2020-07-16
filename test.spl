@@ -1,6 +1,10 @@
 {
-	int x;
-	if( x == 3 ) delete x;
-	else delete x;
-	bool x;
+	int x = 1;
+	void fun(int var y){
+		int z;
+		{
+		
+		}
+		delete y;
+	}
 }

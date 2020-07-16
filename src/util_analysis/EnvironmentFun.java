@@ -1,8 +1,9 @@
 package util_analysis;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import util_analysis.entries.Entry;
 
 public class EnvironmentFun<T extends Entry> implements Environment<T> {
@@ -51,6 +52,8 @@ public class EnvironmentFun<T extends Entry> implements Environment<T> {
 				(entry.IsFunction());
 	}
 	
+
+	
 	@Override
 	public T getIDEntry(String id) {
 		T entry = env.getIDEntry(id);
@@ -62,7 +65,7 @@ public class EnvironmentFun<T extends Entry> implements Environment<T> {
 	@Override
 	public T getLocalIDEntry(String id) {
 		T entry = env.getLocalIDEntry(id);
-		if(isFun(entry))
+		if(isFun(entry) )
 			return entry;
 		return null;
 	}
@@ -85,13 +88,30 @@ public class EnvironmentFun<T extends Entry> implements Environment<T> {
 	}
 
 	@Override
-	public Environment<T> getCurrentScope() {
-		return new EnvironmentFun<T>(env.getCurrentScope());
+	public Environment<T> getCurrentScopeEnv() {
+//		return new EnvironmentFun<T>(env.getCurrentScopeEnv());
+		return env.getCurrentScopeEnv();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object clone() {
 		return new EnvironmentFun<T>((Environment<T>) env.clone());
+	}
+
+	@Override
+	public void addScope(Map<String, T> currentScope) {
+		env.addScope(currentScope);
+	}
+
+	@Override
+	public Map<String, T> getCurrentScope() {
+		return env.getCurrentScope();
+	}
+
+	@Override
+	public LinkedList<HashMap<String, T>> getAllFunctions() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

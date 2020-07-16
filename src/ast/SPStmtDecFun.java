@@ -10,7 +10,6 @@ import ast.types.ArrowType;
 import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
-import util_analysis.EnvironmentFun;
 import util_analysis.ListOfMapEnv;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -35,19 +34,20 @@ public class SPStmtDecFun extends SPStmtDec {
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions());
 		
-		e.openScope();
+		funEnv.openScope();
 		List<Type> argsT = new LinkedList<Type>();
 		int paroffset = 1;
 		for (SPArg arg : args) {
 	    	  argsT.add(arg.getType());
 	    	  
-	    	  if(!e.add(arg.getId(), new STEntry(arg.getType(), e.getNestingLevel(), paroffset++)))
+	    	  if(!funEnv.add(arg.getId(), new STEntry(arg.getType(), funEnv.getNestingLevel(), paroffset++)))
 	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
 		}
 		
-		toRet.addAll(block.checkSemantics(new EnvironmentFun<STEntry>(e)));
-		e.closeScope();
+		toRet.addAll(block.checkSemantics(funEnv));
+		funEnv.closeScope();
 	
 		ArrowType t = (ArrowType) EType.FUNCTION.getType();
 		t.setParamTypes(argsT);
@@ -73,24 +73,27 @@ public class SPStmtDecFun extends SPStmtDec {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
-		Environment<BTEntry> eFun = new EnvironmentFun<BTEntry>(e);
+		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions());
 		
 		Environment<BTEntry> e0 = new ListOfMapEnv<BTEntry>();
+		e0.openScope();
 		args.stream().forEach(arg -> e0.add(arg.getId(), new BTEntry()));
+		
 		e0.add(ID, new BTEntry(e0, e0));
 		Environment<BTEntry> e1 = e0;
 		Environment<BTEntry> e1_1 = e0;
 		
-		e.addScope(e0.getCurrentScope());
+		// e.addScope(e0.getCurrentScope());
+		funEnv.addScope(e0.getCurrentScope()); //open scope
+		
+		// e1 = e1_1 = tutti params a bottom
 		do {
-			toRet.addAll(block.inferBehaviour(e));
+			toRet.addAll(block.inferBehaviour(funEnv));
 			e1 = e1_1;
-			e1_1 = e.getCurrentScope();
-			e.update(ID, new BTEntry(e0, e1_1));
+			e1_1 = funEnv.getCurrentScopeEnv();
+			funEnv.update(ID, new BTEntry(e0, e1_1));
 		} while(e1 != e1_1);
-		e.closeScope();
-		
-		
+		funEnv.closeScope();
 		
 //		e.openScope();
 //		args.stream().forEach(arg -> e.add(arg.getId(), new BTEntry()));
