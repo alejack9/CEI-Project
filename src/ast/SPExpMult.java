@@ -9,11 +9,6 @@ public class SPExpMult extends SPExpBinArithm {
 	}
 
 	@Override
-	public int getValue(Environment e) {
-		return leftSide.getValue(e) * rightSide.getValue(e);
-	}
-
-	@Override
 	protected String getOp() {
 		return "*";
 	}

@@ -8,6 +8,7 @@ public class BoolType extends Type {
 	public BoolType() {
 		this(false, false);
 	}
+	
 	@Override
 	public EType getType() {
 		return EType.BOOL;

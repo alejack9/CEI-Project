@@ -1,9 +1,13 @@
 package ast;
 
+import java.util.Collections;
 import java.util.List;
 
 import ast.types.Type;
 import util_analysis.Environment;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 public class SPExpCall extends SPExp {
@@ -16,19 +20,18 @@ public class SPExpCall extends SPExp {
 	}
 
 	@Override
-	public int getValue(Environment e) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		return call.checkSemantics(e);
 	}
 
 	@Override
 	public Type inferType() {
-		return this.call.inferType();
+		return call.inferType();
 	}
 
+	@Override
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		return call.inferBehaviour(e);
+	}
+	
 }

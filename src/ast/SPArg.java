@@ -6,6 +6,8 @@ import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 

@@ -9,6 +9,8 @@ import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.IdAlreadytExistsError;
 import ast.errors.SemanticError;
@@ -43,9 +45,14 @@ public class SPStmtDecVar extends SPStmtDec {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
+		BTEntry prev = e.getLocalIDEntry(ID);
+		
 		// Should be added after the exp check (if any) but this needs two "exp == null" controls instead of one
 		// "checkSemantics" checks the correct usage of the variable so we can skip the check
-		e.add(ID, new BTEntry());
+		if(prev != null)
+			e.update(ID, new BTEntry(BTHelper.seq(prev.getEffect(), EEffect.BOTTOM)));
+		else
+			e.add(ID, new BTEntry());
 		
 		if(exp != null) {
 			toRet.addAll(exp.inferBehaviour(e));

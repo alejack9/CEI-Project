@@ -8,6 +8,8 @@ import ast.types.Type;
 import behavioural_analysis.BTHelper;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
@@ -36,7 +38,7 @@ public class SPStmtIte extends SPStmt {
 			toRet.addAll(elseStmt.checkSemantics(tempE));
 		}
 		
-		toRet.addAll(thenStmt.checkSemantics(e));
+		toRet.addAll(thenStmt.checkSemantics((Environment<STEntry>) e.clone()));
 		
 		return toRet;
 	}

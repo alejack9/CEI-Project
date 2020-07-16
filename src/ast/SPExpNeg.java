@@ -6,9 +6,12 @@ import java.util.List;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
 
 public class SPExpNeg extends SPExp {
 	
@@ -17,11 +20,6 @@ public class SPExpNeg extends SPExp {
 	public SPExpNeg(SPExp exp, int line, int column) {
 		super(line, column);
 		this.exp = exp;		
-	}
-
-	@Override
-	public int getValue(Environment e) {
-		return -exp.getValue(e);
 	}
 
 	@Override
@@ -42,4 +40,8 @@ public class SPExpNeg extends SPExp {
 		return EType.INT.getType();
 	}
 
+	@Override
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		return exp.inferBehaviour(e);
+	}
 }

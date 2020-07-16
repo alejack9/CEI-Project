@@ -1,13 +1,11 @@
 package behavioural_analysis;
 
-import ast.BTEntry;
 import util_analysis.Environment;
+import util_analysis.entries.BTEntry;
 
 public class BTHelper {
 	
-	private BTHelper() {
-		
-	}
+	private BTHelper() { }
 	
 	public static EEffect max(EEffect a, EEffect b) {
 		return a.compareTo(b) > 0 ? a : b;

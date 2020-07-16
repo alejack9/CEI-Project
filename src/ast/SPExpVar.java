@@ -4,7 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ast.types.Type;
+import behavioural_analysis.BTHelper;
+import behavioural_analysis.EEffect;
 import util_analysis.Environment;
+import util_analysis.EnvironmentFun;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
+import ast.errors.BehaviourError;
+import ast.errors.DeletedVariableError;
+import ast.errors.GlobalVariableAccessError;
 import ast.errors.SemanticError;
 import ast.errors.VariableNotExistsError;
 
@@ -27,21 +35,35 @@ public class SPExpVar extends SPExp {
 		
 		idEntry = e.getIDEntry(id);
 		
-		if(idEntry == null) 
-			toRet.add(new VariableNotExistsError(id, line, column));
+		if(idEntry == null)
+			if(e instanceof EnvironmentFun)
+				toRet.add(new GlobalVariableAccessError(id, line, column));
+			else
+				toRet.add(new VariableNotExistsError(id, line, column));
 		
 		return toRet;
 	}
 
 	@Override
-	public int getValue(Environment e) {	
-		return 0;
-//		return e.getIDEntry(id);
+	public Type inferType() {		
+		return this.idEntry.getType();
 	}
 
 	@Override
-	public Type inferType() {		
-		return this.idEntry.getType();
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+		
+		BTEntry current = e.getIDEntry(id);
+		if(e.update(
+				id,
+				new BTEntry(BTHelper.seq(
+						current.getEffect(),
+						EEffect.RW)))
+				.getEffect()
+				.compareTo(EEffect.T) == 0)
+			toRet.add(new DeletedVariableError(id, line, column));
+		
+		return toRet;
 	}
 
 }

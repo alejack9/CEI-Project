@@ -6,7 +6,6 @@ import java.util.List;
 
 import ast.SPStmtBlock;
 import ast.SPVisitorImpl;
-import ast.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 import ast.types.EType;
@@ -20,6 +19,7 @@ import parser.SimplePlusParser;
 import util_analysis.Environment;
 import util_analysis.ListOfMapEnv;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.STEntry;
 
 public class Analyse {
 

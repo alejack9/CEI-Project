@@ -5,23 +5,29 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import support.MyCloneable;
+import util_analysis.entries.Entry;
 
-public class ListOfMapEnv<T extends MyCloneable> implements Environment<T> {
+public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	
 	LinkedList<HashMap<String, T>> scopes = new LinkedList<HashMap<String,T>>();
-	
+
+	public ListOfMapEnv(HashMap<String, T> startingScope) {
+		scopes.push(startingScope);
+	}
+
+	public ListOfMapEnv() {	}
+
 	public void setScopes(LinkedList<HashMap<String, T>> s) {
 		scopes = s;
 	}
 	
 	/**
-	 * 
 	 * @param id
 	 * @param symTableEntry
 	 */
 	@Override
 	public boolean add(String id, T symTableEntry) {
-		return scopes.get(0).putIfAbsent(id, symTableEntry) == null;
+		return scopes.peek().putIfAbsent(id, symTableEntry) == null;
 	}
 	
 	
@@ -82,12 +88,9 @@ public class ListOfMapEnv<T extends MyCloneable> implements Environment<T> {
 	 */
 	@Override
 	public T getIDEntry(String id){
-		for(HashMap<String, T> scope:scopes){
-			if(scope.containsKey(id)){
-				return scope.get(id);				
-			}
-		}
-		
+		for(HashMap<String, T> scope:scopes)
+			if(scope.containsKey(id))
+				return scope.get(id);
 		return null;
 	}
 	
@@ -117,8 +120,8 @@ public class ListOfMapEnv<T extends MyCloneable> implements Environment<T> {
 
 
 	@Override
-	public boolean update(String id, T entry) {
-		return scopes.peek().computeIfPresent(id, (k,v) -> entry) != null;
+	public T update(String id, T entry) {
+		return scopes.peek().computeIfPresent(id, (k,v) -> entry);
 	}
 
 
@@ -154,5 +157,10 @@ public class ListOfMapEnv<T extends MyCloneable> implements Environment<T> {
 		}
 		
 		return clonedEnv;
+	}
+
+	@Override
+	public Environment<T> getCurrentScope() {
+		return new ListOfMapEnv<T>(scopes.peek());
 	}
 }

@@ -9,12 +9,6 @@ public class SPExpGreaterThan extends SPExpBinBoolIntIn {
 	}
 	
 	@Override
-	public int getValue(Environment e) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
 	protected String getOp() {
 		return ">";
 	}

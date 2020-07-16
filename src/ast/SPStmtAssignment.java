@@ -10,6 +10,8 @@ import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
@@ -46,9 +48,7 @@ public class SPStmtAssignment extends SPStmt{
 	
 		toRet.addAll(exp.inferBehaviour(e));
 		
-		e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id), new BTEntry(EEffect.RW))));
-		
-		if(e.getIDEntry(id).getEffect().equals(EEffect.T))
+		if(e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id), new BTEntry(EEffect.RW)))).getEffect().equals(EEffect.T))
 			toRet.add(new DeletedVariableError(id, line, column));
 		
 		return toRet;

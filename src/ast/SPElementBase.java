@@ -5,6 +5,8 @@ import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 import ast.types.Type;
 import util_analysis.Environment;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
 
 public abstract class SPElementBase {
 

@@ -4,9 +4,8 @@ public abstract class Type implements Cloneable {
 	
 	public abstract EType getType();
 
-	private boolean isParameter;
-	
-	private boolean isRef;
+	protected boolean isParameter;
+	protected boolean isRef;
 
 	protected Type(boolean isParameter, boolean isRef) {
 		this.isParameter = isParameter;
@@ -36,7 +35,7 @@ public abstract class Type implements Cloneable {
 	}
 	
 	@Override
-	public final Object clone() {
+	public Object clone() {
 		return getType().getType(isParameter, isRef);
 	}
 	

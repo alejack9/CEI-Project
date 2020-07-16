@@ -8,6 +8,9 @@ import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 public class SPExpNot extends SPExp {
@@ -17,12 +20,6 @@ public class SPExpNot extends SPExp {
 	public SPExpNot(SPExp exp, int line, int column) {
 		super(line, column);
 		this.exp = exp;
-	}
-
-	@Override
-	public int getValue(Environment e) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -41,6 +38,11 @@ public class SPExpNot extends SPExp {
 			TypeErrorsStorage.addError(new TypeError("Expression type is \"" + expT + "\" but it must be bool.", exp.line, exp.column));
 		
 		return EType.BOOL.getType();
+	}
+
+	@Override
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		return exp.inferBehaviour(e);
 	}
 
 }

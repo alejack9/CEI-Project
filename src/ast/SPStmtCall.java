@@ -9,6 +9,8 @@ import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.FunctionNotExistsError;
 import ast.errors.ParametersMismatchError;
@@ -56,8 +58,11 @@ public class SPStmtCall extends SPStmt {
 
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
-		// TODO Auto-generated method stub
-		return null;
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+		
+		// TODO after function declaration
+		
+		return toRet;
 	}
 
 	@Override

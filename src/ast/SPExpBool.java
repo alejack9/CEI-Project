@@ -1,11 +1,15 @@
 package ast;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import ast.types.EType;
 import ast.types.Type;
 import util_analysis.Environment;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
+import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 public class SPExpBool extends SPExp {
@@ -18,12 +22,6 @@ public class SPExpBool extends SPExp {
 	}
 
 	@Override
-	public int getValue(Environment e) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		return new LinkedList<SemanticError>();
 	}
@@ -33,4 +31,8 @@ public class SPExpBool extends SPExp {
 		return EType.BOOL.getType();
 	}
 
+	@Override
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		return Collections.emptyList();
+	}
 }

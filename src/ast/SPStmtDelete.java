@@ -8,6 +8,8 @@ import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
+import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.DeletedVariableError;
 import ast.errors.LocalVariableDoesntExistsError;
@@ -53,7 +55,17 @@ public class SPStmtDelete extends SPStmt {
 			else
 				idEntry = e.deleteVariable(id);
 		}
-		
+		/**
+		 * int yy;
+		 * void f(var int x) {
+		 * 	void z(var int y) {
+		 * 		delete y;
+		 * 	}
+		 * 	z(x);
+		 * }
+		 * f(yy);
+		 * yy = 3;
+		 */
 		return toRet;
 	}
 
@@ -61,9 +73,7 @@ public class SPStmtDelete extends SPStmt {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
-		e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id), new BTEntry(EEffect.D))));
-		
-		if(e.getIDEntry(id).getEffect().equals(EEffect.T))
+		if(e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id), new BTEntry(EEffect.D)))).getEffect().equals(EEffect.T))
 			toRet.add(new DeletedVariableError(id, line, column));
 		
 		return toRet;
