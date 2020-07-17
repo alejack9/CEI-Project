@@ -1,6 +1,7 @@
 package util_analysis;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -125,12 +126,15 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 
 	@Override
 	public T update(String id, T entry) {
-		return scopes.peek().computeIfPresent(id, (k,v) -> entry);
+		for(HashMap<String, T> scope:scopes)
+			if(scope.containsKey(id))
+				return scope.put(id, entry);
+		return null;
 	}
 
 
 	@Override
-	public Map<String, T> getAllVariables() {
+	public Map<String, T> getAllIDs() {
 		Map<String, T> toRet = new HashMap<String, T>();
 		
 		scopes.descendingIterator().forEachRemaining(scope -> toRet.putAll(scope));
@@ -192,6 +196,34 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	private boolean isFun(T entry) {
 		return entry != null &&
 				(entry.IsFunction());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		if(this == obj) return true;
+		
+		if(!obj.getClass().isInstance(this)) return false;
+		ListOfMapEnv<T> casted = (ListOfMapEnv<T>) obj; 
+
+		if(casted.scopes.size() != scopes.size()) return false;
+		
+		for(int i = 0; i < scopes.size(); i++) {
+			HashMap<String, T> thisScope = scopes.get(i);
+			HashMap<String, T> objScope = casted.scopes.get(i);
+			
+			if(thisScope.size() != objScope.size()) return false;
+			
+			Iterator<java.util.Map.Entry<String, T>> iterator = thisScope.entrySet().iterator(); 
+			while(iterator.hasNext()) {
+				java.util.Map.Entry<String, T> entry = iterator.next(); 
+				if(!objScope.containsKey(entry.getKey()) || !objScope.get(entry.getKey()).equals(entry.getValue()))
+					return false;
+			}
+		}
+
+		return true;
 	}
 
 }

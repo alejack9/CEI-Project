@@ -1,10 +1,12 @@
 {
 	int x = 1;
-	void fun(int var y){
-		int z;
-		{
-		
+	void fun(int var y)
+	{
+		if(y == 0) {
+			delete y;
+		} else {
+			int y;
+			y = 2;
 		}
-		delete y;
 	}
 }

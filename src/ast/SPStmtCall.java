@@ -77,7 +77,7 @@ public class SPStmtCall extends SPStmt {
 		for(int i = 0; i < parTs.size(); i++) {
 			Type parT = parTs.get(i);
 			Type expT = exps.get(i).inferType(); 
-			if(!parT.equals(expT))
+			if(!parT.getType().equalsTo(expT))
 				TypeErrorsStorage.addError(new TypeError("#" + (i + 1) + " parameter type (" + parT + ") is not equal to expression type (" + expT + ")", line, column));
 		}
 		

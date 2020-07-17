@@ -1,7 +1,5 @@
 package ast;
 
-import util_analysis.Environment;
-
 public class SPExpEqual extends SPExpBinBoolAllIn {
 
 	public SPExpEqual(SPExp left, SPExp right, int line, int column) {

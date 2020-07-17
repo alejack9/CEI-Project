@@ -32,4 +32,16 @@ public class STEntry implements Entry {
 		return type.getType().compareTo(EType.FUNCTION) == 0;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		if(this == obj) return true;
+		if(!(obj instanceof STEntry)) return false;
+		STEntry casted = (STEntry) obj;
+		
+		if(!type.equals(casted.type)
+				|| nestingLevel != casted.nestingLevel || offset != casted.offset) return false;
+		
+		return true;
+	}
 }

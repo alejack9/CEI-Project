@@ -1,7 +1,5 @@
 package ast;
 
-import util_analysis.Environment;
-
 public class SPExpLessThan extends SPExpBinBoolIntIn {
 
 	public SPExpLessThan(SPExp leftSide, SPExp rightSide, int line, int column) {

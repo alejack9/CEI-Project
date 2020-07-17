@@ -49,4 +49,20 @@ public class BTEntry implements Entry {
 	public void setE1(Environment<BTEntry> e1) {
 		this.e1 = e1;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		if(this == obj) return true;
+		if(!(obj instanceof BTEntry)) return false;
+		BTEntry casted = (BTEntry) obj;
+		if(e0 != null) {
+			if(casted.e0 == null || !e0.equals(casted.e0)
+				|| !e1.equals(casted.e1)) return false;
+		}
+		else
+			if(effect.compareTo(casted.effect) != 0) return false;
+		
+		return true;
+	}
 }

@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class SPStmtDecFun extends SPStmtDec {
 		this.args.stream().map(SPArg::inferType);
 		
 		Type blockT = this.block.inferType();
-		if(!blockT.equals(type))
+		if(!blockT.getType().equalsTo(type))
 			TypeErrorsStorage.addError(new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")", this.block.line, this.block.column)); 
 		return EType.VOID.getType();
 	}
@@ -83,17 +84,19 @@ public class SPStmtDecFun extends SPStmtDec {
 		Environment<BTEntry> e1 = e0;
 		Environment<BTEntry> e1_1 = e0;
 		
-		// e.addScope(e0.getCurrentScope());
-		funEnv.addScope(e0.getCurrentScope()); //open scope
 		
 		// e1 = e1_1 = tutti params a bottom
 		do {
+			funEnv.addScope(new HashMap<String, BTEntry>(e0.getCurrentScope())); //open scope
 			toRet.addAll(block.inferBehaviour(funEnv));
 			e1 = e1_1;
 			e1_1 = funEnv.getCurrentScopeEnv();
+			funEnv.closeScope();
 			funEnv.update(ID, new BTEntry(e0, e1_1));
-		} while(e1 != e1_1);
-		funEnv.closeScope();
+		} while(!e1.equals(e1_1));
+		/**
+		 * int f(int var x) {  int y; }
+		 */
 		
 //		e.openScope();
 //		args.stream().forEach(arg -> e.add(arg.getId(), new BTEntry()));

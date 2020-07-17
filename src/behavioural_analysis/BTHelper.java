@@ -1,5 +1,8 @@
 package behavioural_analysis;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 
@@ -43,7 +46,10 @@ public class BTHelper {
 	}
 
 	public static void maxModifyEnv(Environment<BTEntry> e, Environment<BTEntry> tempE) {
-		e.getAllVariables().forEach((k,v) ->
+		
+		// TODO MAKE IT FOR
+
+		e.getAllIDs().forEach((k,v) ->
 			e.update(k, new BTEntry(BTHelper.max(
 				v.getEffect(),
 				tempE.getIDEntry(k).getEffect()

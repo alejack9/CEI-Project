@@ -1,6 +1,5 @@
 package ast;
 
-import java.util.Collections;
 import java.util.List;
 
 import ast.types.Type;

@@ -29,8 +29,14 @@ public abstract class Type implements Cloneable {
 	
 	@Override
 	public boolean equals(Object e) {
+		if(e == null) return false;
+		if(this == e) return true;
 		if(!(e instanceof Type)) return false;
-		if(this.getType() != ((Type)e).getType()) return false;
+
+		Type casted = (Type)e;
+		if(casted.getType().compareTo(getType()) != 0) return false;
+		if(isParameter != casted.isParameter || isRef != casted.isRef) return false;
+		
 		return true;
 	}
 	

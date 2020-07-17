@@ -19,7 +19,7 @@ public abstract class SPExpBinBoolAllIn extends SPExpBin {
 		Type leftSideT = this.leftSide.inferType();
 		Type rightSideT = this.rightSide.inferType();
 		
-		if(!leftSideT.equals(rightSideT))
+		if(!leftSideT.getType().equalsTo(rightSideT))
 			TypeErrorsStorage.addError(new TypeError("In condition \"" + this.getOp() + "\", left expression's type (" + leftSideT + ") does not equal to the right's type (" + rightSideT + ")", line, column));
 
 		if(EType.VOID.equalsTo(leftSideT))

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import util_analysis.entries.Entry;
-import util_analysis.entries.STEntry;
 
 public interface Environment<T extends Entry> extends Cloneable {
 	public boolean add(String id, T entry);
@@ -18,10 +17,12 @@ public interface Environment<T extends Entry> extends Cloneable {
 	public T getLocalIDEntry(String id);
 	public int getNestingLevel();
 	public int getOffset();
-	public Map<String, T> getAllVariables();
+	public Map<String, T> getAllIDs();
 	public Object clone();
 	public Environment<T> getCurrentScopeEnv();
 	public Map<String,T> getCurrentScope();
 	public void addScope(Map<String,T> currentScope);
 	public LinkedList<HashMap<String, T>> getAllFunctions();
+	@Override
+	public boolean equals(Object obj);
 }

@@ -8,17 +8,15 @@ import ast.SPStmtBlock;
 import ast.SPVisitorImpl;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
-import ast.types.EType;
-import ast.types.Type;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import parser.SimplePlusLexer;
 import parser.SimplePlusParser;
-import util_analysis.Environment;
 import util_analysis.ListOfMapEnv;
 import util_analysis.TypeErrorsStorage;
+import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 
 public class Analyse {
@@ -46,7 +44,7 @@ public class Analyse {
 			//visit the root, this will recursively visit the whole tree
 			SPStmtBlock mainBlock = (SPStmtBlock) visitor.visitBlock(parser.block());
 			
-			List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv());
+			List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
 			
 			if (errors.size() > 0) {
 				System.out.println("Check semantics FAILED");			
@@ -59,7 +57,7 @@ public class Analyse {
 				if (TypeErrorsStorage.getTypeErrors().size() > 0) {
 					TypeErrorsStorage.getTypeErrors().forEach(System.out::println);
 				} else {
-					List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv());
+					List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
 					
 					if (bErrors.size() > 0) {
 						System.out.println("Behavioural Analysis FAILED");			
