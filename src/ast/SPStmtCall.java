@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import ast.errors.TypeError;
 import ast.types.ArrowType;
 import ast.types.EType;
 import ast.types.Type;
+import behavioural_analysis.BTHelper;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -60,7 +62,21 @@ public class SPStmtCall extends SPStmt {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
-		// TODO after function declaration
+		List<Type> types = ((ArrowType) idEntry.getType()).getParamTypes();
+		List<BTEntry> e1 = e.getIDEntry(ID).getE1();
+		List<BTEntry> ePrimo = new LinkedList<BTEntry>();
+		
+		for(int i = 0; i < types.size(); i++) {
+			if(types.get(i).IsRef()) {
+				BTEntry prev = e.getIDEntry(((SPExpVar) exps.get(i)).getId());
+				BTEntry next = e1.get(i);
+				ePrimo.add(new BTEntry(BTHelper.seq(prev, next)));
+			}
+		}
+		
+		BTEntry entry = ePrimo.stream().reduce((a, b) -> new BTEntry(BTHelper.par(a, b))).get();
+		
+		//e.update(id, entry);
 		
 		return toRet;
 	}

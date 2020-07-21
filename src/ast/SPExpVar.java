@@ -61,4 +61,7 @@ public class SPExpVar extends SPExp {
 		return toRet;
 	}
 
+	public String getId() {
+		return id;
+	}
 }

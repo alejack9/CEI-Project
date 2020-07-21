@@ -1,7 +1,9 @@
 package behavioural_analysis;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
@@ -33,6 +35,12 @@ public class BTHelper {
 		return EEffect.T;
 	}
 	
+	public static EEffect par(BTEntry a, BTEntry b) {
+		if(a == null) return b.getEffect();
+		if(b == null) return a.getEffect();
+		return par(a.getEffect(), b.getEffect());
+	}
+	
 	public static EEffect seq(BTEntry a, BTEntry b) {
 		return b != null ? BTHelper.seq(a.getEffect(), b.getEffect()) : a.getEffect();
 	}
@@ -46,13 +54,12 @@ public class BTHelper {
 	}
 
 	public static void maxModifyEnv(Environment<BTEntry> e, Environment<BTEntry> tempE) {
-		
-		// TODO MAKE IT FOR
-
-		e.getAllIDs().forEach((k,v) ->
-			e.update(k, new BTEntry(BTHelper.max(
-				v.getEffect(),
-				tempE.getIDEntry(k).getEffect()
+		e.getAllIDs().entrySet().stream().filter(k -> !k.getValue().IsFunction())
+			.forEach(en -> e.update(
+					en.getKey(),
+					new BTEntry(BTHelper.max(
+							en.getValue().getEffect(),
+							tempE.getIDEntry(en.getKey()).getEffect()
 		))));
 	}
 }

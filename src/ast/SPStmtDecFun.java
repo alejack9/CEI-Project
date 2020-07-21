@@ -76,40 +76,26 @@ public class SPStmtDecFun extends SPStmtDec {
 		
 		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions());
 		
-		Environment<BTEntry> e0 = new ListOfMapEnv<BTEntry>();
-		e0.openScope();
-		args.stream().forEach(arg -> e0.add(arg.getId(), new BTEntry()));
-		
-		e0.add(ID, new BTEntry(e0, e0));
-		Environment<BTEntry> e1 = e0;
-		Environment<BTEntry> e1_1 = e0;
-		
+		List<BTEntry> e0 = new LinkedList<BTEntry>();
+		args.stream().forEach(arg -> e0.add(new BTEntry()));
+		List<BTEntry> e1 = e0;
+		List<BTEntry> e1_1 = e0;
 		
 		// e1 = e1_1 = tutti params a bottom
 		do {
-			funEnv.addScope(new HashMap<String, BTEntry>(e0.getCurrentScope())); //open scope
+			funEnv.openScope();
+			for(int i = 0; i < e0.size(); i++)
+				funEnv.add(args.get(i).getId(), (BTEntry) e0.get(i).clone());
 			toRet.addAll(block.inferBehaviour(funEnv));
 			e1 = e1_1;
-			e1_1 = funEnv.getCurrentScopeEnv();
+			for(int i = 0; i < e0.size(); i++)
+				e1_1.set(i, funEnv.getIDEntry(args.get(i).getId()));
 			funEnv.closeScope();
-			funEnv.update(ID, new BTEntry(e0, e1_1));
-		} while(!e1.equals(e1_1));
+			funEnv.update(ID, new BTEntry(e1_1));
+		} while(!BTEntry.areEqual(e1, e1_1));
 		/**
 		 * int f(int var x) {  int y; }
 		 */
-		
-//		e.openScope();
-//		args.stream().forEach(arg -> e.add(arg.getId(), new BTEntry()));
-//		
-//		e.add(ID, new BTEntry(e0, e1));
-//		
-//		do {
-//			block.inferBehaviour(e);
-//			e1 = e11;
-//			e11 = e.getCurrentScope();
-//			e.update(ID, new BTEntry(e0, e11));
-//		} while(e1 != e11);
-//		e.closeScope();
 		
 		return toRet;
 	}

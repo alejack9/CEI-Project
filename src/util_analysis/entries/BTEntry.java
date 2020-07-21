@@ -1,12 +1,13 @@
 package util_analysis.entries;
 
+import java.util.List;
+
 import behavioural_analysis.EEffect;
 import util_analysis.Environment;
 
 public class BTEntry implements Entry {
 	private EEffect effect;
-	private Environment<BTEntry> e0;
-	private Environment<BTEntry> e1;
+	private List<BTEntry> e1;
 	
 	public BTEntry() {
 		this(EEffect.BOTTOM);
@@ -15,8 +16,8 @@ public class BTEntry implements Entry {
 	public BTEntry(EEffect effect) {
 		this.effect = effect;
 	}
-	public BTEntry(Environment<BTEntry> e0, Environment<BTEntry> e1) {
-		this.e0 = e0;
+	
+	public BTEntry(List<BTEntry> e1) {
 		this.e1 = e1;
 	}
 	
@@ -30,24 +31,23 @@ public class BTEntry implements Entry {
 
 	@Override
 	public boolean IsFunction() {
-		return e0 != null;
+		return e1 != null;
 	}
 	
-
-	public Environment<BTEntry> getE0() {
-		return e0;
-	}
-	
-	public Environment<BTEntry> getE1() {
+	public List<BTEntry> getE1() {
 		return e1;
 	}
-	
-	public void setE0(Environment<BTEntry> e0) {
-		this.e0 = e0;
+
+	public void setE1(List<BTEntry> e1) {
+		this.e1 = e1;
 	}
 	
-	public void setE1(Environment<BTEntry> e1) {
-		this.e1 = e1;
+	public static boolean areEqual(List<BTEntry> e1, List<BTEntry> e1_1) {
+		if(e1.size() != e1_1.size()) return false;
+		for(int i = 0; i < e1.size(); i++)
+			if(!e1.get(i).equals(e1_1.get(i))) return false;
+		
+		return true;
 	}
 	
 	@Override
@@ -56,9 +56,8 @@ public class BTEntry implements Entry {
 		if(this == obj) return true;
 		if(!(obj instanceof BTEntry)) return false;
 		BTEntry casted = (BTEntry) obj;
-		if(e0 != null) {
-			if(casted.e0 == null || !e0.equals(casted.e0)
-				|| !e1.equals(casted.e1)) return false;
+		if(e1 != null) {
+			if(casted.e1 == null || !areEqual(e1, casted.e1)) return false;
 		}
 		else
 			if(effect.compareTo(casted.effect) != 0) return false;
