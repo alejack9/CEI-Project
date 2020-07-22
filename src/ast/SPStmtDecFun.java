@@ -82,6 +82,7 @@ public class SPStmtDecFun extends SPStmtDec {
 		List<BTEntry> e1_1 = e0;
 		
 		// e1 = e1_1 = tutti params a bottom
+		funEnv.add(ID, new BTEntry(e0));
 		do {
 			funEnv.openScope();
 			for(int i = 0; i < e0.size(); i++)
@@ -96,6 +97,7 @@ public class SPStmtDecFun extends SPStmtDec {
 		/**
 		 * int f(int var x) {  int y; }
 		 */
+		e.add(ID, funEnv.getIDEntry(ID));
 		
 		return toRet;
 	}

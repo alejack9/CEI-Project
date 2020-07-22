@@ -1,8 +1,12 @@
 package ast;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import ast.errors.TypeError;
 import ast.types.ArrowType;
@@ -58,25 +62,29 @@ public class SPStmtCall extends SPStmt {
 		return toRet;
 	}
 
+	
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
 		List<Type> types = ((ArrowType) idEntry.getType()).getParamTypes();
 		List<BTEntry> e1 = e.getIDEntry(ID).getE1();
-		List<BTEntry> ePrimo = new LinkedList<BTEntry>();
+		HashMap<String, List<BTEntry>> ePrimo = new HashMap<>();
 		
 		for(int i = 0; i < types.size(); i++) {
 			if(types.get(i).IsRef()) {
 				BTEntry prev = e.getIDEntry(((SPExpVar) exps.get(i)).getId());
 				BTEntry next = e1.get(i);
-				ePrimo.add(new BTEntry(BTHelper.seq(prev, next)));
+								
+				List<BTEntry> btList = ePrimo.getOrDefault(((SPExpVar) exps.get(i)).getId(), new LinkedList<>());
+				btList.add(new BTEntry(BTHelper.seq(prev, next)));
+				ePrimo.put(((SPExpVar) exps.get(i)).getId(), btList);
 			}
 		}
-		
-		BTEntry entry = ePrimo.stream().reduce((a, b) -> new BTEntry(BTHelper.par(a, b))).get();
-		
-		//e.update(id, entry);
+				
+		ePrimo.entrySet().forEach(entry ->
+			e.update(entry.getKey(), entry.getValue().stream().reduce((a, b) -> new BTEntry(BTHelper.par(a, b))).get())
+		);
 		
 		return toRet;
 	}

@@ -1,12 +1,23 @@
 {
-	int x = 1;
-	void fun(int var y)
-	{
-		if(y == 0) {
-			delete y;
-		} else {
-			int y;
-			y = 2;
-		}
+	// int x = 1;
+	// void fun(int var y)
+	// {
+		// if(y == 0) {
+			// delete y;
+		// } else {
+			// int y;
+			// y = 2;
+		// }
+	// }
+	// fun(x);
+	
+	int z = 3;
+	int x = 3;
+	void fun(int var x, int var y) {
+		delete x;
+		y = 3;
 	}
+	
+	fun(z,x);
+	z = 3;
 }
