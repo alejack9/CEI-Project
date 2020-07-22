@@ -1,23 +1,8 @@
 {
-	// int x = 1;
-	// void fun(int var y)
-	// {
-		// if(y == 0) {
-			// delete y;
-		// } else {
-			// int y;
-			// y = 2;
-		// }
-	// }
-	// fun(x);
-	
-	int z = 3;
-	int x = 3;
-	void fun(int var x, int var y) {
-		delete x;
-		y = 3;
+	void f(int m, int n){
+		if (m > n) { print(m + n); }
+		else { int x = 1; f(m + 1, n + 1); }
 	}
 	
-	fun(z,x);
-	z = 3;
+	f(4,5) ;
 }

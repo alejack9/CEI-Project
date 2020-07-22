@@ -49,11 +49,13 @@ public class SPExpVar extends SPExp {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
 		BTEntry current = e.getIDEntry(id);
-		if(e.update(
+		
+		e.update(
 				id,
 				new BTEntry(BTHelper.seq(
 						current.getEffect(),
-						EEffect.RW)))
+						EEffect.RW)));
+		if(e.getIDEntry(id)
 				.getEffect()
 				.compareTo(EEffect.T) == 0)
 			toRet.add(new DeletedVariableError(id, line, column));

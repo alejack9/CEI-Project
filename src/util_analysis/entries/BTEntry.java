@@ -26,7 +26,10 @@ public class BTEntry implements Entry {
 	}
 	
 	public Object clone() {
-		return new BTEntry(effect);
+		if(e1 == null)
+			return new BTEntry(effect);
+		else
+			return new BTEntry(e1);	
 	}
 
 	@Override

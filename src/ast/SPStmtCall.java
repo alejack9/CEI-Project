@@ -13,10 +13,12 @@ import ast.types.ArrowType;
 import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTHelper;
+import behavioural_analysis.EEffect;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
+import ast.errors.AliasingError;
 import ast.errors.BehaviourError;
 import ast.errors.FunctionNotExistsError;
 import ast.errors.ParametersMismatchError;
@@ -75,16 +77,21 @@ public class SPStmtCall extends SPStmt {
 			if(types.get(i).IsRef()) {
 				BTEntry prev = e.getIDEntry(((SPExpVar) exps.get(i)).getId());
 				BTEntry next = e1.get(i);
-								
+
 				List<BTEntry> btList = ePrimo.getOrDefault(((SPExpVar) exps.get(i)).getId(), new LinkedList<>());
 				btList.add(new BTEntry(BTHelper.seq(prev, next)));
 				ePrimo.put(((SPExpVar) exps.get(i)).getId(), btList);
 			}
 		}
 				
-		ePrimo.entrySet().forEach(entry ->
-			e.update(entry.getKey(), entry.getValue().stream().reduce((a, b) -> new BTEntry(BTHelper.par(a, b))).get())
-		);
+		ePrimo.entrySet().forEach(entry -> {
+			e.update(entry.getKey(), entry.getValue().stream().reduce((a, b) -> new BTEntry(BTHelper.par(a, b))).get());
+			
+			if(e.getIDEntry(entry.getKey()).getEffect().compareTo(EEffect.T) == 0)
+				toRet.add(new AliasingError(entry.getKey(), ID, line, column));
+		});
+		
+		
 		
 		return toRet;
 	}

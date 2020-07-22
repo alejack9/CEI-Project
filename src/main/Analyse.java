@@ -57,15 +57,18 @@ public class Analyse {
 				if (TypeErrorsStorage.getTypeErrors().size() > 0) {
 					TypeErrorsStorage.getTypeErrors().forEach(System.out::println);
 				} else {
+					System.out.println("Type check succeded");
+					
 					List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
 					
 					if (bErrors.size() > 0) {
-						System.out.println("Behavioural Analysis FAILED");			
+						System.out.println("Behavioural analysis FAILED");			
 						for(SemanticError bErr: bErrors)
 							System.out.println(bErr);
+					} else {
+						System.out.println("Behaviour analysis succeded");
 					}
 				}
-				
 			}
 			
 			/*

@@ -35,8 +35,14 @@ public class SPStmtDecFun extends SPStmtDec {
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions());
+
+		ArrowType t = (ArrowType) EType.FUNCTION.getType();
 		
+		if (!e.add(ID, new STEntry(t, e.getNestingLevel(), e.getOffset())))
+			toRet.add(new IdAlreadytExistsError(ID, line, column));
+		
+		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions());
+
 		funEnv.openScope();
 		List<Type> argsT = new LinkedList<Type>();
 		int paroffset = 1;
@@ -47,16 +53,12 @@ public class SPStmtDecFun extends SPStmtDec {
 	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
 		}
 		
-		toRet.addAll(block.checkSemantics(funEnv));
-		funEnv.closeScope();
-	
-		ArrowType t = (ArrowType) EType.FUNCTION.getType();
 		t.setParamTypes(argsT);
 		t.setRetType(type);
 		
-		if (!e.add(ID, new STEntry(t, e.getNestingLevel(), e.getOffset())))
-			toRet.add(new IdAlreadytExistsError(ID, line, column));
-		
+		toRet.addAll(block.checkSemantics(funEnv));
+
+		funEnv.closeScope();
 		return toRet;
 	}
 

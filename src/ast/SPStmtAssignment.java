@@ -48,10 +48,12 @@ public class SPStmtAssignment extends SPStmt{
 	
 		toRet.addAll(exp.inferBehaviour(e));
 		
-		if(e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id), new BTEntry(EEffect.RW)))).getEffect().equals(EEffect.T))
-			toRet.add(new DeletedVariableError(id, line, column));
+		e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id).getEffect(), EEffect.RW)));
 		
-		return toRet;
+	    if(e.getIDEntry(id).getEffect().equals(EEffect.T))
+	      toRet.add(new DeletedVariableError(id, line, column));
+	    
+	    return toRet;
 	}
 
 	@Override
@@ -62,5 +64,4 @@ public class SPStmtAssignment extends SPStmt{
 		
 		return EType.VOID.getType();
 	}
-
 }
