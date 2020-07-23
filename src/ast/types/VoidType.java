@@ -14,4 +14,9 @@ public class VoidType extends Type {
 	public EType getType() {
 		return EType.VOID;
 	}
+	
+	@Override
+	public int _getDimension() {
+		return 0;
+	}
 }

@@ -1,8 +1,18 @@
 {
-	void f(int m, int n){
-		if (m > n) { print(m + n); }
-		else { int x = 1; f(m + 1, n + 1); }
-	}
-	
-	f(4,5) ;
+	print 7;
+	/* int a;
+	int b;
+	a = 4;
+	void g( int var x, int var  y)
+		{ 
+			if (y==0)
+				delete x ;
+			else {
+				bool z;
+				x = x-1;
+				g(x,y) ;
+				delete x;
+			}
+		}
+	g(a,b); */
 }

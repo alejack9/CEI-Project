@@ -44,4 +44,13 @@ public class SPExpNeg extends SPExp {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return exp.inferBehaviour(e);
 	}
+
+	@Override
+	public String codeGen(int nl) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(exp.codeGen(nl));
+		sb.append("\r\n");
+		sb.append("neg $a0");
+		return sb.toString();
+	}
 }

@@ -13,4 +13,9 @@ public class IntType extends Type {
 	public EType getType() {
 		return EType.INT;
 	}
+	
+	@Override
+	public int _getDimension() {
+		return 32;
+	}
 }

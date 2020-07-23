@@ -31,4 +31,10 @@ public abstract class SPElementBase {
 	 * @return the behavior of the expression
 	 */
 	public abstract List<BehaviourError> inferBehaviour(Environment<BTEntry> e);
+	
+	public abstract String codeGen(int nl);
+	
+	public final String codeGen() {
+		return codeGen(-1);
+	}
 }

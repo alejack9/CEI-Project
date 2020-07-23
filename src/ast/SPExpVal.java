@@ -37,4 +37,13 @@ public class SPExpVal extends SPExp {
 		return Collections.emptyList();
 	}
 
+	@Override
+	public String codeGen(int nl) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("si ");
+		sb.append(value);
+		sb.append(" $a0");
+		return sb.toString();
+	}
+
 }

@@ -34,4 +34,9 @@ public class ArrowType extends Type {
 		toRet.setRetType(retType);
 		return toRet;
 	}
+
+	@Override
+	public int _getDimension() {
+		return 0;
+	}
 }

@@ -31,19 +31,23 @@ public class SPStmtBlock extends SPStmt {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		//create scope for inner elements
-		e.openScope();
+		e.openScope(); 
 		
-		//check children semantics
-		if(children != null)
-			for(SPStmt el : children)
-				toRet.addAll(el.checkSemantics(e));
-		
+		toRet.addAll(checkSemanticsSameScope(e));
 		//close scope for this block
 		e.closeScope();
 		
 		return toRet;
 	}
-
+	public List<SemanticError> checkSemanticsSameScope(Environment<STEntry> e){
+		//initialize result variable
+		List<SemanticError> toRet = new LinkedList<SemanticError>();
+		//check children semantics
+		if(children != null)
+			for(SPStmt el : children)
+				toRet.addAll(el.checkSemantics(e));
+		return toRet;
+	}
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		//initialize result variable
@@ -52,17 +56,25 @@ public class SPStmtBlock extends SPStmt {
 		//create scope for inner elements
 		e.openScope();
 		
-		//check children semantics
-		if(children != null)
-			for(SPStmt el : children)
-				toRet.addAll(el.inferBehaviour(e));
+		toRet.addAll(inferBehaviourSameScope(e));
 		
 		//close scope for this block
 		e.closeScope();
 		
 		return toRet;
 	}
-
+	
+	public List<BehaviourError> inferBehaviourSameScope(Environment<BTEntry> e){
+		//initialize result variable
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+				
+		//check children semantics
+		if(children != null)
+			for(SPStmt el : children)
+				toRet.addAll(el.inferBehaviour(e));
+		
+		return toRet;
+	}
 	@Override
 	public Type inferType() {
 		Type toRet = EType.VOID.getType();
@@ -73,6 +85,16 @@ public class SPStmtBlock extends SPStmt {
 			toRet = c.inferType();
 		
 		return toRet;
+	}
+
+	@Override
+	public String codeGen(int nl) {
+		StringBuilder sb = new StringBuilder();
+		for (SPStmt c : children) {
+			sb.append("\r\n");
+			sb.append(c.codeGen(nl+1));
+		}
+		return sb.toString();
 	}
 
 }

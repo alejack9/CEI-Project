@@ -15,6 +15,13 @@ public abstract class Type implements Cloneable {
 	protected Type() {
 		this(false, false);
 	}
+	
+	protected abstract int _getDimension();
+	
+	public int getDimension() {
+		return isRef ? 32 : _getDimension();
+	}
+	
 	public boolean IsParameter() {
 		return this.isParameter;
 	}

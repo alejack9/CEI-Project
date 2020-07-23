@@ -35,4 +35,13 @@ public class SPExpBool extends SPExp {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return Collections.emptyList();
 	}
+
+	@Override
+	public String codeGen(int nl) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("si ");
+		sb.append(value ? 1 : 0);
+		sb.append(" $a0");
+		return sb.toString();
+	}
 }

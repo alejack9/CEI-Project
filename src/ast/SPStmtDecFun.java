@@ -45,18 +45,18 @@ public class SPStmtDecFun extends SPStmtDec {
 
 		funEnv.openScope();
 		List<Type> argsT = new LinkedList<Type>();
-		int paroffset = 1;
+		int paroffset = 32; // access link dimension
 		for (SPArg arg : args) {
 	    	  argsT.add(arg.getType());
-	    	  
-	    	  if(!funEnv.add(arg.getId(), new STEntry(arg.getType(), funEnv.getNestingLevel(), paroffset++)))
+	    	  if(!funEnv.add(arg.getId(), new STEntry(arg.getType(), funEnv.getNestingLevel(), paroffset)))
 	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
+	    	  paroffset += arg.getType().getDimension();
 		}
 		
 		t.setParamTypes(argsT);
 		t.setRetType(type);
 		
-		toRet.addAll(block.checkSemantics(funEnv));
+		toRet.addAll(block.checkSemanticsSameScope(funEnv));
 
 		funEnv.closeScope();
 		return toRet;
@@ -89,7 +89,7 @@ public class SPStmtDecFun extends SPStmtDec {
 			funEnv.openScope();
 			for(int i = 0; i < e0.size(); i++)
 				funEnv.add(args.get(i).getId(), (BTEntry) e0.get(i).clone());
-			toRet.addAll(block.inferBehaviour(funEnv));
+			toRet.addAll(block.inferBehaviourSameScope(funEnv));
 			e1 = e1_1;
 			for(int i = 0; i < e0.size(); i++)
 				e1_1.set(i, funEnv.getIDEntry(args.get(i).getId()));

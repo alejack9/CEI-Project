@@ -11,6 +11,8 @@ import util_analysis.entries.Entry;
 public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	
 	LinkedList<HashMap<String, T>> scopes = new LinkedList<HashMap<String,T>>();
+	
+	private int offset = -32;
 
 	public ListOfMapEnv(HashMap<String, T> startingScope) {
 		scopes.push(startingScope);
@@ -43,6 +45,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	 */
 	@Override
 	public void openScope(){
+		offset = -32;
 		scopes.push(new HashMap<String, T>());
 	}
 	
@@ -119,8 +122,17 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 
 	@Override
 	public int getOffset() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.offset;
+	}
+	
+	@Override
+	public void addOffset(int i) {
+		this.offset += i;
+	}
+
+	@Override
+	public void setOffset(int i) {
+		this.offset = i;
 	}
 
 
@@ -225,5 +237,6 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 
 		return true;
 	}
+
 
 }

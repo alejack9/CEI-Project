@@ -32,6 +32,7 @@ public class SPStmtDecVar extends SPStmtDec {
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
+		e.addOffset(-type.getDimension());
 		if (!e.add(ID, new STEntry(type, e.getNestingLevel(), e.getOffset())))
 			toRet.add(new IdAlreadytExistsError(ID, line, column));
 
