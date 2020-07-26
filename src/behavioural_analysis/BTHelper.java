@@ -1,10 +1,5 @@
 package behavioural_analysis;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import support.MyCloneable;
 import util_analysis.entries.Entry;
-import util_analysis.entries.STEntry;
 
 public interface Environment<T extends Entry> extends MyCloneable {
 	public boolean add(String id, T entry);

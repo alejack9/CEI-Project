@@ -44,6 +44,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean add(String id, STEntry stEntry) {
 		T prev = getLocalIDEntry(id);
 		if(prev == null || prev.isDeleted()) {

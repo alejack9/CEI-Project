@@ -58,7 +58,7 @@ public class SPStmtDecVar extends SPStmtDec {
 			}
 			else if (prev.getLocalEffect().compareTo(EEffect.D) == 0)
 				e.getIDEntry(ID).addEffect(EEffect.BOTTOM);
-		}	
+		}
 		else
 			e.add(ID, new BTEntry());
 		

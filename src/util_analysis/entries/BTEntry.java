@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import behavioural_analysis.EEffect;
-import util_analysis.Environment;
 
 public class BTEntry extends Entry {
 	private List<EEffect> effects = new LinkedList<EEffect>();

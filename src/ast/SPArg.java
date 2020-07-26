@@ -15,13 +15,15 @@ public class SPArg extends SPElementBase {
 
 	private Type type;
 	private String ID;
-	private boolean ref;
+	// unused
+	// private boolean ref;
 	
 	public SPArg(String type, String ID, boolean ref, int line, int column) {
 		super(line, column);
 		this.type = EType.getEnum(type).getType(true, ref);
 		this.ID = ID;
-		this.ref = ref;
+		// unused
+		// this.ref = ref;
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class SPArg extends SPElementBase {
 
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
-		// TODO Auto-generated method stub
+		// Checked by "SPStmtDecFun"
 		return null;
 	}
 	

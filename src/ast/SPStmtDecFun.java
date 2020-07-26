@@ -1,6 +1,5 @@
 package ast;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,8 +46,8 @@ public class SPStmtDecFun extends SPStmtDec {
 		List<Type> argsT = new LinkedList<Type>();
 		int paroffset = 32; // access link dimension
 		for (SPArg arg : args) {
-	    	  argsT.add(arg.getType());
-	    	  STEntry toAdd = new STEntry(arg.getType());
+			  STEntry toAdd = new STEntry(arg.getType());
+	    	  argsT.add(toAdd.getType());
 	    	  if(!funEnv.add(arg.getId(), toAdd))
 	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
 	    	  else
@@ -83,8 +82,10 @@ public class SPStmtDecFun extends SPStmtDec {
 		
 		List<BTEntry> e0 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e0.add(new BTEntry()));
-		List<BTEntry> e1 = e0;
-		List<BTEntry> e1_1 = e0;
+		List<BTEntry> e1 = new LinkedList<BTEntry>();
+		args.stream().forEach(arg -> e1.add(new BTEntry()));
+		List<BTEntry> e1_1 = new LinkedList<BTEntry>();
+		args.stream().forEach(arg -> e1_1.add(new BTEntry()));
 		
 		// e1 = e1_1 = tutti params a bottom
 		funEnv.add(ID, new BTEntry(e0));
@@ -93,9 +94,10 @@ public class SPStmtDecFun extends SPStmtDec {
 			for(int i = 0; i < e0.size(); i++)
 				funEnv.add(args.get(i).getId(), (BTEntry) e0.get(i).clone());
 			toRet.addAll(block.inferBehaviourSameScope(funEnv));
-			e1 = e1_1;
-			for(int i = 0; i < e0.size(); i++)
+			for(int i = 0; i < e0.size(); i++) {
+				e1.set(i, (BTEntry)e1_1.get(i).clone());
 				e1_1.set(i, funEnv.getIDEntry(args.get(i).getId()));
+			}
 			funEnv.closeScope();
 			funEnv.update(ID, new BTEntry(e1_1));
 		} while(!BTEntry.areEqual(e1, e1_1));

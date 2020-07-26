@@ -1,8 +1,5 @@
 package util_analysis.entries;
 
-import java.util.List;
-
-import behavioural_analysis.EEffect;
 import support.MyCloneable;
 
 public abstract class Entry implements MyCloneable {
