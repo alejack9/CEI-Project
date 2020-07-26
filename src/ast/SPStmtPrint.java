@@ -37,10 +37,10 @@ public class SPStmtPrint extends SPStmt {
 		return EType.VOID.getType();
 	}
 
-//	@Override
+	@Override
 	public String codeGen(int nl) {
 		StringBuilder sb = new StringBuilder(); 
-//		sb.append(exp.codeGen(nl));
+		sb.append(exp.codeGen(nl));
 		sb.append("\r\nprint");
 		return sb.toString();
 	}

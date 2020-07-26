@@ -12,6 +12,7 @@ import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
+import ast.errors.DifferentVarTypeError;
 import ast.errors.IdAlreadytExistsError;
 import ast.errors.SemanticError;
 
@@ -32,11 +33,11 @@ public class SPStmtDecVar extends SPStmtDec {
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
-		e.add(ID, new STEntry(type));
+		if (e.getLocalIDEntry(ID) == null || e.getLocalIDEntry(ID).getType().getType().compareTo(type.getType()) == 0)
+			e.add(ID, new STEntry(type));
+		else 
+			toRet.add(new DifferentVarTypeError(ID, line, column));
 		
-//		if (!e.add(ID, new STEntry(type, e.getNestingLevel(), e.getOffset())))
-//			toRet.add(new IdAlreadytExistsError(ID, line, column));
-
 		if(exp != null)
 			toRet.addAll(exp.checkSemantics(e));
 		

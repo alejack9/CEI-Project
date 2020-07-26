@@ -45,4 +45,15 @@ public class SPExpNot extends SPExp {
 		return exp.inferBehaviour(e);
 	}
 
+	@Override
+	public String codeGen(int nl) {
+		// TODO lasciare i registri? ((sì))
+		StringBuilder sb = new StringBuilder();
+		sb.append(exp.codeGen());
+		sb.append("li $t1 0");
+		sb.append("\r\n beq $a0 $t1 ");
+		return sb.toString();
+		
+	}
+
 }

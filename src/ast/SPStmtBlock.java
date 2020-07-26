@@ -87,12 +87,12 @@ public class SPStmtBlock extends SPStmt {
 		return toRet;
 	}
 
-//	@Override
+	@Override
 	public String codeGen(int nl) {
 		StringBuilder sb = new StringBuilder();
 		for (SPStmt c : children) {
 			sb.append("\r\n");
-//			sb.append(c.codeGen(nl+1));
+			sb.append(c.codeGen(nl+1));
 		}
 		return sb.toString();
 	}
