@@ -73,9 +73,9 @@ public class SPStmtDelete extends SPStmt {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
-		e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id), new BTEntry(EEffect.D))));
+		e.getIDEntry(id).setLocalEffect(BTHelper.seq(e.getIDEntry(id).getLocalEffect(), EEffect.D));
 		
-		if(e.getIDEntry(id).getEffect().equals(EEffect.T))
+		if(e.getIDEntry(id).getLocalEffect().equals(EEffect.T))
 			toRet.add(new DeletedVariableError(id, line, column));
 		
 		return toRet;

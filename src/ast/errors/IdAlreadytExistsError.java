@@ -1,13 +1,13 @@
 package ast.errors;
 
 /**
- * Represents a semantic error, in particular the declared id is already used
+ * Represents a behaviour error, in particular the declared id is already used
  */
-public class IdAlreadytExistsError extends SemanticError {
+public class IdAlreadytExistsError extends BehaviourError {
 	private static final long serialVersionUID = 1L;
 
 	public IdAlreadytExistsError(String id, int line, int col) {
-		super(id,SemanticErrorType.IDALREADYEXISTS, line, col);
+		super(id,line, col);
 	}
 
 	@Override

@@ -50,13 +50,12 @@ public class SPExpVar extends SPExp {
 		
 		BTEntry current = e.getIDEntry(id);
 		
-		e.update(
-				id,
-				new BTEntry(BTHelper.seq(
-						current.getEffect(),
-						EEffect.RW)));
+		current.setLocalEffect(BTHelper.seq(
+				current.getLocalEffect(),
+				EEffect.RW));
+		
 		if(e.getIDEntry(id)
-				.getEffect()
+				.getLocalEffect()
 				.compareTo(EEffect.T) == 0)
 			toRet.add(new DeletedVariableError(id, line, column));
 		

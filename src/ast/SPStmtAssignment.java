@@ -48,9 +48,9 @@ public class SPStmtAssignment extends SPStmt{
 	
 		toRet.addAll(exp.inferBehaviour(e));
 		
-		e.update(id, new BTEntry(BTHelper.seq(e.getIDEntry(id).getEffect(), EEffect.RW)));
+		e.getIDEntry(id).setLocalEffect(BTHelper.seq(e.getIDEntry(id).getLocalEffect(), EEffect.RW));
 		
-	    if(e.getIDEntry(id).getEffect().equals(EEffect.T))
+	    if(e.getIDEntry(id).getLocalEffect().equals(EEffect.T))
 	      toRet.add(new DeletedVariableError(id, line, column));
 	    
 	    return toRet;

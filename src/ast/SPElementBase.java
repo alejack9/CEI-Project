@@ -32,9 +32,9 @@ public abstract class SPElementBase {
 	 */
 	public abstract List<BehaviourError> inferBehaviour(Environment<BTEntry> e);
 	
-	public abstract String codeGen(int nl);
+//	public abstract String codeGen(int nl);
 	
-	public final String codeGen() {
-		return codeGen(-1);
-	}
+//	public final String codeGen() {
+//		return codeGen(-1);
+//	}
 }

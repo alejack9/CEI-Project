@@ -67,31 +67,33 @@ public class SPStmtCall extends SPStmt {
 	
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
 		List<Type> types = ((ArrowType) idEntry.getType()).getParamTypes();
+		
 		List<BTEntry> e1 = e.getIDEntry(ID).getE1();
-		HashMap<String, List<BTEntry>> ePrimo = new HashMap<>();
+		
+		HashMap<String, List<EEffect>> ePrimo = new HashMap<>();
 		
 		for(int i = 0; i < types.size(); i++) {
 			if(types.get(i).IsRef()) {
 				BTEntry prev = e.getIDEntry(((SPExpVar) exps.get(i)).getId());
 				BTEntry next = e1.get(i);
 
-				List<BTEntry> btList = ePrimo.getOrDefault(((SPExpVar) exps.get(i)).getId(), new LinkedList<>());
-				btList.add(new BTEntry(BTHelper.seq(prev, next)));
+				List<EEffect> btList = ePrimo.getOrDefault(((SPExpVar) exps.get(i)).getId(), new LinkedList<>());
+				
+				btList.add(BTHelper.invocationSeq(prev, next));
 				ePrimo.put(((SPExpVar) exps.get(i)).getId(), btList);
 			}
 		}
 				
 		ePrimo.entrySet().forEach(entry -> {
-			e.update(entry.getKey(), entry.getValue().stream().reduce((a, b) -> new BTEntry(BTHelper.par(a, b))).get());
+			e.getIDEntry(entry.getKey()).setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
 			
-			if(e.getIDEntry(entry.getKey()).getEffect().compareTo(EEffect.T) == 0)
+			if(e.getIDEntry(entry.getKey()).getRefEffect().compareTo(EEffect.T) == 0)
 				toRet.add(new AliasingError(entry.getKey(), ID, line, column));
 		});
-		
-		
 		
 		return toRet;
 	}

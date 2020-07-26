@@ -32,9 +32,10 @@ public class SPStmtDecVar extends SPStmtDec {
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
-		e.addOffset(-type.getDimension());
-		if (!e.add(ID, new STEntry(type, e.getNestingLevel(), e.getOffset())))
-			toRet.add(new IdAlreadytExistsError(ID, line, column));
+		e.add(ID, new STEntry(type));
+		
+//		if (!e.add(ID, new STEntry(type, e.getNestingLevel(), e.getOffset())))
+//			toRet.add(new IdAlreadytExistsError(ID, line, column));
 
 		if(exp != null)
 			toRet.addAll(exp.checkSemantics(e));
@@ -50,15 +51,20 @@ public class SPStmtDecVar extends SPStmtDec {
 		
 		// Should be added after the exp check (if any) but this needs two "exp == null" controls instead of one
 		// "checkSemantics" checks the correct usage of the variable so we can skip the check
-		if(prev != null)
-			e.update(ID, new BTEntry(BTHelper.seq(prev.getEffect(), EEffect.BOTTOM)));
+		if(prev != null) {
+			if (prev.getLocalEffect().compareTo(EEffect.D) < 0 ) {
+				prev.setLocalEffect(EEffect.T);
+				toRet.add(new IdAlreadytExistsError(ID, line, column));
+			}
+			else if (prev.getLocalEffect().compareTo(EEffect.D) == 0)
+				e.getIDEntry(ID).addEffect(EEffect.BOTTOM);
+		}	
 		else
 			e.add(ID, new BTEntry());
 		
 		if(exp != null) {
 			toRet.addAll(exp.inferBehaviour(e));
-			// "exp" cannot change the value of ID, so seq(bottom, rw) is always rw
-			e.update(ID, new BTEntry(EEffect.RW));
+			e.getIDEntry(ID).setLocalEffect(BTHelper.seq(e.getLocalIDEntry(ID).getLocalEffect(), EEffect.RW));
 		}
 		
 		return toRet;

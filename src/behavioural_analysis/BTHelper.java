@@ -36,30 +36,31 @@ public class BTHelper {
 	}
 	
 	public static EEffect par(BTEntry a, BTEntry b) {
-		if(a == null) return b.getEffect();
-		if(b == null) return a.getEffect();
-		return par(a.getEffect(), b.getEffect());
+		if(a == null) return b.getRefEffect();
+		if(b == null) return a.getRefEffect();
+		return par(a.getRefEffect(), b.getRefEffect());
 	}
 	
 	public static EEffect seq(BTEntry a, BTEntry b) {
-		return b != null ? BTHelper.seq(a.getEffect(), b.getEffect()) : a.getEffect();
+		return b != null ? BTHelper.seq(a.getLocalEffect(), b.getLocalEffect()) : a.getLocalEffect();
+	}
+	
+	public static EEffect invocationSeq(BTEntry a, BTEntry b) {
+		return b != null ? BTHelper.seq(a.getLocalEffect(), b.getRefEffect()) : a.getLocalEffect();
 	}
 	
 	public static EEffect max(BTEntry a, BTEntry b) {
 		return b != null ?
-				a.getEffect().compareTo(b.getEffect()) > 0 ?
-						a.getEffect()
-						: b.getEffect()
-				: a.getEffect();
+				a.getLocalEffect().compareTo(b.getLocalEffect()) > 0 ?
+						a.getLocalEffect()
+						: b.getLocalEffect()
+				: a.getLocalEffect();
 	}
 
 	public static void maxModifyEnv(Environment<BTEntry> e, Environment<BTEntry> tempE) {
 		e.getAllIDs().entrySet().stream().filter(k -> !k.getValue().IsFunction())
-			.forEach(en -> e.update(
-					en.getKey(),
-					new BTEntry(BTHelper.max(
-							en.getValue().getEffect(),
-							tempE.getIDEntry(en.getKey()).getEffect()
-		))));
+			.forEach(en -> e.getIDEntry(en.getKey()).setLocalEffect(BTHelper.max(
+					en.getValue().getLocalEffect(),
+					tempE.getIDEntry(en.getKey()).getLocalEffect())));
 	}
 }

@@ -67,8 +67,8 @@ public class Analyse {
 							System.out.println(bErr);
 					} else {
 						System.out.println("Behaviour analysis succeded");
-						String code = mainBlock.codeGen();
-						System.out.println(code);
+//						String code = mainBlock.codeGen();
+//						System.out.println(code);
 	
 					}
 				}

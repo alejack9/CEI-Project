@@ -1,18 +1,63 @@
 {
-	print 7;
-	/* int a;
-	int b;
-	a = 4;
-	void g( int var x, int var  y)
-		{ 
-			if (y==0)
-				delete x ;
-			else {
-				bool z;
-				x = x-1;
-				g(x,y) ;
-				delete x;
+	int x;
+	
+	void f(int var y) {
+		void g(int var z) {
+			void h(int var q) {
+				delete q;
+				int q;
 			}
+			delete z;
+			int z;
+			h(z);
 		}
-	g(a,b); */
+		delete y;
+		int y;
+		g(y);
+	}
+	f(x);
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	void f(int var y) {
+		if (y == 0) delete y;
+		int y;
+		f(y)
+		
+	}
+		
+	f(x);
+	bool x;
+	
+	*/
+	int x;
+	void f(int var y){
+		y = 3;
+		delete y;
+		int y;
+		y = 4;
+	}
+	f(x);
+	int x = 3;
+	
 }

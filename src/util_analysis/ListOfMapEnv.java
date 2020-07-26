@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import util_analysis.entries.Entry;
+import util_analysis.entries.STEntry;
 
 public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	
@@ -27,14 +28,34 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	public void setScopes(LinkedList<HashMap<String, T>> s) {
 		scopes = s;
 	}
-	
+
 	/**
 	 * @param id
-	 * @param symTableEntry
+	 * @param entry
 	 */
 	@Override
-	public boolean add(String id, T symTableEntry) {
-		return scopes.peek().putIfAbsent(id, symTableEntry) == null;
+	public boolean add(String id, T entry) {
+		if(entry instanceof STEntry) return add(id, (STEntry)entry);
+		T prev = getLocalIDEntry(id);
+		if(prev == null || prev.isDeleted()) {
+			scopes.peek().put(id, entry);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean add(String id, STEntry stEntry) {
+		T prev = getLocalIDEntry(id);
+		if(prev == null || prev.isDeleted()) {
+			if(prev == null) {
+				addOffset(-stEntry.getType().getDimension());
+				stEntry.setOffset(getOffset());
+				stEntry.setNestingLevel(getNestingLevel());
+			}
+			scopes.peek().put(id, (T)stEntry);
+			return true;
+		}
+		return false;
 	}
 	
 	
@@ -82,11 +103,10 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	 */
 	@Override
 	public T deleteVariable(String id){
-		for(HashMap<String, T> scope:scopes)
-			if(scope.containsKey(id)){
-				return scope.remove(id);
-			}
-		return null;
+		T toRet = getIDEntry(id);
+		if (toRet != null)
+			toRet.setDeleted(true);
+		return toRet;
 	}
 	
 	/**
@@ -95,9 +115,9 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	 * @return T associated with the variable/function, null if it is not declared
 	 */
 	@Override
-	public T getIDEntry(String id){
+	public T getIDEntry(String id) {
 		for(HashMap<String, T> scope:scopes)
-			if(scope.containsKey(id))
+			if(scope.containsKey(id) && !scope.get(id).isDeleted())
 				return scope.get(id);
 		return null;
 	}
@@ -110,8 +130,9 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	 */
 	@Override
 	public T getLocalIDEntry(String id) {
-		return scopes.peek().get(id);		
-		
+		return scopes.peek().containsKey(id) && !scopes.peek().get(id).isDeleted()
+				? scopes.peek().get(id)
+				: null;
 	}
 
 	@Override
@@ -125,21 +146,14 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		return this.offset;
 	}
 	
-	@Override
-	public void addOffset(int i) {
+	private void addOffset(int i) {
 		this.offset += i;
 	}
 
 	@Override
-	public void setOffset(int i) {
-		this.offset = i;
-	}
-
-
-	@Override
 	public T update(String id, T entry) {
 		for(HashMap<String, T> scope:scopes)
-			if(scope.containsKey(id))
+			if(scope.containsKey(id) && !scope.get(id).isDeleted())
 				return scope.put(id, entry);
 		return null;
 	}

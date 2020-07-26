@@ -38,7 +38,7 @@ public class SPStmtDecFun extends SPStmtDec {
 
 		ArrowType t = (ArrowType) EType.FUNCTION.getType();
 		
-		if (!e.add(ID, new STEntry(t, e.getNestingLevel(), e.getOffset())))
+		if (!e.add(ID, new STEntry(t)))
 			toRet.add(new IdAlreadytExistsError(ID, line, column));
 		
 		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions());
@@ -48,8 +48,11 @@ public class SPStmtDecFun extends SPStmtDec {
 		int paroffset = 32; // access link dimension
 		for (SPArg arg : args) {
 	    	  argsT.add(arg.getType());
-	    	  if(!funEnv.add(arg.getId(), new STEntry(arg.getType(), funEnv.getNestingLevel(), paroffset)))
+	    	  STEntry toAdd = new STEntry(arg.getType());
+	    	  if(!funEnv.add(arg.getId(), toAdd))
 	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
+	    	  else
+	    		  toAdd.setOffset(paroffset);
 	    	  paroffset += arg.getType().getDimension();
 		}
 		
