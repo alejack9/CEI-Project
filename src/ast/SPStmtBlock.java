@@ -5,6 +5,7 @@ import java.util.List;
 
 import ast.types.EType;
 import ast.types.Type;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
@@ -32,10 +33,11 @@ public class SPStmtBlock extends SPStmt {
 		
 		//create scope for inner elements
 		e.openScope(); 
-		
+		int oldOffset = e.getOffset();
 		toRet.addAll(checkSemanticsSameScope(e));
 		//close scope for this block
 		e.closeScope();
+		e.setOffset(oldOffset);
 		
 		return toRet;
 	}
@@ -88,13 +90,9 @@ public class SPStmtBlock extends SPStmt {
 	}
 
 	@Override
-	public String codeGen(int nl) {
-		StringBuilder sb = new StringBuilder();
-		for (SPStmt c : children) {
-			sb.append("\r\n");
-			sb.append(c.codeGen(nl+1));
-		}
-		return sb.toString();
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		for (SPStmt c : children)
+			c._codeGen(nl+1, sb);
 	}
 
 }

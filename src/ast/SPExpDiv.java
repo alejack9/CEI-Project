@@ -10,4 +10,9 @@ public class SPExpDiv extends SPExpBinArithm {
 	protected String getOp() {
 		return "/";
 	}
+
+	@Override
+	public String cGenOperator() {
+		return "div";
+	}
 }

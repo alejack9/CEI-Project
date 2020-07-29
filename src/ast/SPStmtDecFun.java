@@ -9,6 +9,8 @@ import ast.errors.TypeError;
 import ast.types.ArrowType;
 import ast.types.EType;
 import ast.types.Type;
+import support.CodeGenUtils;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.ListOfMapEnv;
 import util_analysis.TypeErrorsStorage;
@@ -22,6 +24,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	private String ID;
 	private List<SPArg> args;
 	private SPStmtBlock block;
+	private STEntry idEntry;
 	
 	public SPStmtDecFun(Type type, String ID, List<SPArg> args, SPStmtBlock block, int line, int column) {
 		super(line, column);
@@ -37,36 +40,40 @@ public class SPStmtDecFun extends SPStmtDec {
 
 		ArrowType t = (ArrowType) EType.FUNCTION.getType();
 		
-		if (!e.add(ID, new STEntry(t)))
+		idEntry = new STEntry(t);
+		if (!e.add(ID, idEntry))
 			toRet.add(new IdAlreadytExistsError(ID, line, column));
 		
 		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions());
-
+		funEnv.setOffset(e.getOffset());
+		
 		funEnv.openScope();
 		List<Type> argsT = new LinkedList<Type>();
 		int paroffset = 32; // access link dimension
-		for (SPArg arg : args) {
-			  STEntry toAdd = new STEntry(arg.getType());
+		int oldEnvOffset = funEnv.getOffset();
+		for(int i = args.size() - 1; i >= 0; i--) {
+			STEntry toAdd = new STEntry(args.get(i).getType());
 	    	  argsT.add(toAdd.getType());
-	    	  if(!funEnv.add(arg.getId(), toAdd))
-	    		  toRet.add(new IdAlreadytExistsError(arg.getId(), arg.line, arg.column));
+	    	  if(!funEnv.add(args.get(i).getId(), toAdd))
+	    		  toRet.add(new IdAlreadytExistsError(args.get(i).getId(), args.get(i).line, args.get(i).column));
 	    	  else
 	    		  toAdd.setOffset(paroffset);
-	    	  paroffset += arg.getType().getDimension();
+	    	  paroffset += args.get(i).getType().getDimension();
 		}
-		
 		t.setParamTypes(argsT);
 		t.setRetType(type);
+		funEnv.setOffset(oldEnvOffset);
 		
 		toRet.addAll(block.checkSemanticsSameScope(funEnv));
 
 		funEnv.closeScope();
+		funEnv.setOffset(oldEnvOffset);
 		return toRet;
 	}
 
 	@Override
 	public Type inferType() {
-		this.args.stream().map(SPArg::inferType);
+		this.args.forEach(SPArg::inferType);
 		
 		Type blockT = this.block.inferType();
 		if(!blockT.getType().equalsTo(type))
@@ -87,7 +94,6 @@ public class SPStmtDecFun extends SPStmtDec {
 		List<BTEntry> e1_1 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e1_1.add(new BTEntry()));
 		
-		// e1 = e1_1 = tutti params a bottom
 		funEnv.add(ID, new BTEntry(e0));
 		do {
 			funEnv.openScope();
@@ -107,5 +113,19 @@ public class SPStmtDecFun extends SPStmtDec {
 		e.add(ID, funEnv.getIDEntry(ID));
 		
 		return toRet;
+	}
+
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		idEntry.label = CodeGenUtils.freshLabel();
+		sb.newLine(idEntry.label, ":");
+		sb.newLine("move $fp $sp");
+		sb.newLine("push $ra");
+		block._codeGen(nl+1, sb);
+		sb.newLine("lw $ra 0($sp)");
+		sb.newLine("addi $sp $sp ", Integer.toString(args.stream().map(SPArg::getType).map(Type::getDimension).reduce((a,b) -> a + b).orElse(0) + 64));
+		sb.newLine("lw $fp 0($sp)");
+		sb.newLine("pop");
+		sb.newLine("jr $ra");
 	}
 }

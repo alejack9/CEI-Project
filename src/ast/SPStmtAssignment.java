@@ -8,6 +8,8 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
+import support.CodeGenUtils;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -63,5 +65,11 @@ public class SPStmtAssignment extends SPStmt{
 			TypeErrorsStorage.addError(new TypeError("Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType +")", line, column));
 		
 		return EType.VOID.getType();
+	}
+
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		exp._codeGen(nl, sb);
+		CodeGenUtils.getVariableCodeGen(idEntry, nl, "sw", sb);
 	}
 }

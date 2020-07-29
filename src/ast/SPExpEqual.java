@@ -10,4 +10,14 @@ public class SPExpEqual extends SPExpBinBoolAllIn {
 	protected String getOp() {
 		return "==";
 	}
+	
+	@Override
+	protected String falseReturn() {
+		return "0";
+	}
+
+	@Override
+	protected String trueReturn() {
+		return "1";
+	}
 }

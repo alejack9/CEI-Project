@@ -13,7 +13,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	
 	LinkedList<HashMap<String, T>> scopes = new LinkedList<HashMap<String,T>>();
 	
-	private int offset = -32;
+	private int offset = 0;
 
 	public ListOfMapEnv(HashMap<String, T> startingScope) {
 		scopes.push(startingScope);
@@ -49,8 +49,8 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		T prev = getLocalIDEntry(id);
 		if(prev == null || prev.isDeleted()) {
 			if(prev == null) {
-				addOffset(-stEntry.getType().getDimension());
 				stEntry.setOffset(getOffset());
+				addOffset(stEntry.getType().getDimension());
 				stEntry.setNestingLevel(getNestingLevel());
 			}
 			scopes.peek().put(id, (T)stEntry);
@@ -66,8 +66,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	 * variables still exist
 	 */
 	@Override
-	public void openScope(){
-		offset = -32;
+	public void openScope() {
 		scopes.push(new HashMap<String, T>());
 	}
 	
@@ -251,6 +250,11 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		}
 
 		return true;
+	}
+
+	@Override
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 

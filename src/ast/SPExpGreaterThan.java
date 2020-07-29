@@ -10,4 +10,9 @@ public class SPExpGreaterThan extends SPExpBinBoolIntIn {
 	protected String getOp() {
 		return ">";
 	}
+
+	@Override
+	protected String getOperator() {
+		return "bgt";
+	}
 }

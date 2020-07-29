@@ -4,6 +4,7 @@ import java.util.List;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 import ast.types.Type;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
@@ -32,9 +33,15 @@ public abstract class SPElementBase {
 	 */
 	public abstract List<BehaviourError> inferBehaviour(Environment<BTEntry> e);
 	
-	public abstract String codeGen(int nl);
+	public abstract void _codeGen(int nl, CustomStringBuilder sb);	
+	
+	public final String codeGen(int nl, StringBuilder sb) {
+		CustomStringBuilder csb = new CustomStringBuilder(sb);
+		_codeGen(nl, csb);
+		return csb.toString();
+	}
 	
 	public final String codeGen() {
-		return codeGen(-1);
+		return codeGen(-1, new StringBuilder());
 	}
 }

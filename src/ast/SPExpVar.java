@@ -6,6 +6,8 @@ import java.util.List;
 import ast.types.Type;
 import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
+import support.CodeGenUtils;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
@@ -64,6 +66,16 @@ public class SPExpVar extends SPExp {
 
 	public String getId() {
 		return id;
+	}
+
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		if(idEntry.getType().IsParameter())
+			CodeGenUtils.getVariableCodeGen(idEntry, nl, "lw", sb);
+		else {
+			sb.newLine("li $t1 0");
+			sb.newLine("lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
+		}
 	}
 
 }

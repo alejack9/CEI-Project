@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,8 @@ import parser.SimplePlusParser.VarExpContext;
 
 public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	
+	private List<SPArg> lastArgs = new LinkedList<SPArg>();
+	
 	@Override
 	public SPStmt visitStatement(StatementContext ctx) {
 		return (SPStmt)visit(ctx.getChild(0));
@@ -56,7 +59,7 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	
 	@Override
 	public SPStmtRet visitRet(RetContext ctx) {
-		return new SPStmtRet(ctx.exp() == null ? null : (SPExp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+		return new SPStmtRet(ctx.exp() == null ? null : (SPExp) visit(ctx.exp()), lastArgs, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
@@ -135,11 +138,11 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 
 	@Override
 	public SPStmtDecFun visitDecFun(DecFunContext ctx) {
-		List<SPArg> args = ctx.arg() == null ? Collections.emptyList() : ctx.arg().stream().map(this::visitArg).collect(Collectors.toList());
+		lastArgs = ctx.arg() == null ? Collections.emptyList() : ctx.arg().stream().map(this::visitArg).collect(Collectors.toList());
 		return new SPStmtDecFun(
 				EType.getEnum(ctx.type().getText()).getType(),
 				ctx.ID().getText(),
-				args,
+				lastArgs,
 				visitBlock(ctx.block()),
 				ctx.start.getLine(),
 				ctx.start.getCharPositionInLine());

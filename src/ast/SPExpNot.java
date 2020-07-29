@@ -6,6 +6,8 @@ import java.util.List;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
+import support.CodeGenUtils;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -46,14 +48,18 @@ public class SPExpNot extends SPExp {
 	}
 
 	@Override
-	public String codeGen(int nl) {
-		// TODO lasciare i registri? ((sì))
-		StringBuilder sb = new StringBuilder();
-		sb.append(exp.codeGen());
-		sb.append("li $t1 0");
-		sb.append("\r\n beq $a0 $t1 ");
-		return sb.toString();
+	public  void _codeGen(int nl, CustomStringBuilder sb) {
+		String one = CodeGenUtils.freshLabel();
+		String end = CodeGenUtils.freshLabel();
 		
+		exp._codeGen(nl, sb);
+		sb.newLine("li $t1 0");
+		sb.newLine("beq $a0 $t1 ", one);
+		sb.newLine("li $a0 0");
+		sb.newLine("b ", end);
+		sb.newLine(one, ":");
+		sb.newLine("li $a0 1");
+		sb.newLine(end, ":");	
 	}
 
 }

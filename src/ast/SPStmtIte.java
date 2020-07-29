@@ -6,6 +6,8 @@ import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTHelper;
+import support.CodeGenUtils;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -78,5 +80,21 @@ public class SPStmtIte extends SPStmt {
 				TypeErrorsStorage.addError(new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")", this.thenStmt.line, this.thenStmt.column));
 		}
 		return thenT;
+	}
+
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		String T = CodeGenUtils.freshLabel();
+		String end = CodeGenUtils.freshLabel();
+
+		exp._codeGen(nl, sb);
+		sb.newLine("li $t1 1");
+		sb.newLine("beq $a0 $t1 ", T);
+		if(elseStmt != null)
+			elseStmt._codeGen(nl, sb);
+		sb.newLine("b ", end);
+		sb.newLine(T, ":");
+		thenStmt._codeGen(nl, sb);
+		sb.newLine(end, ":");
 	}
 }

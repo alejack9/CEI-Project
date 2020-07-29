@@ -10,6 +10,8 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
+import support.CodeGenUtils;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -111,6 +113,21 @@ public class SPStmtCall extends SPStmt {
 		}
 		
 		return funT.getReturnType();
+	}
+
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		sb.newLine("push $fp");
+		for(int i = exps.size() - 1; i >= 0; i--) {
+			exps.get(i)._codeGen(nl, sb);
+			sb.newLine("push $a0");
+		}
+		sb.newLine("lw $al 0($fp)");
+		for(int i = 0; i < nl - idEntry.getNestingLevel(); i++)
+			sb.newLine("\r\nlw $al 0($al)");
+		sb.newLine("push $al");
+		sb.newLine("jal ", idEntry.label);
+		
 	}
 
 }

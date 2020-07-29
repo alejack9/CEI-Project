@@ -3,6 +3,8 @@ package ast;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
+import support.CodeGenUtils;
+import support.CustomStringBuilder;
 import util_analysis.TypeErrorsStorage;
 /**
  * Represents boolean expressions that require only INT type of input
@@ -24,5 +26,24 @@ public abstract class SPExpBinBoolIntIn extends SPExpBin {
 			TypeErrorsStorage.addError(new TypeError("Right expression in condition \"" + this.getOp() + "\" must return int. It returns \"" + rightSideT + "\" instead", rightSide.line, rightSide.column));
 		
 		return EType.BOOL.getType();
+	}
+	
+	protected abstract String getOperator();
+	
+	@Override
+	public final void _codeGen(int nl, CustomStringBuilder sb) {
+		String T = CodeGenUtils.freshLabel();
+		String end = CodeGenUtils.freshLabel();
+		leftSide._codeGen(nl, sb);
+		sb.newLine("push $a0");
+		rightSide._codeGen(nl, sb);
+		sb.newLine("lw $t1 0($sp)");
+		sb.newLine("pop");
+		sb.newLine(getOperator(), " $a0 $t1 ", T);
+		sb.newLine("li $a0 0");
+		sb.newLine("b ", end);
+		sb.newLine(T, ":");
+		sb.newLine("li $a0 1");
+		sb.newLine(end, ":");
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
+import support.CustomStringBuilder;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 import util_analysis.Environment;
@@ -46,11 +47,8 @@ public class SPExpNeg extends SPExp {
 	}
 
 	@Override
-	public String codeGen(int nl) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(exp.codeGen(nl));
-		sb.append("\r\n");
-		sb.append("neg $a0");
-		return sb.toString();
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		exp._codeGen(nl, sb);
+		sb.newLine("neg $a0");
 	}
 }

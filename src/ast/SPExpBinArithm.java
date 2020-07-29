@@ -3,6 +3,7 @@ package ast;
 import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
+import support.CustomStringBuilder;
 import util_analysis.TypeErrorsStorage;
 
 public abstract class SPExpBinArithm extends SPExpBin {
@@ -22,4 +23,18 @@ public abstract class SPExpBinArithm extends SPExpBin {
 		
 		return EType.INT.getType();
 	}
+
+
+	@Override
+	public final void _codeGen(int nl, CustomStringBuilder sb) {
+		leftSide._codeGen(nl, sb);
+		sb.newLine("push $a0\r\n");
+		rightSide._codeGen(nl, sb);
+		sb.newLine("lw $t1 0($sp)");
+		sb.newLine(cGenOperator(), " $a0 $t1 $a0");
+		sb.newLine("pop");
+	}
+
+	
+	public abstract String cGenOperator();
 }

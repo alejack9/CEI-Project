@@ -19,6 +19,7 @@ public interface Environment<T extends Entry> extends MyCloneable {
 	public T getLocalIDEntry(String id);
 	public int getNestingLevel();
 	public int getOffset();
+	public void setOffset(int offset);
 	public Map<String, T> getAllIDs();
 	public Environment<T> getCurrentScopeEnv();
 	public Map<String,T> getCurrentScope();

@@ -6,6 +6,7 @@ import java.util.List;
 
 import ast.types.EType;
 import ast.types.Type;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
@@ -37,13 +38,9 @@ public class SPExpVal extends SPExp {
 		return Collections.emptyList();
 	}
 
-//	@Override
-	public String codeGen(int nl) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("si ");
-		sb.append(value);
-		sb.append(" $a0");
-		return sb.toString();
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		sb.newLine("li $a0 ", Integer.toString(value));
 	}
 
 }

@@ -10,4 +10,9 @@ public class SPExpMult extends SPExpBinArithm {
 	protected String getOp() {
 		return "*";
 	}
+
+	@Override
+	public String cGenOperator() {
+		return "mul";
+	}
 }

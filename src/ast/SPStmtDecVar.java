@@ -7,6 +7,7 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -21,6 +22,7 @@ public class SPStmtDecVar extends SPStmtDec {
 	private Type type;
 	private String ID;
 	private SPExp exp;
+	private STEntry idEntry;
 	
 	public SPStmtDecVar(Type type, String ID, SPExp exp, int line, int column) {
 		super(line, column);
@@ -33,8 +35,9 @@ public class SPStmtDecVar extends SPStmtDec {
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
+		idEntry = new STEntry(type);
 		if (e.getLocalIDEntry(ID) == null || e.getLocalIDEntry(ID).getType().getType().compareTo(type.getType()) == 0)
-			e.add(ID, new STEntry(type));
+			e.add(ID, idEntry);
 		else 
 			toRet.add(new DifferentVarTypeError(ID, line, column));
 		
@@ -83,6 +86,14 @@ public class SPStmtDecVar extends SPStmtDec {
 		}
 				
 		return EType.VOID.getType();
+	}
+
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		if(exp != null)
+			exp._codeGen(nl, sb);
+		sb.newLine("sw $a0 ", Integer.toString(idEntry.getOffset()), "($hp)");
+		sb.newLine("addi $hp ", Integer.toString(type.getDimension()));
 	}
 	
 }

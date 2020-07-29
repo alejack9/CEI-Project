@@ -3,6 +3,7 @@ package ast;
 import java.util.List;
 
 import ast.types.Type;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
@@ -31,6 +32,11 @@ public class SPExpCall extends SPExp {
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return call.inferBehaviour(e);
+	}
+
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		call._codeGen(nl, sb);
 	}
 	
 }

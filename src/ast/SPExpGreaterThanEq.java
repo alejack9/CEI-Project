@@ -10,4 +10,9 @@ public class SPExpGreaterThanEq extends SPExpBinBoolIntIn {
 	protected String getOp() {
 		return ">=";
 	}
+
+	@Override
+	protected String getOperator() {
+		return "bge";
+	}
 }

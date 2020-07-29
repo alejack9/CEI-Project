@@ -6,6 +6,7 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
+import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -88,4 +89,6 @@ public class SPStmtDelete extends SPStmt {
 		return EType.VOID.getType();
 	}
 
+	@Override
+	public void _codeGen(int nl, CustomStringBuilder sb) { }
 }

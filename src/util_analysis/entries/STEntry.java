@@ -8,6 +8,8 @@ public class STEntry extends Entry {
 	private int nestingLevel;
 	private int offset;
 	
+	public String label;
+	
 	public STEntry(Type type) {
 		this.type = type;
 	}
