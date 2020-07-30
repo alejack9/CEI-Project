@@ -31,19 +31,20 @@ public abstract class SPExpBinBoolIntIn extends SPExpBin {
 	protected abstract String getOperator();
 	
 	@Override
-	public final void _codeGen(int nl, CustomStringBuilder sb) {
+	public final void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SPExpBinBoolIntIn ", getOperator());
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		leftSide._codeGen(nl, sb);
-		sb.newLine("push $a0");
+		sb.newLine(prev, "push $a0");
 		rightSide._codeGen(nl, sb);
-		sb.newLine("lw $t1 0($sp)");
-		sb.newLine("pop");
-		sb.newLine(getOperator(), " $a0 $t1 ", T);
-		sb.newLine("li $a0 0");
-		sb.newLine("b ", end);
-		sb.newLine(T, ":");
-		sb.newLine("li $a0 1");
-		sb.newLine(end, ":");
+		sb.newLine(prev, "lw $t1 0($sp)");
+		sb.newLine(prev, "pop");
+		sb.newLine(prev, getOperator(), " $a0 $t1 ", T);
+		sb.newLine(prev, "li $a0 0");
+		sb.newLine(prev, "b ", end);
+		sb.newLine(prev, T, ":");
+		sb.newLine(prev, "li $a0 1");
+		sb.newLine(prev, end, ":");
 	}
 }

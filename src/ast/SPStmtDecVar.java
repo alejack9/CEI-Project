@@ -34,12 +34,21 @@ public class SPStmtDecVar extends SPStmtDec {
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		
+
 		idEntry = new STEntry(type);
-		if (e.getLocalIDEntry(ID) == null || e.getLocalIDEntry(ID).getType().getType().compareTo(type.getType()) == 0)
+		if(e.getLocalIDEntry(ID) == null) 
 			e.add(ID, idEntry);
-		else 
-			toRet.add(new DifferentVarTypeError(ID, line, column));
+		else
+			// checked by behavior analysis
+//			if(e.getLocalIDEntry(ID).isDeleted())
+				if(e.getLocalIDEntry(ID).getType().getType().equalsTo(type))
+					idEntry = e.getLocalIDEntry(ID);
+				else
+					toRet.add(new DifferentVarTypeError(ID, line, column));
+//			else
+//				toRet.add(new IdAlreadytExistsError(ID, line, column));
+
+		idEntry.setDeleted(false);
 		
 		if(exp != null)
 			toRet.addAll(exp.checkSemantics(e));
@@ -89,11 +98,15 @@ public class SPStmtDecVar extends SPStmtDec {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SPStmtDecVar");
 		if(exp != null)
 			exp._codeGen(nl, sb);
-		sb.newLine("sw $a0 ", Integer.toString(idEntry.getOffset()), "($hp)");
-		sb.newLine("addi $hp ", Integer.toString(type.getDimension()));
+		sb.newLine(prev, "sw $a0 ", Integer.toString(idEntry.getOffset()), "($hp)");
+		if(idEntry.isDeleted())
+			idEntry.setDeleted(false);
+		else
+			sb.newLine(prev, "addi $hp ", Integer.toString(type.getDimension()));
 	}
 	
 }

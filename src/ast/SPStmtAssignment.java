@@ -68,7 +68,8 @@ public class SPStmtAssignment extends SPStmt{
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SPStmtAssignment");
 		exp._codeGen(nl, sb);
 		CodeGenUtils.getVariableCodeGen(idEntry, nl, "sw", sb);
 	}

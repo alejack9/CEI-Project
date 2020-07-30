@@ -48,18 +48,19 @@ public class SPExpNot extends SPExp {
 	}
 
 	@Override
-	public  void _codeGen(int nl, CustomStringBuilder sb) {
+	public  void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SPExpNot");
 		String one = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		
 		exp._codeGen(nl, sb);
-		sb.newLine("li $t1 0");
-		sb.newLine("beq $a0 $t1 ", one);
-		sb.newLine("li $a0 0");
-		sb.newLine("b ", end);
-		sb.newLine(one, ":");
-		sb.newLine("li $a0 1");
-		sb.newLine(end, ":");	
+		sb.newLine(prev, "li $t1 0");
+		sb.newLine(prev, "beq $a0 $t1 ", one);
+		sb.newLine(prev, "li $a0 0");
+		sb.newLine(prev, "b ", end);
+		sb.newLine(prev, one, ":");
+		sb.newLine(prev, "li $a0 1");
+		sb.newLine(prev, end, ":");	
 	}
 
 }

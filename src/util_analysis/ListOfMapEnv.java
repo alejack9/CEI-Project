@@ -13,6 +13,8 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	
 	LinkedList<HashMap<String, T>> scopes = new LinkedList<HashMap<String,T>>();
 	
+	private int nestingLevel;
+	
 	private int offset = 0;
 
 	public ListOfMapEnv(HashMap<String, T> startingScope) {
@@ -35,6 +37,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	 */
 	@Override
 	public boolean add(String id, T entry) {
+		entry.setDeleted(false);
 		if(entry instanceof STEntry) return add(id, (STEntry)entry);
 		T prev = getLocalIDEntry(id);
 		if(prev == null || prev.isDeleted()) {
@@ -130,14 +133,16 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	 */
 	@Override
 	public T getLocalIDEntry(String id) {
-		return scopes.peek().containsKey(id) && !scopes.peek().get(id).isDeleted()
-				? scopes.peek().get(id)
-				: null;
+		return scopes.peek().get(id);
+		
+//		return scopes.peek().containsKey(id) && !scopes.peek().get(id).isDeleted()
+//				? scopes.peek().get(id)
+//				: null;
 	}
 
 	@Override
 	public int getNestingLevel() {
-		return scopes.size() - 1;
+		return nestingLevel;
 	}
 
 
@@ -255,6 +260,16 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	@Override
 	public void setOffset(int offset) {
 		this.offset = offset;
+	}
+
+	@Override
+	public void increaseNestingLevel() {
+		nestingLevel++;
+	}
+
+	@Override
+	public void decreaseNestingLevel() {
+		nestingLevel--;
 	}
 
 

@@ -66,3 +66,18 @@ f(int m, int n){
 f(5,4) ;
 // cosa succede se la invoco con f(4,5)?
 =====
+
+------------------------------------------------------------------
+
+L'analisi semantica *non e` scritta nella pietra*. Due analizzatori possono essere eccellenti pur riconoscendo programmi differenti. Uno degli obiettivi del progetto (e del corso) e` che voi comprendiate cosa significa Analisi Semantica e come si implementa. Nulla toglie che ognuno di voi, nella propria analisi semantica, riconosca/rifiuti programmi differenti. L'importante e` che voi comprendiate perché ciò accade (cioè per quale motivo avete fatto questa scelta). Datemi le motivazioni e vi assicuro che non sarete penalizzati.
+Qui sotto trovate accettazioni/rifiuto di alcuni programmi da parte dell'analizzatore che io ho in mente (e che non ho implementato). Il mio analizzatore è guidato dalla semplicità: voglio regole di inferenza facili e implementazione facile. Voi potete discostarvi per_nulla/poco/molto da esso e io ne sarei felice se lo faceste come sarei anche contento di discutere con voi perché lo avete fatto.
+
+* int x ; delete x; int x ;  // accettato perche` la variabile viene dichiarata, cancellata e ridichiarata.
+* int x = 4; if (e) { delete x; } else {x = 1 ;} ; int x = 5; // dove "e" e` una espressione booleana. Qui nella continuazione del condizionale "x" risulta cancellata. Quindi il programma e` accettato. Si riesce a far di meglio? Non in maniera semplice, secondo me.
+* int x; void f(int var y) { delete y; } ; f(x); int x; // accettato: a tutti gli effetti e` come il primo programma. Fare delete x o fare f(x) e` la stessa cosa.
+* int x; void f(int var y) {  if (y == 0) { delete y; } } ; f(x); int x; // questo e` un misto del primo e secondo caso. Quindi, il mio "semplice"  analizzatore lo accetta. 
+* int x; delete x; bool x;  // rifiutato perche` in questo linguaggio le variabili sono allocate sulla pila e il mio *semplice* compilatore alloca 4 byte per un intero, 1 per un booleano, etc. E qui ci sarebbero problemi durante la generazione di codice/esecuzione. Ovviamente si può complicare.
+
+
+
+

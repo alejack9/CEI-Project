@@ -30,7 +30,7 @@ import parser.SimplePlusParser.VarExpContext;
 
 public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	
-	private List<SPArg> lastArgs = new LinkedList<SPArg>();
+	private List<Integer> lastArgsDimension = new LinkedList<Integer>();
 	
 	@Override
 	public SPStmt visitStatement(StatementContext ctx) {
@@ -59,7 +59,7 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 	
 	@Override
 	public SPStmtRet visitRet(RetContext ctx) {
-		return new SPStmtRet(ctx.exp() == null ? null : (SPExp) visit(ctx.exp()), lastArgs, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+		return new SPStmtRet(ctx.exp() == null ? null : (SPExp) visit(ctx.exp()), lastArgsDimension, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 	
 	@Override
@@ -138,14 +138,21 @@ public class SPVisitorImpl extends SimplePlusBaseVisitor<SPElementBase> {
 
 	@Override
 	public SPStmtDecFun visitDecFun(DecFunContext ctx) {
-		lastArgs = ctx.arg() == null ? Collections.emptyList() : ctx.arg().stream().map(this::visitArg).collect(Collectors.toList());
+		List<SPArg> args = new LinkedList<SPArg>();
+		lastArgsDimension = new LinkedList<Integer>();
+		if(ctx.arg() != null)
+			for (ArgContext spArg : ctx.arg()) {
+				args.add(visitArg(spArg));
+				lastArgsDimension.add(args.get(args.size()-1).getType().getDimension());
+			}
 		return new SPStmtDecFun(
-				EType.getEnum(ctx.type().getText()).getType(),
-				ctx.ID().getText(),
-				lastArgs,
-				visitBlock(ctx.block()),
-				ctx.start.getLine(),
-				ctx.start.getCharPositionInLine());
+			EType.getEnum(ctx.type().getText()).getType(),
+			ctx.ID().getText(),
+			args,
+			visitBlock(ctx.block()),
+			ctx.start.getLine(),
+			ctx.start.getCharPositionInLine()
+		);
 	}
 	
 	@Override

@@ -67,15 +67,20 @@ public class SPExpVar extends SPExp {
 	public String getId() {
 		return id;
 	}
+	
+	public STEntry getIdEntry() {
+		return idEntry;
+	}
 
+	// scrive sempre il valore
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SPExpVar");
 		if(idEntry.getType().IsParameter())
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, "lw", sb);
 		else {
-			sb.newLine("li $t1 0");
-			sb.newLine("lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
+			sb.newLine(prev, "li $t1 0");
+			sb.newLine(prev, "lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
 		}
 	}
-
 }

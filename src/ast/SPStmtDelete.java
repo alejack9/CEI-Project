@@ -42,11 +42,11 @@ public class SPStmtDelete extends SPStmt {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		STEntry candidate = e.getLocalIDEntry(id);
-		if(candidate != null && !candidate.getType().IsParameter())
+		if(candidate != null  && !candidate.isDeleted() && !candidate.getType().IsParameter())
 			idEntry = e.deleteVariable(id);
 		else {
 			candidate = e.getIDEntry(id);
-			if(candidate == null)
+			if(candidate == null || candidate.isDeleted())
 				toRet.add(new VariableNotExistsError(id, line, column));
 			else if(!candidate.getType().IsRef())
 				if (candidate.getType().IsParameter())
@@ -90,5 +90,7 @@ public class SPStmtDelete extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { }
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		idEntry.setDeleted(true);
+	}
 }

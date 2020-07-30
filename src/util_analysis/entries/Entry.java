@@ -15,8 +15,6 @@ public abstract class Entry implements MyCloneable {
 				&& ((Entry)obj).deleted == deleted;
 	}
 	
-//	protected abstract Entry _clone();
-	
 	@Override
 	public abstract Object clone();
 	

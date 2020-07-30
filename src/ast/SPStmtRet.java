@@ -14,12 +14,12 @@ import ast.errors.SemanticError;
 public class SPStmtRet extends SPStmt {
 
 	private SPExp exp;
-	private List<SPArg> functionArgs;
+	private String k;
 
-	public SPStmtRet(SPExp exp, List<SPArg> args, int line, int column) {
+	public SPStmtRet(SPExp exp, List<Integer> argsDimension, int line, int column) {
 		super(line, column);
 		this.exp = exp;
-		functionArgs = args;
+		k = Integer.toString(argsDimension.stream().reduce((a,b) -> a + b).orElse(0) + 64);
 	}
 
 	@Override
@@ -52,14 +52,15 @@ public class SPStmtRet extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SPStmtRet");
 		// TODO this is horrible
 		if(exp != null)
 			exp._codeGen(nl, sb);
-		sb.newLine("lw $ra -32($fp)");
-		sb.newLine("addi $sp $sp ", Integer.toString(functionArgs.stream().map(SPArg::getType).map(Type::getDimension).reduce((a,b) -> a + b).orElse(0) + 64));
-		sb.newLine("lw $fp 0($sp)");
-		sb.newLine("pop");
-		sb.newLine("jr $ra");
+		sb.newLine(prev, "lw $ra -32($fp)");
+		sb.newLine(prev, "addi $sp $sp ", k);
+		sb.newLine(prev, "lw $fp 0($sp)");
+		sb.newLine(prev, "pop");
+		sb.newLine(prev, "jr $ra");
 	}
 }

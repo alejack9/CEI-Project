@@ -1,8 +1,5 @@
 package ast;
 
-import support.CodeGenUtils;
-import support.CustomStringBuilder;
-
 public class SPExpNotEqual extends SPExpBinBoolAllIn {
 
 	public SPExpNotEqual(SPExp left, SPExp right, int line, int column) {

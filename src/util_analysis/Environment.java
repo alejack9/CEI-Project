@@ -17,6 +17,8 @@ public interface Environment<T extends Entry> extends MyCloneable {
 	public T deleteVariable(String id);
 	public T getIDEntry(String id);
 	public T getLocalIDEntry(String id);
+	public void increaseNestingLevel();
+	public void decreaseNestingLevel();
 	public int getNestingLevel();
 	public int getOffset();
 	public void setOffset(int offset);

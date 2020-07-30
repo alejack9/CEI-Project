@@ -83,18 +83,19 @@ public class SPStmtIte extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SPStmtIte");
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 
 		exp._codeGen(nl, sb);
-		sb.newLine("li $t1 1");
-		sb.newLine("beq $a0 $t1 ", T);
+		sb.newLine(prev, "li $t1 1");
+		sb.newLine(prev, "beq $a0 $t1 ", T);
 		if(elseStmt != null)
 			elseStmt._codeGen(nl, sb);
-		sb.newLine("b ", end);
-		sb.newLine(T, ":");
+		sb.newLine(prev, "b ", end);
+		sb.newLine(prev, T, ":");
 		thenStmt._codeGen(nl, sb);
-		sb.newLine(end, ":");
+		sb.newLine(prev, end, ":");
 	}
 }

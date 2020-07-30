@@ -37,6 +37,6 @@ public class ArrowType extends Type {
 
 	@Override
 	public int _getDimension() {
-		return 32;
+		return 0;
 	}
 }

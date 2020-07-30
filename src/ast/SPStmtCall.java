@@ -10,7 +10,6 @@ import ast.types.EType;
 import ast.types.Type;
 import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
-import support.CodeGenUtils;
 import support.CustomStringBuilder;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
@@ -116,17 +115,41 @@ public class SPStmtCall extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
-		sb.newLine("push $fp");
+	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SPStmtCall");
+		sb.newLine(prev, "push $fp");
+		List<Type> paramsType = ((ArrowType) idEntry.getType()).getParamTypes(); 
 		for(int i = exps.size() - 1; i >= 0; i--) {
-			exps.get(i)._codeGen(nl, sb);
-			sb.newLine("push $a0");
+			if(!paramsType.get(i).IsRef())
+				exps.get(i)._codeGen(nl, sb);
+			else {
+				STEntry var = ((SPExpVar)exps.get(i)).getIdEntry();
+				if(var.getType().IsRef()) {
+					// ritorno il valore del riferimento
+					exps.get(i)._codeGen(nl, sb);
+				}
+				else {
+					// ritorno il puntatore a var
+					if(var.getType().IsParameter()) {
+						sb.newLine(prev, "lw $al 0($fp)");
+						for(int j = 0; j < nl - var.getNestingLevel(); j++)
+							sb.newLine(prev, "lw $al 0($al)");
+						sb.newLine("addi $t1 $al ", Integer.toString(var.getOffset()));
+						sb.newLine("lw $a0 $t1");
+					}
+					else {
+						sb.newLine(prev, "li $t1 0");
+						sb.newLine(prev, "lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
+					}
+				}
+			}
+			sb.newLine(prev, "push $a0");
 		}
-		sb.newLine("lw $al 0($fp)");
+		sb.newLine(prev, "lw $al 0($fp)");
 		for(int i = 0; i < nl - idEntry.getNestingLevel(); i++)
-			sb.newLine("\r\nlw $al 0($al)");
-		sb.newLine("push $al");
-		sb.newLine("jal ", idEntry.label);
+			sb.newLine(prev, "\r\nlw $al 0($al)");
+		sb.newLine(prev, "push $al");
+		sb.newLine(prev, "jal ", idEntry.label);
 		
 	}
 

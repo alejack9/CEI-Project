@@ -26,13 +26,14 @@ public abstract class SPExpBinArithm extends SPExpBin {
 
 
 	@Override
-	public final void _codeGen(int nl, CustomStringBuilder sb) {
+	public final void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+		sb.newLine(prev, "# SpExpBinArithm ", cGenOperator());
 		leftSide._codeGen(nl, sb);
-		sb.newLine("push $a0\r\n");
+		sb.newLine(prev, "push $a0\r\n");
 		rightSide._codeGen(nl, sb);
-		sb.newLine("lw $t1 0($sp)");
-		sb.newLine(cGenOperator(), " $a0 $t1 $a0");
-		sb.newLine("pop");
+		sb.newLine(prev, "lw $t1 0($sp)");
+		sb.newLine(prev, cGenOperator(), " $a0 $t1 $a0");
+		sb.newLine(prev, "pop");
 	}
 
 	
