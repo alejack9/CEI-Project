@@ -38,8 +38,7 @@ public class SPExpBool extends SPExp {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPExpBool");
-		sb.newLine(prev, "li ", "$a0 ", value ? "1" : "0");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		sb.newLine("li ", "$a0 ", value ? "1" : "0");
 	}
 }

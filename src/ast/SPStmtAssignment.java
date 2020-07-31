@@ -68,9 +68,21 @@ public class SPStmtAssignment extends SPStmt{
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPStmtAssignment");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		exp._codeGen(nl, sb);
-		CodeGenUtils.getVariableCodeGen(idEntry, nl, "sw", sb);
+		sb.newLine("move $t1 $a0");
+		
+		if(idEntry.getType().IsParameter()) {
+			CodeGenUtils.getVariableCodeGen(idEntry, nl, "lw", sb);
+			
+			if(idEntry.getType().IsRef())
+				sb.newLine("sw $t1 0($a0)");
+			else 
+				sb.newLine("sw $t1 ", Integer.toString(idEntry.getOffset()), "($al)");
+		}
+		else {
+			sb.newLine("li $t1 0");
+			sb.newLine("sw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
+		}
 	}
 }

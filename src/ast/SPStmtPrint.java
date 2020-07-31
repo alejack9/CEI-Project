@@ -39,10 +39,9 @@ public class SPStmtPrint extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPStmtPrint");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		exp._codeGen(nl, sb);
-		sb.newLine(prev, "print $a0");
+		sb.newLine("print $a0");
 	}
 
 }

@@ -28,7 +28,6 @@ public class SPExpVar extends SPExp {
 	}
 	
 	// Checks if the variable in use exists. if it doesn't then add an error.
-	
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -74,13 +73,17 @@ public class SPExpVar extends SPExp {
 
 	// scrive sempre il valore
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPExpVar");
-		if(idEntry.getType().IsParameter())
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		if(idEntry.getType().IsParameter()) {
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, "lw", sb);
+			
+			if(idEntry.getType().IsRef()) {
+				sb.newLine("lw $a0 0($a0)");
+			}
+		}
 		else {
-			sb.newLine(prev, "li $t1 0");
-			sb.newLine(prev, "lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
+			sb.newLine("li $t1 0");
+			sb.newLine("lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
 		}
 	}
 }

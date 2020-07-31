@@ -115,9 +115,8 @@ public class SPStmtCall extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPStmtCall");
-		sb.newLine(prev, "push $fp");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		sb.newLine("push $fp");
 		List<Type> paramsType = ((ArrowType) idEntry.getType()).getParamTypes(); 
 		for(int i = exps.size() - 1; i >= 0; i--) {
 			if(!paramsType.get(i).IsRef())
@@ -131,25 +130,25 @@ public class SPStmtCall extends SPStmt {
 				else {
 					// ritorno il puntatore a var
 					if(var.getType().IsParameter()) {
-						sb.newLine(prev, "lw $al 0($fp)");
+						sb.newLine("lw $al 0($fp)");
 						for(int j = 0; j < nl - var.getNestingLevel(); j++)
-							sb.newLine(prev, "lw $al 0($al)");
+							sb.newLine("lw $al 0($al)");
 						sb.newLine("addi $t1 $al ", Integer.toString(var.getOffset()));
 						sb.newLine("lw $a0 $t1");
 					}
 					else {
-						sb.newLine(prev, "li $t1 0");
-						sb.newLine(prev, "lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
+						sb.newLine("li $t1 0");
+						sb.newLine("lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
 					}
 				}
 			}
-			sb.newLine(prev, "push $a0");
+			sb.newLine("push $a0");
 		}
-		sb.newLine(prev, "lw $al 0($fp)");
+		sb.newLine("lw $al 0($fp)");
 		for(int i = 0; i < nl - idEntry.getNestingLevel(); i++)
-			sb.newLine(prev, "\r\nlw $al 0($al)");
-		sb.newLine(prev, "push $al");
-		sb.newLine(prev, "jal ", idEntry.label);
+			sb.newLine("\r\nlw $al 0($al)");
+		sb.newLine("push $al");
+		sb.newLine("jal ", idEntry.label);
 		
 	}
 

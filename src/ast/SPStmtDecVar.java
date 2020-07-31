@@ -98,15 +98,14 @@ public class SPStmtDecVar extends SPStmtDec {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPStmtDecVar");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		if(exp != null)
 			exp._codeGen(nl, sb);
-		sb.newLine(prev, "sw $a0 ", Integer.toString(idEntry.getOffset()), "($hp)");
+		sb.newLine("sw $a0 ", Integer.toString(idEntry.getOffset()), "($hp)");
 		if(idEntry.isDeleted())
 			idEntry.setDeleted(false);
 		else
-			sb.newLine(prev, "addi $hp ", Integer.toString(type.getDimension()));
+			sb.newLine("addi $hp ", Integer.toString(type.getDimension()));
 	}
 	
 }

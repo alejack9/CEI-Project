@@ -52,7 +52,7 @@ public class SPStmtDecFun extends SPStmtDec {
 		List<Type> argsT = new LinkedList<Type>();
 		int paroffset = 32; // access link dimension
 		int oldEnvOffset = funEnv.getOffset();
-		for(int i = args.size() - 1; i >= 0; i--) {
+		for(int i = 0; i < args.size(); i++) {
 			STEntry toAdd = new STEntry(args.get(i).getType());
 	    	  argsT.add(toAdd.getType());
 	    	  if(!funEnv.add(args.get(i).getId(), toAdd))
@@ -61,6 +61,7 @@ public class SPStmtDecFun extends SPStmtDec {
 	    		  toAdd.setOffset(paroffset);
 	    	  paroffset += args.get(i).getType().getDimension();
 		}
+		
 		t.setParamTypes(argsT);
 		t.setRetType(type);
 		funEnv.setOffset(oldEnvOffset);
@@ -118,17 +119,16 @@ public class SPStmtDecFun extends SPStmtDec {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPStmtDecFun");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		idEntry.label = CodeGenUtils.freshLabel();
-		sb.newLine(prev, idEntry.label, ":");
-		sb.newLine(prev, "move $fp $sp");
-		sb.newLine(prev, "push $ra");
+		sb.newLine(idEntry.label, ":");
+		sb.newLine("move $fp $sp");
+		sb.newLine("push $ra");
 		block._codeGen(nl+1, sb);
-		sb.newLine(prev, "lw $ra 0($sp)");
-		sb.newLine(prev, "addi $sp $sp ", Integer.toString(args.stream().map(SPArg::getType).map(Type::getDimension).reduce((a,b) -> a + b).orElse(0) + 64));
-		sb.newLine(prev, "lw $fp 0($sp)");
-		sb.newLine(prev, "pop");
-		sb.newLine(prev, "jr $ra");
+		sb.newLine("lw $ra 0($sp)");
+		sb.newLine("addi $sp $sp ", Integer.toString(args.stream().map(SPArg::getType).map(Type::getDimension).reduce((a,b) -> a + b).orElse(0) + 64));
+		sb.newLine("lw $fp 0($sp)");
+		sb.newLine("pop");
+		sb.newLine("jr $ra");
 	}
 }

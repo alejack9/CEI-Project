@@ -33,14 +33,17 @@ public class SPStmtIte extends SPStmt {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 		
 		toRet.addAll(exp.checkSemantics(e));
-		
+
+		Environment<STEntry> thenEnv = (Environment<STEntry>) e.clone();
+		Environment<STEntry> elseEnv = (Environment<STEntry>) e.clone();
 		if(elseStmt != null) {
-			Environment<STEntry> tempE = (Environment<STEntry>) e.clone();
 			
-			toRet.addAll(elseStmt.checkSemantics(tempE));
+			toRet.addAll(elseStmt.checkSemantics(elseEnv));
 		}
 		
-		toRet.addAll(thenStmt.checkSemantics((Environment<STEntry>) e.clone()));
+		toRet.addAll(thenStmt.checkSemantics(thenEnv));
+		
+		
 		
 		return toRet;
 	}
@@ -83,19 +86,18 @@ public class SPStmtIte extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPStmtIte");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 
 		exp._codeGen(nl, sb);
-		sb.newLine(prev, "li $t1 1");
-		sb.newLine(prev, "beq $a0 $t1 ", T);
+		sb.newLine("li $t1 1");
+		sb.newLine("beq $a0 $t1 ", T);
 		if(elseStmt != null)
 			elseStmt._codeGen(nl, sb);
-		sb.newLine(prev, "b ", end);
-		sb.newLine(prev, T, ":");
+		sb.newLine("b ", end);
+		sb.newLine(T, ":");
 		thenStmt._codeGen(nl, sb);
-		sb.newLine(prev, end, ":");
+		sb.newLine(end, ":");
 	}
 }

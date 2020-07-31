@@ -52,15 +52,14 @@ public class SPStmtRet extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPStmtRet");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		// TODO this is horrible
 		if(exp != null)
 			exp._codeGen(nl, sb);
-		sb.newLine(prev, "lw $ra -32($fp)");
-		sb.newLine(prev, "addi $sp $sp ", k);
-		sb.newLine(prev, "lw $fp 0($sp)");
-		sb.newLine(prev, "pop");
-		sb.newLine(prev, "jr $ra");
+		sb.newLine("lw $ra -32($fp)");
+		sb.newLine("addi $sp $sp ", k);
+		sb.newLine("lw $fp 0($sp)");
+		sb.newLine("pop");
+		sb.newLine("jr $ra");
 	}
 }

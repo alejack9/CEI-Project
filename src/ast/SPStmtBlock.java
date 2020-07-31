@@ -90,8 +90,7 @@ public class SPStmtBlock extends SPStmt {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPStmtBlock");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		for (SPStmt c : children)
 			c._codeGen(nl, sb);
 	}

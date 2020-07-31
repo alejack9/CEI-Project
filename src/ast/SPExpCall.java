@@ -35,8 +35,7 @@ public class SPExpCall extends SPExp {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPExpCall");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		call._codeGen(nl, sb);
 	}
 	

@@ -39,9 +39,8 @@ public class SPExpVal extends SPExp {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPExpVal");
-		sb.newLine(prev, "li $a0 ", Integer.toString(value));
+	public void _codeGen(int nl, CustomStringBuilder sb) {
+		sb.newLine("li $a0 ", Integer.toString(value));
 	}
 
 }

@@ -23,7 +23,7 @@ public class SPStmtDelete extends SPStmt {
 
 	private String id;
 	private STEntry idEntry;
-
+	private BTEntry idBTentry;
 	/**
 	 * Creates a delete statement
 	 * @param id the variable we want to delete
@@ -51,8 +51,10 @@ public class SPStmtDelete extends SPStmt {
 			else if(!candidate.getType().IsRef())
 				if (candidate.getType().IsParameter())
 					toRet.add(new VariableNotVarError(id, line, column));
-				else 
-					toRet.add(new LocalVariableDoesntExistsError(id, line, column));
+				else
+					// la variabile esiste in un altro scope (non è un param ma non è locale! (passiamo funenv))
+//					toRet.add(new LocalVariableDoesntExistsError(id, line, column));
+					idEntry = e.deleteVariable(id);
 			else
 				idEntry = e.deleteVariable(id);
 		}

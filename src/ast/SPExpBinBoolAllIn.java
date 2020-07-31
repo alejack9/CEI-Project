@@ -34,20 +34,19 @@ public abstract class SPExpBinBoolAllIn extends SPExpBin {
 	protected abstract String falseReturn();
 	
 	@Override
-	public final void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPExpBinBoolAllIn");
+	public final void _codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		leftSide._codeGen(nl, sb);
-		sb.newLine(prev, "push $a0");
+		sb.newLine("push $a0");
 		rightSide._codeGen(nl, sb);
-		sb.newLine(prev, "lw $t1 0($sp)");
-		sb.newLine(prev, "pop");
-		sb.newLine(prev, "beq $a0 $t1 ", T);
-		sb.newLine(prev, "li $a0 ", falseReturn());
-		sb.newLine(prev, "b ", end);
-		sb.newLine(prev, T, ":");
-		sb.newLine(prev, "li $a0 ", trueReturn());
-		sb.newLine(prev, end, ":");
+		sb.newLine("lw $t1 0($sp)");
+		sb.newLine("pop");
+		sb.newLine("beq $a0 $t1 ", T);
+		sb.newLine("li $a0 ", falseReturn());
+		sb.newLine("b ", end);
+		sb.newLine(T, ":");
+		sb.newLine("li $a0 ", trueReturn());
+		sb.newLine(end, ":");
 	}
 }

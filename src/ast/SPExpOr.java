@@ -15,25 +15,24 @@ public class SPExpOr extends SPExpBinBoolBoolIn {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
+	public void _codeGen(int nl, CustomStringBuilder sb) { 
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		
-		valutate(leftSide, nl, T, sb, prev);
-		valutate(rightSide, nl, T, sb, prev);
+		valutate(leftSide, nl, T, sb);
+		valutate(rightSide, nl, T, sb);
 		
-		sb.newLine(prev, "li $a0 0");
-		sb.newLine(prev, "b ", end);
-		sb.newLine(prev, T, ":");
-		sb.newLine(prev, "li $a0 0");
-		sb.newLine(prev, end, ":");
+		sb.newLine("li $a0 0");
+		sb.newLine("b ", end);
+		sb.newLine(T, ":");
+		sb.newLine("li $a0 0");
+		sb.newLine(end, ":");
 	}
 
-	private void valutate(SPExp side, int nl, String label, CustomStringBuilder sb, String prev) {
-		sb.newLine(prev, "# SPExpOr");
+	private void valutate(SPExp side, int nl, String label, CustomStringBuilder sb) {
 		side._codeGen(nl, sb);
-		sb.newLine(prev, "li $t1 1");
-		sb.newLine(prev, "beq $a0 $t1 ", label);
+		sb.newLine("li $t1 1");
+		sb.newLine("beq $a0 $t1 ", label);
 	}
 
 }

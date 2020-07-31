@@ -47,9 +47,8 @@ public class SPExpNeg extends SPExp {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { String prev = ""; for(int i = 0; i <= nl; i++) prev += "\t";
-		sb.newLine(prev, "# SPExpNeg");
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		exp._codeGen(nl, sb);
-		sb.newLine(prev, "neg $a0");
+		sb.newLine("neg $a0");
 	}
 }
