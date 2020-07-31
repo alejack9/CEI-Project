@@ -34,14 +34,11 @@ public class SPStmtIte extends SPStmt {
 		
 		toRet.addAll(exp.checkSemantics(e));
 
-		Environment<STEntry> thenEnv = (Environment<STEntry>) e.clone();
-		Environment<STEntry> elseEnv = (Environment<STEntry>) e.clone();
 		if(elseStmt != null) {
-			
-			toRet.addAll(elseStmt.checkSemantics(elseEnv));
+			toRet.addAll(elseStmt.checkSemantics(e));
 		}
 		
-		toRet.addAll(thenStmt.checkSemantics(thenEnv));
+		toRet.addAll(thenStmt.checkSemantics(e));
 		
 		
 		

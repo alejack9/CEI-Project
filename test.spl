@@ -2,6 +2,8 @@
 	int x;
 	if(x == 3) {
 		delete x;
-		}
-	int x;
+	} else 
+		x = 5;
+	
+	int x = 3;
 }
