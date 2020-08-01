@@ -30,22 +30,19 @@ public class LoggerFactory {
 	/**
 	 * @return A unique logger
 	 */
-	public static Logger getLogger(boolean verbose) {
+	public static Logger getLogger() {
 		if (consoleLogger == null)
-			consoleLogger = new ConsoleOutputLogger(verbose);
+			consoleLogger = new ConsoleOutputLogger();
 		return consoleLogger;
 	}
 
-	public static Logger getLogger() {
-		return getLogger(true);
-	}
 	
 	/**
 	 * @param fileName
 	 * @return A unique logger that writes on the file
 	 * @throws IOException
 	 */
-	public static Logger getLogger(String fileName, boolean verbose) throws IOException {
+	public static Logger getLogger(String fileName) throws IOException {
 		// if the file is not registered
 		if (!filesLoggers.containsKey(fileName)) {
 			// create a new file
@@ -53,7 +50,7 @@ public class LoggerFactory {
 			file.createNewFile();
 
 			try {
-				filesLoggers.put(fileName, new FileOutputLogger(file, verbose));
+				filesLoggers.put(fileName, new FileOutputLogger(file));
 			}
 			// this will never happen
 			catch (FileNotFoundException e) {
@@ -61,9 +58,5 @@ public class LoggerFactory {
 		}
 		// there's always a logger
 		return filesLoggers.get(fileName);
-	}
-	
-	public static Logger getLogger(String fileName) throws IOException {
-		return getLogger(fileName, true);
 	}
 }

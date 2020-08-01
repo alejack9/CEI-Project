@@ -1,5 +1,5 @@
 {
-	ù;int x;
+	int x;
 	if(x == 3) {
 		delete x;
 	} else int x;

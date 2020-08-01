@@ -1,5 +1,10 @@
 // Generated from SimplePlus.g4 by ANTLR 4.6
 package parser;
+
+import java.util.List;
+import java.util.LinkedList;
+import ast.errors.LexicalError;
+
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**

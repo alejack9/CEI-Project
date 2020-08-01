@@ -9,23 +9,12 @@ import java.io.PrintStream;
 public abstract class Logger {
 
 	protected PrintStream out;
-	protected boolean verbose;
 
 	/**
-	 * Not instantiable
-	 * @param out OutputPrinter (used to print the output)
+	 * @param out
 	 */
 	protected Logger(PrintStream out) {
-		this(out, true);
-	}
-	
-	/**
-	 * @param out
-	 * @param verbose
-	 */
-	protected Logger(PrintStream out, boolean verbose) {
 		this.out = out;
-		this.verbose = verbose;
 	}
 
 
@@ -55,7 +44,4 @@ public abstract class Logger {
 		this.out.println();
 	}
 
-	public boolean isVerbose() {
-		return this.verbose;
-	};
 }

@@ -1,5 +1,10 @@
 // Generated from SimplePlus.g4 by ANTLR 4.6
 package parser;
+
+import java.util.List;
+import java.util.LinkedList;
+import ast.errors.LexicalError;
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -80,7 +85,7 @@ public class SimplePlusLexer extends Lexer {
 	}
 
 
-	public int lexicalErrors=0;
+	public List<LexicalError> errors = new LinkedList<LexicalError>();
 
 
 	public SimplePlusLexer(CharStream input) {
@@ -114,7 +119,7 @@ public class SimplePlusLexer extends Lexer {
 	private void ERR_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
 		case 0:
-			 System.err.println("Invalid char: "+ getText()); lexicalErrors++;  
+			 errors.add(new LexicalError(getText(), getLine(), getCharPositionInLine()));  
 			break;
 		}
 	}

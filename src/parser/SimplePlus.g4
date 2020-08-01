@@ -2,8 +2,14 @@ grammar SimplePlus;
 
 // THIS IS THE PARSER INPUT
 
+@header {
+import java.util.List;
+import java.util.LinkedList;
+import ast.errors.LexicalError;
+}
+
 @lexer::members {
-public int lexicalErrors=0;
+public List<LexicalError> errors = new LinkedList<LexicalError>();
 }
 
 block	    : '{' statement* '}';
@@ -83,4 +89,4 @@ WS              : (' '|'\t'|'\n'|'\r')-> skip;
 LINECOMMENTS 	: '//' (~('\n'|'\r'))* -> skip;
 BLOCKCOMMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMMENTS)* '*/' -> skip;
 
-ERR   	 : . { System.err.println("Invalid char: "+ getText()); lexicalErrors++;  } -> channel(HIDDEN); 
+ERR   	 : . { errors.add(new LexicalError(getText(), getLine(), getCharPositionInLine()));  } -> channel(HIDDEN); 

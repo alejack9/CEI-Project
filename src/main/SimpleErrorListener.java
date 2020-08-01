@@ -18,7 +18,8 @@ import logger.Logger;
 public abstract class SimpleErrorListener implements ANTLRErrorListener {
 
 	protected final Logger logger;
-
+	private boolean errors = false;
+	
 	/**
 	 * This class can be instanced by children
 	 * @param logger The logger in which write
@@ -35,6 +36,7 @@ public abstract class SimpleErrorListener implements ANTLRErrorListener {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		errors = true;
 	}
 	
 	@Override
@@ -50,6 +52,10 @@ public abstract class SimpleErrorListener implements ANTLRErrorListener {
 	@Override
 	public void reportContextSensitivity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, int prediction,
 			ATNConfigSet configs) {
+	}
+
+	public boolean errorsDetected() {
+		return errors;
 	}
 
 }

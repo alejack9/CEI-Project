@@ -4,14 +4,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-import ast.SPStmtBlock;
-import ast.SPVisitorImpl;
+import ast.StmtBlock;
+import ast.VisitorImplSP;
+import ast.VisitorImplSVM;
 import ast.errors.BehaviourError;
+import ast.errors.LexicalError;
 import ast.errors.SemanticError;
+import ast.errors.TypeError;
+import logger.Logger;
+import logger.LoggerFactory;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ConsoleErrorListener;
 
+import parser.SVMLexer;
+import parser.SVMParser;
 import parser.SimplePlusLexer;
 import parser.SimplePlusParser;
 import util_analysis.ListOfMapEnv;
@@ -22,82 +30,166 @@ import util_analysis.entries.STEntry;
 public class Analyse {
 
 	public static void main(String[] args) {
-		String fileName = "test.spl";
+		String inFileName = "test.spl";
+		String errorsFileName = "errors.txt";
+		String outCodeFileName;
 		
+		switch (args.length) {
+		case 0:
+			break;
+		case 1:
+			inFileName = args[0];
+			break;
+		case 2:
+			inFileName = args[0];
+			errorsFileName = args[1];
+			break;
+		default:
+			System.out.println("Usage: \"java -jar .\\exportedJar.jar inputfile outputfile\"");
+		}
+		
+		outCodeFileName = inFileName.replaceFirst("[.][^.]+$", "") + ".out";
+		
+		// create console logger
+		Logger clogger = LoggerFactory.getLogger();
+				
 		try{   
-			FileInputStream is = new FileInputStream(fileName);
+			FileInputStream is = new FileInputStream(inFileName);
 			ANTLRInputStream input = new ANTLRInputStream(is);
         
+
+			clogger.writeLine("Input File: " + inFileName);
+			clogger.writeLine("Output File: " + errorsFileName);
+
+			clogger.writeLine();
+			
 			//create lexer
 			SimplePlusLexer lexer = new SimplePlusLexer(input);
+			// disable default ANTLR lexer listener (to override default behavior)
+			lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
+			lexer.addErrorListener(new SimpleLexerErrorListener(LoggerFactory.getLogger(errorsFileName)));
+			lexer.addErrorListener(new SimpleLexerErrorListener(clogger));
+
 			
+			clogger.writeLine("Collecting Tokens...");
+
 			//create parser
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			
+			clogger.writeLine("...Tokens collected");
+
+			clogger.writeLine();
+			
 			SimplePlusParser parser = new SimplePlusParser(tokens);
+			SimpleErrorListener sl = new SimpleSintaxErrorListener(LoggerFactory.getLogger(errorsFileName));
+			
+			// disable default ANTLR syntax listener (to override default behavior)
+			parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
+			// logger returned from LoggerFactory writes on errors.txt file
+			parser.addErrorListener(sl);
+			parser.addErrorListener(new SimpleSintaxErrorListener(clogger));
+
+			//tell the parser to build the AST
+			parser.setBuildParseTree(true);
+			
+			//build custom visitor
+			VisitorImplSP visitor = new VisitorImplSP();
+			
+			//visit the root, this will recursively visit the whole tree
+			StmtBlock mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
+			
+			if(lexer.errors.size() > 0) {
+				for (LexicalError error : lexer.errors)
+					clogger.writeLine("Lexical Error: " + error.toString());
+				quit(clogger);
+			}
+			
+			if (sl.errorsDetected()) {
+				quit(clogger);
+			}
+	
+			clogger.writeLine("Checking semantic...");
+			
+			List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
+			
+			if (errors.size() > 0) {
+				clogger.writeLine("Check semantics FAILED");
+				for (SemanticError err : errors)
+					clogger.writeLine(err.toString());
+				quit(clogger);
+			} 
+			
+			clogger.writeLine("Check semantic succeeded");
+
+			clogger.writeLine();
+			
+			clogger.writeLine("Checking types...");
+				
+			mainBlock.inferType();
+			
+			if (TypeErrorsStorage.getTypeErrors().size() > 0) {
+				clogger.writeLine("Type check FAILED");
+				for (TypeError err : TypeErrorsStorage.getTypeErrors())
+					clogger.writeLine(err.toString());
+				quit(clogger);
+			} 
+
+			clogger.writeLine("Type check succeeded");
+
+			clogger.writeLine();
+			
+			List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
+			
+			if (bErrors.size() > 0) {
+				clogger.writeLine("Behavioural analysis FAILED");			
+				for(SemanticError bErr: bErrors)
+					clogger.writeLine(bErr.toString());
+				quit(clogger);
+			}
+			clogger.writeLine("Behavioural analysis succeeded");
+			String code = mainBlock.codeGen();
+			LoggerFactory.getLogger(outCodeFileName).write(code.replaceFirst("\r\n", ""));
+			
+			is = new FileInputStream(outCodeFileName);
+			input = new ANTLRInputStream(is);
+       
+			clogger.writeLine("Input File: " + outCodeFileName);
+
+			clogger.writeLine();
+			
+			//create lexer
+			SVMLexer SVMlexer = new SVMLexer(input);
+
+			//create parser
+			tokens = new CommonTokenStream(SVMlexer);
+			
+			
+			SVMParser SVMparser = new SVMParser(tokens);
 			
 			//tell the parser to build the AST
 			parser.setBuildParseTree(true);
 			
 			//build custom visitor
-			SPVisitorImpl visitor = new SPVisitorImpl();
+			VisitorImplSVM SVMVisitor = new VisitorImplSVM();
 			
 			//visit the root, this will recursively visit the whole tree
-			SPStmtBlock mainBlock = (SPStmtBlock) visitor.visitBlock(parser.block());
+			SVMVisitor.visitAssembly(SVMparser.assembly());
 			
-			List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
+			for(int i : SVMVisitor.getCode()) System.out.print(i);
 			
-			if (errors.size() > 0) {
-				System.out.println("Check semantics FAILED");			
-				for(SemanticError err: errors)
-					System.out.println(err);
-			} else {
-				System.out.println("Check semantics succeded");
-				
-				mainBlock.inferType();
-				if (TypeErrorsStorage.getTypeErrors().size() > 0) {
-					TypeErrorsStorage.getTypeErrors().forEach(System.out::println);
-				} else {
-					System.out.println("Type check succeded");
-					
-					List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
-					
-					if (bErrors.size() > 0) {
-						System.out.println("Behavioural analysis FAILED");			
-						for(SemanticError bErr: bErrors)
-							System.out.println(bErr);
-					} else {
-						System.out.println("Behaviour analysis succeded");
-						String code = mainBlock.codeGen();
-						System.out.println(code);
-	
-					}
-				}
-			}
-			
-			/*
-			//check semantics
-			//give a fresh environment, no need to make it persist
-			List<SemanticError> errors = mainBlock.checkSemantics(new Environment());
-			
-			//this means the semantic checker found some errors
-			if (errors.size() > 0) {
-				System.out.println("Check semantics FAILED");			
-				for(SemanticError err: errors)
-					System.out.println(err);
-			}else{
-				System.out.println("Check semantics succeded");
-				System.out.println("Calculating behavioral type");
-				
-				//give a fresh environment, no need to make it persist
-				BTBlock res = (BTBlock)mainBlock.inferBehavior(new Environment());
-				
-				System.out.println(res.toString());
-			}
-			*/
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	private static void quit(Logger clogger) {
+		try {
+			clogger.writeLine("Quitting compiling");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.exit(-1);
+	}
 }
