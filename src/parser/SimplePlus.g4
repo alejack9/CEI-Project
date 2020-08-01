@@ -2,6 +2,10 @@ grammar SimplePlus;
 
 // THIS IS THE PARSER INPUT
 
+@lexer::members {
+public int lexicalErrors=0;
+}
+
 block	    : '{' statement* '}';
 
 statement   : declaration 
@@ -78,3 +82,5 @@ NUMBER      : DIGIT+;
 WS              : (' '|'\t'|'\n'|'\r')-> skip;
 LINECOMMENTS 	: '//' (~('\n'|'\r'))* -> skip;
 BLOCKCOMMENTS   : '/*'( ~('/'|'*')|'/'~'*'|'*'~'/'|BLOCKCOMMENTS)* '*/' -> skip;
+
+ERR   	 : . { System.err.println("Invalid char: "+ getText()); lexicalErrors++;  } -> channel(HIDDEN); 

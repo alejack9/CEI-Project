@@ -38,11 +38,10 @@ public class SPStmtIte extends SPStmt {
 			toRet.addAll(elseStmt.checkSemantics(e));
 		}
 		
-		toRet.addAll(thenStmt.checkSemantics(e));
-		
-		
+		toRet.addAll(thenStmt.checkSemantics(e));		
 		
 		return toRet;
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -56,10 +55,10 @@ public class SPStmtIte extends SPStmt {
 		
 		if (elseStmt != null) {
 			tempE = (Environment<BTEntry>) e.clone();
-			toRet.addAll(elseStmt.inferBehaviour(tempE));
+			analyseStmtBehaviour(tempE, elseStmt, toRet);
 		}
 		
-		toRet.addAll(thenStmt.inferBehaviour(e));
+		analyseStmtBehaviour(e, thenStmt, toRet);
 		
 		if(tempE != null)
 			BTHelper.maxModifyEnv(e, tempE);
@@ -67,6 +66,15 @@ public class SPStmtIte extends SPStmt {
 		return toRet;
 	}
 
+	private void analyseStmtBehaviour(Environment<BTEntry> e, SPStmt stmt, List<BehaviourError> errors){
+		if (stmt instanceof SPStmtBlock) errors.addAll(stmt.inferBehaviour(e));
+		else {
+			e.openScope();
+			errors.addAll(stmt.inferBehaviour(e));
+			e.closeScope();
+		}
+	}
+	
 	@Override
 	public Type inferType() {
 		if(!EType.BOOL.equalsTo(exp.inferType()))
