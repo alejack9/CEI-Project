@@ -50,7 +50,7 @@ public class StmtDecFun extends StmtDec {
 		funEnv.openScope();
 		funEnv.increaseNestingLevel();
 		List<Type> argsT = new LinkedList<Type>();
-		int paroffset = 32; // access link dimension
+		int paroffset = 4; // access link dimension
 		int oldEnvOffset = funEnv.getOffset();
 		for(int i = 0; i < args.size(); i++) {
 			STEntry toAdd = new STEntry(args.get(i).getType());
@@ -123,12 +123,12 @@ public class StmtDecFun extends StmtDec {
 		idEntry.label = CodeGenUtils.freshLabel();
 		sb.newLine(idEntry.label, ":");
 		sb.newLine("move $fp $sp");
-		sb.newLine("push $ra");
+		sb.newLine("push $ra 4");
 		block._codeGen(nl+1, sb);
-		sb.newLine("lw $ra 0($sp)");
+		sb.newLine("lw $ra 0($sp) 4");
 		sb.newLine("addi $sp $sp ", Integer.toString(args.stream().map(Arg::getType).map(Type::getDimension).reduce((a,b) -> a + b).orElse(0) + 64));
-		sb.newLine("lw $fp 0($sp)");
-		sb.newLine("pop");
+		sb.newLine("lw $fp 0($sp) 4");
+		sb.newLine("pop 4");
 		sb.newLine("jr");
 	}
 }

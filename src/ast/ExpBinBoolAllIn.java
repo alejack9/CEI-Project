@@ -12,19 +12,21 @@ import util_analysis.TypeErrorsStorage;
  */
 public abstract class ExpBinBoolAllIn extends ExpBin {
 	
+	Type leftType;
+	
 	protected ExpBinBoolAllIn(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);
 	}
 	
 	@Override
 	public final Type inferType() {
-		Type leftSideT = this.leftSide.inferType();
+		leftType = this.leftSide.inferType();
 		Type rightSideT = this.rightSide.inferType();
 		
-		if(!leftSideT.getType().equalsTo(rightSideT))
-			TypeErrorsStorage.addError(new TypeError("In condition \"" + this.getOp() + "\", left expression's type (" + leftSideT + ") does not equal to the right's type (" + rightSideT + ")", line, column));
+		if(!leftType.getType().equalsTo(rightSideT))
+			TypeErrorsStorage.addError(new TypeError("In condition \"" + this.getOp() + "\", left expression's type (" + leftType + ") does not equal to the right's type (" + rightSideT + ")", line, column));
 
-		if(EType.VOID.equalsTo(leftSideT))
+		if(EType.VOID.equalsTo(leftType))
 			TypeErrorsStorage.addError(new TypeError("Expressions must not be \"void\" type in operation \"" + this.getOp() + "\"", line, column));
 		
 		return EType.BOOL.getType();
@@ -38,10 +40,10 @@ public abstract class ExpBinBoolAllIn extends ExpBin {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		leftSide._codeGen(nl, sb);
-		sb.newLine("push $a0");
+		sb.newLine("push $a0 ", Integer.toString(leftType.getDimension()));
 		rightSide._codeGen(nl, sb);
-		sb.newLine("lw $t1 0($sp)");
-		sb.newLine("pop");
+		sb.newLine("lw $t1 0($sp) ", Integer.toString(leftType.getDimension()));
+		sb.newLine("pop ", Integer.toString(leftType.getDimension()));
 		sb.newLine("beq $a0 $t1 ", T);
 		sb.newLine("li $a0 ", falseReturn());
 		sb.newLine("b ", end);

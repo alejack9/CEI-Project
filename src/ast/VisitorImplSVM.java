@@ -2,10 +2,11 @@ package ast;
 
 import java.util.HashMap;
 import parser.*;
+import support.Regs;
 
 public class VisitorImplSVM extends SVMBaseVisitor<Void> {	
 	
-    private int[] code = new int[10000];    
+    private int[] code = new int[ExecuteVM.CODESIZE];  
     private int i = 0;
     private HashMap<String,Integer> labelsIndexes = new HashMap<String,Integer>();
     private HashMap<Integer,String> labelRef = new HashMap<Integer,String>();
@@ -29,8 +30,8 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
     		
     		case SVMLexer.LOADINTEGER:
     			code[i++] = SVMParser.LOADINTEGER;
-    			code[i++] = getRegIndex(ctx.REG(0).getText());
-    			code[i++] = Integer.parseInt(ctx.NUMBER().getText());
+    			code[i++] = Regs.valueOf(ctx.REG(0).getText()).ordinal();
+    			code[i++] = Integer.parseInt(ctx.NUMBER(0).getText());
     			break;
     	
     		case SVMLexer.BRANCH:
@@ -44,103 +45,107 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 				
 			case SVMLexer.PUSH:
 				code[i++] = SVMParser.PUSH;
-				code[i++] = getRegIndex(ctx.REG(0).getText());
+				code[i++] = Regs.valueOf(ctx.REG(0).getText()).ordinal();
+				code[i++] = Integer.parseInt(ctx.NUMBER(0).getText());
 				break;
 				
     		case SVMLexer.LOADWORD:
 				code[i++] = SVMParser.LOADWORD;
-				code[i++] = SVMParser.STOREWORD;
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = Integer.parseInt(ctx.NUMBER().getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Integer.parseInt(ctx.offset.getText());
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
+				code[i++] = Integer.parseInt(ctx.dimension.getText());
 				break;
 			
 			case SVMLexer.STOREWORD:
 				code[i++] = SVMParser.STOREWORD;
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = Integer.parseInt(ctx.NUMBER().getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Integer.parseInt(ctx.offset.getText());
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
+				code[i++] = Integer.parseInt(ctx.dimension.getText());
 				break;
 				
 			case SVMLexer.ADD:
 				code[i++] = SVMParser.ADD;
-				code[i++] = getRegIndex(ctx.dest.getText());
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.dest.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
 				break;
 			case SVMLexer.SUB:
 				code[i++] = SVMParser.SUB;
-				code[i++] = getRegIndex(ctx.dest.getText());
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.dest.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
 				break;
 			case SVMLexer.MUL:
 				code[i++] = SVMParser.MUL;
-				code[i++] = getRegIndex(ctx.dest.getText());
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.dest.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
 				break;
 			case SVMLexer.DIV:
 				code[i++] = SVMParser.DIV;
-				code[i++] = getRegIndex(ctx.dest.getText());
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.dest.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
 				break;
 			case SVMLexer.POP:
 				code[i++] = SVMParser.POP;
+				code[i++] = Integer.parseInt(ctx.NUMBER(0).getText());
+
 				break;
 				
 			case SVMLexer.BRANCHEQ:
 				code[i++] = SVMParser.BRANCHEQ;
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
                 labelRef.put(i++,ctx.LABEL().getText());
 				break;	
 				
 			case SVMLexer.BRANCHGT:
 				code[i++] = SVMParser.BRANCHGT;
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
                 labelRef.put(i++,ctx.LABEL().getText());
                 break;
 			
 			case SVMLexer.BRANCHGE:
 				code[i++] = SVMParser.BRANCHGE;
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
                 labelRef.put(i++,ctx.LABEL().getText());
                 break;
 			
 			case SVMLexer.BRANCHLT:
 				code[i++] = SVMParser.BRANCHLT;
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
                 labelRef.put(i++,ctx.LABEL().getText());
                 break;
 			
 			case SVMLexer.BRANCHLE:
 				code[i++] = SVMParser.BRANCHLE;
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = getRegIndex(ctx.r2.getText());
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r2.getText()).ordinal();
                 labelRef.put(i++,ctx.LABEL().getText());
                 break;
                 
 			case SVMLexer.NEG:
 				code[i++] = SVMParser.NEG;
-				code[i++] = getRegIndex(ctx.REG(0).getText());
+				code[i++] = Regs.valueOf(ctx.REG(0).getText()).ordinal();
                 break;
                 
 			case SVMLexer.MOVE:
 				code[i++] = SVMParser.MOVE;
-				code[i++] = getRegIndex(ctx.dest.getText());
-				code[i++] = getRegIndex(ctx.origin.getText());
+				code[i++] = Regs.valueOf(ctx.dest.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.origin.getText()).ordinal();
                 break;
                 
 			case SVMLexer.ADDINTEGER:
 				code[i++] = SVMParser.ADDINTEGER;
-				code[i++] = getRegIndex(ctx.dest.getText());
-				code[i++] = getRegIndex(ctx.r1.getText());
-				code[i++] = Integer.parseInt(ctx.NUMBER().getText());
+				code[i++] = Regs.valueOf(ctx.dest.getText()).ordinal();
+				code[i++] = Regs.valueOf(ctx.r1.getText()).ordinal();
+				code[i++] = Integer.parseInt(ctx.NUMBER(0).getText());
                 break;
                 
 			case SVMLexer.JUMPLABEL:
@@ -161,25 +166,4 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
     	}
     	return null;
     }
-    
-    private int getRegIndex(String reg) {
-    	switch(reg) {
-    	case "$a0":
-    		return 0;
-    	case "$t1":
-    		return 1;
-    	case "$fp":
-    		return 2;
-    	case "$ra":
-    		return 3;
-    	case "$hp":
-    		return 4;
-    	case "$sp":
-    		return 5;
-    	case "$al":
-    		return 6;
-    	default:
-    		return -1;
-    	}
-    	}
 }

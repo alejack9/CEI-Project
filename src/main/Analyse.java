@@ -18,6 +18,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
 
+import parser.ExecuteVM;
 import parser.SVMLexer;
 import parser.SVMParser;
 import parser.SimplePlusLexer;
@@ -175,7 +176,7 @@ public class Analyse {
 			//visit the root, this will recursively visit the whole tree
 			SVMVisitor.visitAssembly(SVMparser.assembly());
 			
-			for(int i : SVMVisitor.getCode()) System.out.print(i);
+			new ExecuteVM(SVMVisitor.getCode()).cpu();
 			
 
 		} catch (IOException e) {

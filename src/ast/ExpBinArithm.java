@@ -28,11 +28,11 @@ public abstract class ExpBinArithm extends ExpBin {
 	@Override
 	public final void _codeGen(int nl, CustomStringBuilder sb) {
 		leftSide._codeGen(nl, sb);
-		sb.newLine("push $a0");
+		sb.newLine("push $a0 4");
 		rightSide._codeGen(nl, sb);
-		sb.newLine("lw $t1 0($sp)");
+		sb.newLine("lw $t1 0($sp) 4");
 		sb.newLine(cGenOperator(), " $a0 $t1 $a0");
-		sb.newLine("pop");
+		sb.newLine("pop 4");
 	}
 
 	

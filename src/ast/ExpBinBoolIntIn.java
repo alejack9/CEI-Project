@@ -35,10 +35,10 @@ public abstract class ExpBinBoolIntIn extends ExpBin {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		leftSide._codeGen(nl, sb);
-		sb.newLine("push $a0");
+		sb.newLine("push $a0 4");
 		rightSide._codeGen(nl, sb);
-		sb.newLine("lw $t1 0($sp)");
-		sb.newLine("pop");
+		sb.newLine("lw $t1 0($sp) 4");
+		sb.newLine("pop 4");
 		sb.newLine(getOperator(), " $t1 $a0 ", T);
 		sb.newLine("li $a0 0");
 		sb.newLine("b ", end);

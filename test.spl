@@ -1,8 +1,4 @@
 {
-	int x;
-	if(x == 3) {
-		delete x;
-	} else int x;
-	
-	int x = 3;
+	int x = 1;
+	print x;
 }

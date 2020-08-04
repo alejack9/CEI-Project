@@ -56,10 +56,11 @@ public class StmtRet extends Stmt {
 		// TODO this is horrible
 		if(exp != null)
 			exp._codeGen(nl, sb);
-		sb.newLine("lw $ra -32($fp)");
+		sb.newLine("lw $ra -4($fp) 4");
 		sb.newLine("addi $sp $sp ", k);
-		sb.newLine("lw $fp 0($sp)");
-		sb.newLine("pop");
+		sb.newLine("lw $fp 0($sp) 4");
+		// as the pop of functionDec
+		sb.newLine("pop 4");
 		sb.newLine("jr");
 	}
 }

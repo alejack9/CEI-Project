@@ -73,16 +73,16 @@ public class StmtAssignment extends Stmt{
 		sb.newLine("move $t1 $a0");
 		
 		if(idEntry.getType().IsParameter()) {
-			CodeGenUtils.getVariableCodeGen(idEntry, nl, "lw", sb);
+			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
 			
 			if(idEntry.getType().IsRef())
-				sb.newLine("sw $t1 0($a0)");
+				sb.newLine("sw $t1 0($a0) ", Integer.toString(idEntry.getType().getDimension()));
 			else 
-				sb.newLine("sw $t1 ", Integer.toString(idEntry.getOffset()), "($al)");
+				sb.newLine("sw $t1 ", Integer.toString(idEntry.getOffset()), "($al) ",Integer.toString(idEntry.getType().getDimension()));
 		}
 		else {
 			sb.newLine("li $t1 0");
-			sb.newLine("sw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
+			sb.newLine("sw $a0 ", Integer.toString(idEntry.getOffset()), "($t1) ", Integer.toString(idEntry.getType().getDimension()));
 		}
 	}
 }

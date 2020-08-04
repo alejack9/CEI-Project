@@ -75,15 +75,15 @@ public class ExpVar extends Exp {
 	@Override
 	public void _codeGen(int nl, CustomStringBuilder sb) {
 		if(idEntry.getType().IsParameter()) {
-			CodeGenUtils.getVariableCodeGen(idEntry, nl, "lw", sb);
+			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
 			
 			if(idEntry.getType().IsRef()) {
-				sb.newLine("lw $a0 0($a0)");
+				sb.newLine("lw $a0 0($a0) 4");
 			}
 		}
 		else {
 			sb.newLine("li $t1 0");
-			sb.newLine("lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1)");
+			sb.newLine("lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1) ", Integer.toString(idEntry.getType().getDimension()));
 		}
 	}
 }

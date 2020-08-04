@@ -101,7 +101,7 @@ public class StmtDecVar extends StmtDec {
 	public void _codeGen(int nl, CustomStringBuilder sb) {
 		if(exp != null)
 			exp._codeGen(nl, sb);
-		sb.newLine("sw $a0 ", Integer.toString(idEntry.getOffset()), "($hp)");
+		sb.newLine("sw $a0 ", Integer.toString(idEntry.getOffset()), "($hp) ", Integer.toString(type.getDimension()));
 		if(idEntry.isDeleted())
 			idEntry.setDeleted(false);
 		else

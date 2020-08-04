@@ -145,7 +145,9 @@ public class SVMParser extends Parser {
 
 	public static class InstructionContext extends ParserRuleContext {
 		public Token r1;
+		public Token offset;
 		public Token r2;
+		public Token dimension;
 		public Token dest;
 		public Token origin;
 		public TerminalNode LOADINTEGER() { return getToken(SVMParser.LOADINTEGER, 0); }
@@ -153,18 +155,21 @@ public class SVMParser extends Parser {
 		public TerminalNode REG(int i) {
 			return getToken(SVMParser.REG, i);
 		}
-		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public List<TerminalNode> NUMBER() { return getTokens(SVMParser.NUMBER); }
+		public TerminalNode NUMBER(int i) {
+			return getToken(SVMParser.NUMBER, i);
+		}
 		public TerminalNode BRANCH() { return getToken(SVMParser.BRANCH, 0); }
 		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
 		public TerminalNode COL() { return getToken(SVMParser.COL, 0); }
 		public TerminalNode PUSH() { return getToken(SVMParser.PUSH, 0); }
 		public TerminalNode LOADWORD() { return getToken(SVMParser.LOADWORD, 0); }
 		public TerminalNode STOREWORD() { return getToken(SVMParser.STOREWORD, 0); }
+		public TerminalNode POP() { return getToken(SVMParser.POP, 0); }
 		public TerminalNode ADD() { return getToken(SVMParser.ADD, 0); }
 		public TerminalNode SUB() { return getToken(SVMParser.SUB, 0); }
 		public TerminalNode MUL() { return getToken(SVMParser.MUL, 0); }
 		public TerminalNode DIV() { return getToken(SVMParser.DIV, 0); }
-		public TerminalNode POP() { return getToken(SVMParser.POP, 0); }
 		public TerminalNode BRANCHEQ() { return getToken(SVMParser.BRANCHEQ, 0); }
 		public TerminalNode BRANCHGT() { return getToken(SVMParser.BRANCHGT, 0); }
 		public TerminalNode BRANCHGE() { return getToken(SVMParser.BRANCHGE, 0); }
@@ -192,7 +197,7 @@ public class SVMParser extends Parser {
 		enterRule(_localctx, 2, RULE_instruction);
 		int _la;
 		try {
-			setState(53);
+			setState(57);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LOADINTEGER:
@@ -231,49 +236,64 @@ public class SVMParser extends Parser {
 				match(PUSH);
 				setState(18);
 				match(REG);
+				setState(19);
+				match(NUMBER);
 				}
 				break;
 			case LOADWORD:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(19);
-				match(LOADWORD);
 				setState(20);
-				((InstructionContext)_localctx).r1 = match(REG);
+				match(LOADWORD);
 				setState(21);
-				match(NUMBER);
+				((InstructionContext)_localctx).r1 = match(REG);
 				setState(22);
-				match(T__0);
+				((InstructionContext)_localctx).offset = match(NUMBER);
 				setState(23);
-				((InstructionContext)_localctx).r2 = match(REG);
+				match(T__0);
 				setState(24);
+				((InstructionContext)_localctx).r2 = match(REG);
+				setState(25);
 				match(T__1);
+				setState(26);
+				((InstructionContext)_localctx).dimension = match(NUMBER);
 				}
 				break;
 			case STOREWORD:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(25);
-				match(STOREWORD);
-				setState(26);
-				((InstructionContext)_localctx).r1 = match(REG);
 				setState(27);
-				match(NUMBER);
+				match(STOREWORD);
 				setState(28);
-				match(T__0);
+				((InstructionContext)_localctx).r1 = match(REG);
 				setState(29);
-				((InstructionContext)_localctx).r2 = match(REG);
+				((InstructionContext)_localctx).offset = match(NUMBER);
 				setState(30);
+				match(T__0);
+				setState(31);
+				((InstructionContext)_localctx).r2 = match(REG);
+				setState(32);
 				match(T__1);
+				setState(33);
+				((InstructionContext)_localctx).dimension = match(NUMBER);
+				}
+				break;
+			case POP:
+				enterOuterAlt(_localctx, 7);
+				{
+				setState(34);
+				match(POP);
+				setState(35);
+				match(NUMBER);
 				}
 				break;
 			case ADD:
 			case SUB:
 			case MUL:
 			case DIV:
-				enterOuterAlt(_localctx, 7);
+				enterOuterAlt(_localctx, 8);
 				{
-				setState(31);
+				setState(36);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ADD) | (1L << SUB) | (1L << MUL) | (1L << DIV))) != 0)) ) {
 				_errHandler.recoverInline(this);
@@ -283,19 +303,12 @@ public class SVMParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(32);
+				setState(37);
 				((InstructionContext)_localctx).dest = match(REG);
-				setState(33);
+				setState(38);
 				((InstructionContext)_localctx).r1 = match(REG);
-				setState(34);
+				setState(39);
 				((InstructionContext)_localctx).r2 = match(REG);
-				}
-				break;
-			case POP:
-				enterOuterAlt(_localctx, 8);
-				{
-				setState(35);
-				match(POP);
 				}
 				break;
 			case BRANCHEQ:
@@ -305,7 +318,7 @@ public class SVMParser extends Parser {
 			case BRANCHLE:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(36);
+				setState(40);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BRANCHEQ) | (1L << BRANCHGT) | (1L << BRANCHGE) | (1L << BRANCHLT) | (1L << BRANCHLE))) != 0)) ) {
 				_errHandler.recoverInline(this);
@@ -315,67 +328,67 @@ public class SVMParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(37);
+				setState(41);
 				((InstructionContext)_localctx).r1 = match(REG);
-				setState(38);
+				setState(42);
 				((InstructionContext)_localctx).r2 = match(REG);
-				setState(39);
+				setState(43);
 				match(LABEL);
 				}
 				break;
 			case NEG:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(40);
+				setState(44);
 				match(NEG);
-				setState(41);
+				setState(45);
 				match(REG);
 				}
 				break;
 			case MOVE:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(42);
+				setState(46);
 				match(MOVE);
-				setState(43);
+				setState(47);
 				((InstructionContext)_localctx).dest = match(REG);
-				setState(44);
+				setState(48);
 				((InstructionContext)_localctx).origin = match(REG);
 				}
 				break;
 			case ADDINTEGER:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(45);
+				setState(49);
 				match(ADDINTEGER);
-				setState(46);
+				setState(50);
 				((InstructionContext)_localctx).dest = match(REG);
-				setState(47);
+				setState(51);
 				((InstructionContext)_localctx).r1 = match(REG);
-				setState(48);
+				setState(52);
 				match(NUMBER);
 				}
 				break;
 			case JUMPLABEL:
 				enterOuterAlt(_localctx, 13);
 				{
-				setState(49);
+				setState(53);
 				match(JUMPLABEL);
-				setState(50);
+				setState(54);
 				match(LABEL);
 				}
 				break;
 			case JUMPREG:
 				enterOuterAlt(_localctx, 14);
 				{
-				setState(51);
+				setState(55);
 				match(JUMPREG);
 				}
 				break;
 			case PRINT:
 				enterOuterAlt(_localctx, 15);
 				{
-				setState(52);
+				setState(56);
 				match(PRINT);
 				}
 				break;
@@ -395,24 +408,24 @@ public class SVMParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\37:\4\2\t\2\4\3\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\37>\4\2\t\2\4\3\t"+
 		"\3\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3"+
-		"8\n\3\3\3\2\2\4\2\4\2\4\3\2\23\26\3\2\n\16F\2\t\3\2\2\2\4\67\3\2\2\2\6"+
-		"\b\5\4\3\2\7\6\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2"+
-		"\2\13\t\3\2\2\2\f\r\7\30\2\2\r\16\7\32\2\2\168\7\35\2\2\17\20\7\31\2\2"+
-		"\208\7\34\2\2\21\22\7\34\2\2\228\7\33\2\2\23\24\7\22\2\2\248\7\32\2\2"+
-		"\25\26\7\20\2\2\26\27\7\32\2\2\27\30\7\35\2\2\30\31\7\3\2\2\31\32\7\32"+
-		"\2\2\328\7\4\2\2\33\34\7\21\2\2\34\35\7\32\2\2\35\36\7\35\2\2\36\37\7"+
-		"\3\2\2\37 \7\32\2\2 8\7\4\2\2!\"\t\2\2\2\"#\7\32\2\2#$\7\32\2\2$8\7\32"+
-		"\2\2%8\7\17\2\2&\'\t\3\2\2\'(\7\32\2\2()\7\32\2\2)8\7\34\2\2*+\7\27\2"+
-		"\2+8\7\32\2\2,-\7\t\2\2-.\7\32\2\2.8\7\32\2\2/\60\7\b\2\2\60\61\7\32\2"+
-		"\2\61\62\7\32\2\2\628\7\35\2\2\63\64\7\7\2\2\648\7\34\2\2\658\7\6\2\2"+
-		"\668\7\5\2\2\67\f\3\2\2\2\67\17\3\2\2\2\67\21\3\2\2\2\67\23\3\2\2\2\67"+
-		"\25\3\2\2\2\67\33\3\2\2\2\67!\3\2\2\2\67%\3\2\2\2\67&\3\2\2\2\67*\3\2"+
-		"\2\2\67,\3\2\2\2\67/\3\2\2\2\67\63\3\2\2\2\67\65\3\2\2\2\67\66\3\2\2\2"+
-		"8\5\3\2\2\2\4\t\67";
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\5\3<\n\3\3\3\2\2\4\2\4\2\4\3\2\23\26\3\2\n\16J\2\t\3\2\2"+
+		"\2\4;\3\2\2\2\6\b\5\4\3\2\7\6\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2"+
+		"\2\2\n\3\3\2\2\2\13\t\3\2\2\2\f\r\7\30\2\2\r\16\7\32\2\2\16<\7\35\2\2"+
+		"\17\20\7\31\2\2\20<\7\34\2\2\21\22\7\34\2\2\22<\7\33\2\2\23\24\7\22\2"+
+		"\2\24\25\7\32\2\2\25<\7\35\2\2\26\27\7\20\2\2\27\30\7\32\2\2\30\31\7\35"+
+		"\2\2\31\32\7\3\2\2\32\33\7\32\2\2\33\34\7\4\2\2\34<\7\35\2\2\35\36\7\21"+
+		"\2\2\36\37\7\32\2\2\37 \7\35\2\2 !\7\3\2\2!\"\7\32\2\2\"#\7\4\2\2#<\7"+
+		"\35\2\2$%\7\17\2\2%<\7\35\2\2&\'\t\2\2\2\'(\7\32\2\2()\7\32\2\2)<\7\32"+
+		"\2\2*+\t\3\2\2+,\7\32\2\2,-\7\32\2\2-<\7\34\2\2./\7\27\2\2/<\7\32\2\2"+
+		"\60\61\7\t\2\2\61\62\7\32\2\2\62<\7\32\2\2\63\64\7\b\2\2\64\65\7\32\2"+
+		"\2\65\66\7\32\2\2\66<\7\35\2\2\678\7\7\2\28<\7\34\2\29<\7\6\2\2:<\7\5"+
+		"\2\2;\f\3\2\2\2;\17\3\2\2\2;\21\3\2\2\2;\23\3\2\2\2;\26\3\2\2\2;\35\3"+
+		"\2\2\2;$\3\2\2\2;&\3\2\2\2;*\3\2\2\2;.\3\2\2\2;\60\3\2\2\2;\63\3\2\2\2"+
+		";\67\3\2\2\2;9\3\2\2\2;:\3\2\2\2<\5\3\2\2\2\4\t;";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

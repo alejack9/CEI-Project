@@ -15,6 +15,6 @@ public class BoolType extends Type {
 	}
 	@Override
 	public int _getDimension() {
-		return 8;
+		return 1;
 	}
 }
