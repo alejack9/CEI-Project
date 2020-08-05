@@ -18,7 +18,7 @@ public class ExecuteVM {
 		this.code = code;
 		
 		setRegValue(Regs.$sp, MEMSIZE);
-		setRegValue(Regs.$fp, MEMSIZE);
+		setRegValue(Regs.$fp, MEMSIZE-4);
 	}
 
 	public void cpu() {
@@ -43,25 +43,24 @@ public class ExecuteVM {
 				ip = code[ip];
 				break;
 
-			case SVMParser.LABEL:
-				// TODO empty?
-				break;
-
 			case SVMParser.PUSH:
-				setRegValue(Regs.$sp, getRegValue(Regs.$sp) - code[ip + 1] - 1);
+				setRegValue(Regs.$sp, getRegValue(Regs.$sp) - code[ip + 1]);
 				for(v1 = 0; v1 < code[ip + 1]; v1++)
-					memory[getRegValue(Regs.$sp) + code[ip + 1] - v1] = intToBytes(code[ip], (byte) (4 - v1 - 1));
+					memory[getRegValue(Regs.$sp) + v1] = decToByte(regs[code[ip]], (byte) (code[ip+1] - v1 - 1));
 				ip += 2;
 				break;
 
 			case SVMParser.LOADWORD:
-				regs[code[ip++]] = buildInt(code[ip] + regs[code[ip + 1]], (byte)code[ip + 2]);
-				ip += 3;
+				if (code[ip + 3] == 1) 
+					regs[code[ip]] = byteToDec((byte) 0,(byte) 0, (byte) 0, memory[code[ip + 1] + regs[code[ip + 2]]]);
+				else
+					regs[code[ip]] = byteToDec(memory[code[ip + 1] + regs[code[ip + 2]]], memory[code[ip + 1] + regs[code[ip + 2]] + 1], memory[code[ip + 1] + regs[code[ip + 2]] + 2], memory[code[ip + 1] + regs[code[ip + 2]] + 3] );
+				ip += 4;
 				break;
 
 			case SVMParser.STOREWORD:
 				for(v1 = 0; v1 < code[ip + 3]; v1++)
-					memory[code[ip + 1] + regs[code[ip + 2]] + code[ip + 3] - v1] = intToBytes(regs[code[ip]], (byte) (4 - v1 - 1));
+					memory[code[ip + 1] + regs[code[ip + 2]] + v1] = decToByte(regs[code[ip]], (byte) (code[ip + 3] - v1 - 1));
 				ip += 4;
 				break;
 
@@ -82,6 +81,11 @@ public class ExecuteVM {
 				break;
 
 			case SVMParser.POP:
+//				if (code[ip] == 1)
+//					setRegValue(Regs.$a0, byteToDec((byte) 0,(byte) 0, (byte) 0, memory[getRegValue(Regs.$sp)]));
+//				else
+//					regs[code[ip]] = byteToDec(memory[code[ip + 1] + regs[code[ip + 2]]], memory[code[ip + 1] + regs[code[ip + 2]] + 1], memory[code[ip + 1] + regs[code[ip + 2]] + 2], memory[code[ip + 1] + regs[code[ip + 2]] + 3] );
+				setRegValue(Regs.$sp, getRegValue(Regs.$sp) + code[ip++] );
 				break;
 
 			case SVMParser.BRANCHEQ:
@@ -151,23 +155,30 @@ public class ExecuteVM {
 		}
 	}
 	
-	private int buildInt(int sp, byte dimension) {
-		int toRet = 0;
-		for(byte i = dimension; i >= 0; i--)
-			toRet = toRet |(memory[sp++] & 0xFF) << 8 * i;
-		return toRet;
-	}
 
 	
-	public int getRegValue(Regs reg) {
+	private int getRegValue(Regs reg) {
 		return regs[reg.ordinal()];
 	}
 	
-	public void setRegValue(Regs reg, int value) {
+	private void setRegValue(Regs reg, int value) {
 		regs[reg.ordinal()] = value;
 	}
 
-	private static byte intToBytes(final int data, byte index) {
-		return (byte)((data >> 8 * index) & 0xff);
+	
+	private static byte decToByte(int number, byte i) {
+		return (byte) (number >> 8*i);
 	}
+	
+	// 3 2 1 0
+	private static int byteToDec(byte... numbers) {
+		// "& 0xFF" turns signed number to binary value, so we can shift this without be aware of the sign
+		return ((numbers[0] & 0xFF) << 24)
+				| ((numbers[1] & 0xFF) << 16)
+				| ((numbers[2] & 0xFF) << 8)
+				| ((numbers[3] & 0xFF) << 0);	
+
+		
+	}
+
 }

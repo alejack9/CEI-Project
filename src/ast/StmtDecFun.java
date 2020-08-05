@@ -121,6 +121,8 @@ public class StmtDecFun extends StmtDec {
 	@Override
 	public void _codeGen(int nl, CustomStringBuilder sb) {
 		idEntry.label = CodeGenUtils.freshLabel();
+		String end = CodeGenUtils.freshLabel();
+		sb.newLine("b ", end);
 		sb.newLine(idEntry.label, ":");
 		sb.newLine("move $fp $sp");
 		sb.newLine("push $ra 4");
@@ -130,5 +132,6 @@ public class StmtDecFun extends StmtDec {
 		sb.newLine("lw $fp 0($sp) 4");
 		sb.newLine("pop 4");
 		sb.newLine("jr");
+		sb.newLine(end, ":");
 	}
 }

@@ -1,4 +1,9 @@
 {
-	int x = 1;
+	int x = -1511 + 201;
+	int fun(int y){
+		return y;
+	}
+	
+	x = fun(4);
 	print x;
 }
