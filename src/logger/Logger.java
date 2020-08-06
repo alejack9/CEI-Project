@@ -2,6 +2,7 @@ package logger;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.time.LocalDateTime;
 
 /**
  * Default logger: handles print outputs;

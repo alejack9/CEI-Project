@@ -128,7 +128,7 @@ public class StmtDecFun extends StmtDec {
 		sb.newLine("push $ra 4");
 		block._codeGen(nl+1, sb);
 		sb.newLine("lw $ra 0($sp) 4");
-		sb.newLine("addi $sp $sp ", Integer.toString(args.stream().map(Arg::getType).map(Type::getDimension).reduce((a,b) -> a + b).orElse(0) + 64));
+		sb.newLine("addi $sp $sp ", Integer.toString(args.stream().map(Arg::getType).map(Type::getDimension).reduce((a,b) -> a + b).orElse(0) + 8));
 		sb.newLine("lw $fp 0($sp) 4");
 		sb.newLine("pop 4");
 		sb.newLine("jr");

@@ -1,38 +1,118 @@
-li $a0 1511
-neg $a0
-push $a0 4
-li $a0 201
-lw $t1 0($sp) 4
-add $a0 $t1 $a0
-pop 4
-sw $a0 0($hp) 4
+li $a0 3
+li $t1 0
+sw $a0 0($t1) 4
 addi $hp $hp 4
 b label1
 label0:
 move $fp $sp
 push $ra 4
-lw $al 0($fp) 4
-lw $a0 4($al)4
+move $al $fp
+lw $a0 8($al) 1
+push $a0 1
+li $a0 1
+lw $t1 0($sp) 1
+pop 1
+beq $a0 $t1 label4
+li $a0 0
+b label5
+label4:
+li $a0 1
+label5:
+li $t1 1
+beq $a0 $t1 label2
+b label3
+label2:
+move $al $fp
+lw $a0 4($al) 4
+lw $a0 0($a0) 4
 lw $ra -4($fp) 4
-addi $sp $sp 68
+addi $sp $sp 13
+lw $fp 0($sp) 4
+pop 4
+jr
+label3:
+b label7
+label6:
+move $fp $sp
+push $ra 4
+b label9
+label8:
+move $fp $sp
+push $ra 4
+move $al $fp
+lw $al 0($al) 4
+lw $al 0($al) 4
+lw $a0 4($al) 4
+push $a0 4
+li $a0 2
+lw $t1 0($sp) 4
+div $a0 $t1 $a0
+pop 4
+lw $ra -4($fp) 4
+addi $sp $sp 12
 lw $fp 0($sp) 4
 pop 4
 jr
 lw $ra 0($sp) 4
-addi $sp $sp 68
+addi $sp $sp 12
+lw $fp 0($sp) 4
+pop 4
+jr
+label9:
+push $fp 4
+li $a0 10
+push $a0 4
+move $al $fp
+lw $al 0($al) 4
+push $al 4
+jal label8
+push $a0 4
+move $al $fp
+lw $al 0($al) 4
+lw $a0 4($al) 4
+lw $t1 0($sp) 4
+div $a0 $t1 $a0
+pop 4
+lw $ra -4($fp) 4
+addi $sp $sp 12
+lw $fp 0($sp) 4
+pop 4
+jr
+lw $ra 0($sp) 4
+addi $sp $sp 12
+lw $fp 0($sp) 4
+pop 4
+jr
+label7:
+move $al $fp
+lw $a0 8($al) 1
+print
+push $fp 4
+li $a0 5
+push $a0 4
+move $al $fp
+push $al 4
+jal label6
+lw $ra -4($fp) 4
+addi $sp $sp 12
+lw $fp 0($sp) 4
+pop 4
+jr
+lw $ra 0($sp) 4
+addi $sp $sp 13
 lw $fp 0($sp) 4
 pop 4
 jr
 label1:
 push $fp 4
-li $a0 4
+li $a0 0
+push $a0 1
+li $a0 0
+addi $a0 $a0 0
 push $a0 4
-lw $al 0($fp) 4
+move $al $fp
 push $al 4
 jal label0
-move $t1 $a0
-li $t1 0
-sw $a0 0($t1) 4
 li $t1 0
 lw $a0 0($t1) 4
 print

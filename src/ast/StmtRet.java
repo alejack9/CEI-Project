@@ -19,7 +19,7 @@ public class StmtRet extends Stmt {
 	public StmtRet(Exp exp, List<Integer> argsDimension, int line, int column) {
 		super(line, column);
 		this.exp = exp;
-		k = Integer.toString(argsDimension.stream().reduce((a,b) -> a + b).orElse(0) + 64);
+		k = Integer.toString(argsDimension.stream().reduce((a,b) -> a + b).orElse(0) + 8);
 	}
 
 	@Override

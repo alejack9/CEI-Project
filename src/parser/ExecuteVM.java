@@ -54,7 +54,11 @@ public class ExecuteVM {
 				if (code[ip + 3] == 1) 
 					regs[code[ip]] = byteToDec((byte) 0,(byte) 0, (byte) 0, memory[code[ip + 1] + regs[code[ip + 2]]]);
 				else
-					regs[code[ip]] = byteToDec(memory[code[ip + 1] + regs[code[ip + 2]]], memory[code[ip + 1] + regs[code[ip + 2]] + 1], memory[code[ip + 1] + regs[code[ip + 2]] + 2], memory[code[ip + 1] + regs[code[ip + 2]] + 3] );
+					regs[code[ip]] = byteToDec(
+							memory[code[ip + 1] + regs[code[ip + 2]]],
+							memory[code[ip + 1] + regs[code[ip + 2]] + 1],
+							memory[code[ip + 1] + regs[code[ip + 2]] + 2],
+							memory[code[ip + 1] + regs[code[ip + 2]] + 3] );
 				ip += 4;
 				break;
 

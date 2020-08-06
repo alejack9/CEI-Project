@@ -71,7 +71,7 @@ public class ExpVar extends Exp {
 		return idEntry;
 	}
 
-	// scrive sempre il valore
+	// scrive sempre il valore in $a0
 	@Override
 	public void _codeGen(int nl, CustomStringBuilder sb) {
 		if(idEntry.getType().IsParameter()) {
