@@ -1,18 +1,26 @@
 {
-	 int x = 3;
-	 int f(int var a, bool b) {
-	 	if(b == true) {
-	 		return a;
-	 	}
-	 	int g(int c) {
-	 		int h(int d) {
-	 			return d/2;
-	 		}
-	 		return h(10)/c;
-	 	}
-	 	print b;
-	 	return g(5);
-	 }
-	 f(x, false);
-	 print x;
+	void g(int var x, int var y) {
+		int a = 2;
+		
+		if(x == 1) {
+			delete a;
+			delete x;
+			y = 3;
+		}
+		else {
+			delete y;
+			a = 2;
+		}
+		
+		print a;
+	}
+	
+	int x;
+	int y;
+	g(x,y);
+	
+	//int x = 4;
+	//if (x < 2) { x = 1; }
+	//else {delete x;}
+	//int x = 5;
 }

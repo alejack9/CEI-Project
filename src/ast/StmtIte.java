@@ -35,10 +35,10 @@ public class StmtIte extends Stmt {
 		toRet.addAll(exp.checkSemantics(e));
 
 		if(elseStmt != null) {
-			toRet.addAll(elseStmt.checkSemantics(e));
+			toRet.addAll(elseStmt.checkSemantics((Environment<STEntry>) e.clone()));
 		}
 		
-		toRet.addAll(thenStmt.checkSemantics(e));		
+		toRet.addAll(thenStmt.checkSemantics((Environment<STEntry>) e.clone()));		
 		
 		return toRet;
 

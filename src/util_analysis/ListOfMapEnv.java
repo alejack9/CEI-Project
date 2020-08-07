@@ -21,8 +21,10 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		scopes.push(startingScope);
 	}
 	
-	public ListOfMapEnv(LinkedList<HashMap<String, T>> existingScopes) {
+	public ListOfMapEnv(LinkedList<HashMap<String, T>> existingScopes, int offset, int nestingLevel) {
 		this.scopes = existingScopes;
+		this.offset = offset;
+		this.nestingLevel = nestingLevel;
 	}
 
 	public ListOfMapEnv() {	}

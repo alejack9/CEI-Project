@@ -44,7 +44,7 @@ public class StmtDecFun extends StmtDec {
 		if (!e.add(ID, idEntry))
 			toRet.add(new IdAlreadytExistsError(ID, line, column));
 		
-		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions());
+		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions(), e.getOffset(), e.getNestingLevel());
 		funEnv.setOffset(e.getOffset());
 		
 		funEnv.openScope();
@@ -88,7 +88,7 @@ public class StmtDecFun extends StmtDec {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 		
-		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions());
+		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions(), e.getOffset(), e.getNestingLevel());
 		
 		List<BTEntry> e0 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e0.add(new BTEntry()));
@@ -100,6 +100,7 @@ public class StmtDecFun extends StmtDec {
 		funEnv.add(ID, new BTEntry(e0));
 		do {
 			funEnv.openScope();
+			toRet = new LinkedList<BehaviourError>(); // stampa più volte lo stesso messaggio d'errore
 			for(int i = 0; i < e0.size(); i++)
 				funEnv.add(args.get(i).getId(), (BTEntry) e0.get(i).clone());
 			toRet.addAll(block.inferBehaviourSameScope(funEnv));
@@ -110,9 +111,6 @@ public class StmtDecFun extends StmtDec {
 			funEnv.closeScope();
 			funEnv.update(ID, new BTEntry(e1_1));
 		} while(!BTEntry.areEqual(e1, e1_1));
-		/**
-		 * int f(int var x) {  int y; }
-		 */
 		e.add(ID, funEnv.getIDEntry(ID));
 		
 		return toRet;
