@@ -35,6 +35,7 @@ public class STEntry extends Entry {
 		STEntry st = new STEntry((Type) type.clone());
 		st.nestingLevel = nestingLevel;
 		st.offset = offset;
+		st.label = label;
 		return st;
 	}
 
