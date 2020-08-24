@@ -41,6 +41,8 @@ public class StmtDecFun extends StmtDec {
 		ArrowType t = (ArrowType) EType.FUNCTION.getType();
 		
 		idEntry = new STEntry(t);
+		idEntry.label = CodeGenUtils.freshLabel();
+
 		if (!e.add(ID, idEntry))
 			toRet.add(new IdAlreadytExistsError(ID, line, column));
 		
@@ -118,7 +120,6 @@ public class StmtDecFun extends StmtDec {
 
 	@Override
 	public void _codeGen(int nl, CustomStringBuilder sb) {
-		idEntry.label = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		sb.newLine("b ", end);
 		sb.newLine(idEntry.label, ":");
