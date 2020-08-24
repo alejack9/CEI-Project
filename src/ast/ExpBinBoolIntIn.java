@@ -6,10 +6,10 @@ import ast.types.Type;
 import support.CodeGenUtils;
 import support.CustomStringBuilder;
 import util_analysis.TypeErrorsStorage;
+
 /**
  * Represents boolean expressions that require only INT type of input
  */
-
 public abstract class ExpBinBoolIntIn extends ExpBin {
 	
 	protected ExpBinBoolIntIn(Exp left, Exp right, int line, int column) {

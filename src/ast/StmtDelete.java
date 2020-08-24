@@ -13,7 +13,6 @@ import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.DeletedVariableError;
-import ast.errors.LocalVariableDoesntExistsError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
 import ast.errors.VariableNotExistsError;
@@ -23,7 +22,7 @@ public class StmtDelete extends Stmt {
 
 	private String id;
 	private STEntry idEntry;
-	private BTEntry idBTentry;
+
 	/**
 	 * Creates a delete statement
 	 * @param id the variable we want to delete
@@ -58,17 +57,6 @@ public class StmtDelete extends Stmt {
 			else
 				idEntry = e.deleteVariable(id);
 		}
-		/**
-		 * int yy;
-		 * void f(var int x) {
-		 * 	void z(var int y) {
-		 * 		delete y;
-		 * 	}
-		 * 	z(x);
-		 * }
-		 * f(yy);
-		 * yy = 3;
-		 */
 		return toRet;
 	}
 

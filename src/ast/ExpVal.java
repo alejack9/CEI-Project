@@ -42,5 +42,4 @@ public class ExpVal extends Exp {
 	public void _codeGen(int nl, CustomStringBuilder sb) {
 		sb.newLine("li $a0 ", Integer.toString(value));
 	}
-
 }

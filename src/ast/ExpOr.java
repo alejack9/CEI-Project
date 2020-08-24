@@ -34,5 +34,4 @@ public class ExpOr extends ExpBinBoolBoolIn {
 		sb.newLine("li $t1 1");
 		sb.newLine("beq $a0 $t1 ", label);
 	}
-
 }

@@ -41,10 +41,10 @@ public class StmtDecVar extends StmtDec {
 		else
 			// checked by behavior analysis
 //			if(e.getLocalIDEntry(ID).isDeleted())
-				if(e.getLocalIDEntry(ID).getType().getType().equalsTo(type))
-					idEntry = e.getLocalIDEntry(ID);
-				else
-					toRet.add(new DifferentVarTypeError(ID, line, column));
+			if(e.getLocalIDEntry(ID).getType().getType().equalsTo(type))
+				idEntry = e.getLocalIDEntry(ID);
+			else
+				toRet.add(new DifferentVarTypeError(ID, line, column));
 //			else
 //				toRet.add(new IdAlreadytExistsError(ID, line, column));
 

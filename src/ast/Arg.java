@@ -16,14 +16,11 @@ public class Arg extends ElementBase {
 
 	private Type type;
 	private String ID;
-	// "ref" is unused
-	// private boolean ref;
 
 	public Arg(String type, String ID, boolean ref, int line, int column) {
 		super(line, column);
 		this.type = EType.getEnum(type).getType(true, ref);
 		this.ID = ID;
-		// this.ref = ref;
 	}
 	
 	@Override

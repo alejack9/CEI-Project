@@ -27,7 +27,9 @@ public class ExpVar extends Exp {
 		this.id = id;
 	}
 	
-	// Checks if the variable in use exists. if it doesn't then add an error.
+	/**
+	 * Checks if the variable in use exists. if it doesn't then add an error.
+	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();

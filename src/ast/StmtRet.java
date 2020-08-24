@@ -53,7 +53,6 @@ public class StmtRet extends Stmt {
 
 	@Override
 	public void _codeGen(int nl, CustomStringBuilder sb) {
-		// TODO this is horrible
 		if(exp != null)
 			exp._codeGen(nl, sb);
 		sb.newLine("lw $ra -4($fp) 4");

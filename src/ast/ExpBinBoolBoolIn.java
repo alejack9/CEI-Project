@@ -4,10 +4,10 @@ import ast.errors.TypeError;
 import ast.types.EType;
 import ast.types.Type;
 import util_analysis.TypeErrorsStorage;
+
 /**
  * Represents boolean expressions that require only INT type of input
  */
-
 public abstract class ExpBinBoolBoolIn extends ExpBin {
 	
 	protected ExpBinBoolBoolIn(Exp left, Exp right, int line, int column) {

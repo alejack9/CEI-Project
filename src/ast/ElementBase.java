@@ -18,7 +18,8 @@ public abstract class ElementBase {
 		this.column = column;
 	}
 	
-	/**performs a semantic check for controlling that all declared variables exist
+	/**
+	 * performs a semantic check for controlling that all declared variables exist
 	 * @param e is the current environment where the information about existent variables is stored
 	 * @return a list of the semantic problems found
 	 */
