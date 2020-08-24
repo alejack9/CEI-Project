@@ -1,26 +1,31 @@
 {
-	void g(int var x, int var y) {
-		int a = 2;
-		
-		if(x == 1) {
-			delete a;
-			delete x;
-			y = 3;
-		}
-		else {
-			delete y;
-			a = 2;
-		}
-		
-		print a;
-	}
-	
-	int x;
-	int y;
-	g(x,y);
-	
-	//int x = 4;
-	//if (x < 2) { x = 1; }
-	//else {delete x;}
-	//int x = 5;
+    int num1 = 3;
+    {
+        int num2 = 5;
+        delete num2;
+        int num2 = 3;
+    }
+    
+    int fun1() {
+        int num3 = 0;
+        int num1 = num3 - 4;
+        bool value = false;
+        if (num3 > num1 && !(value)) {
+            return num3;
+        } else {
+            return num1;
+        }
+    }
+    
+    int fun2(int par1, int var par2) {
+    	if(par1 == 1) return 1;
+        delete par2;
+        int par2 = fun1();
+        print (par1 + par2);
+        if (par1 > par2) {}
+        par1 = par1 - 1;
+    	return fun2(par1, par2);
+    }
+    
+    return fun2(num1, num1);
 }
