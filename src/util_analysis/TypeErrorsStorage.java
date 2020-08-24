@@ -18,4 +18,8 @@ public class TypeErrorsStorage {
 	public static List<TypeError> getTypeErrors(){
 		return storage;
 	}
+
+	public static void clear() {
+		storage.clear();
+	}
 }
