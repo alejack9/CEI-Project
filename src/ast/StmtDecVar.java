@@ -94,7 +94,7 @@ public class StmtDecVar extends StmtDec {
 				TypeErrorsStorage.addError(new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")", this.exp.line, this.exp.column));
 		}
 				
-		return EType.VOID.getType();
+		return null;
 	}
 
 	@Override

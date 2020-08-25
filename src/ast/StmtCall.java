@@ -41,17 +41,21 @@ public class StmtCall extends Stmt {
 		
 		idEntry = e.getIDEntry(ID);
 		
-		Type funT = idEntry.getType();
-		
-		if(idEntry == null || !EType.FUNCTION.equalsTo(funT))
+		if(idEntry == null) {
 			toRet.add(new FunctionNotExistsError(ID, line, column));
+		}
 		else {
-			List<Type> params = ((ArrowType) funT).getParamTypes();
-			if(exps.size() != params.size())
-				toRet.add(new ParametersMismatchError(params.size(), exps.size(), line, column));
-			for(int i = 0; i < Math.min(exps.size(), params.size()); i++) {
-				if(params.get(i).IsRef() && !(exps.get(i) instanceof ExpVar)) {
-					toRet.add(new PassedReferenceNotVarError(i+1, ID, exps.get(i).line, exps.get(i).column));
+			Type funT = idEntry.getType();
+			if (!EType.FUNCTION.equalsTo(funT))
+				toRet.add(new FunctionNotExistsError(ID, line, column));
+			else {
+				List<Type> params = ((ArrowType) funT).getParamTypes();
+				if(exps.size() != params.size())
+					toRet.add(new ParametersMismatchError(params.size(), exps.size(), line, column));
+				for(int i = 0; i < Math.min(exps.size(), params.size()); i++) {
+					if(params.get(i).IsRef() && !(exps.get(i) instanceof ExpVar)) {
+						toRet.add(new PassedReferenceNotVarError(i+1, ID, exps.get(i).line, exps.get(i).column));
+					}
 				}
 			}
 		}

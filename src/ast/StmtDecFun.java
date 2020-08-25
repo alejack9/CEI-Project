@@ -81,9 +81,10 @@ public class StmtDecFun extends StmtDec {
 		this.args.forEach(Arg::inferType);
 		
 		Type blockT = this.block.inferType();
+		blockT = blockT == null? EType.VOID.getType() : blockT;
 		if(!blockT.getType().equalsTo(type))
 			TypeErrorsStorage.addError(new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")", this.block.line, this.block.column)); 
-		return EType.VOID.getType();
+		return null;
 	}
 	
 	@Override

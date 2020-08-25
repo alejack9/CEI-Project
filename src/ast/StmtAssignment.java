@@ -64,7 +64,7 @@ public class StmtAssignment extends Stmt{
 		if(!expType.getType().equalsTo(idEntry.getType()))
 			TypeErrorsStorage.addError(new TypeError("Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType +")", line, column));
 		
-		return EType.VOID.getType();
+		return null;
 	}
 
 	@Override

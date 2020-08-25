@@ -1,200 +1,77 @@
-li $a0 3
-li $t1 0
-sw $a0 0($t1) 4
-addi $hp $hp 4
-li $a0 5
-li $t1 0
-sw $a0 4($t1) 4
-addi $hp $hp 4
-li $a0 3
-li $t1 0
-sw $a0 4($t1) 4
 b label2
 label0:
 move $fp $sp
 push $ra 4
-li $a0 0
+li $a0 7
 li $t1 0
-sw $a0 4($t1) 4
+sw $a0 0($t1) 4
 addi $hp $hp 4
 li $t1 0
-lw $a0 4($t1) 4
+lw $a0 0($t1) 4
 push $a0 4
-li $a0 4
-lw $t1 0($sp) 4
-sub $a0 $t1 $a0
-pop 4
-li $t1 0
-sw $a0 8($t1) 4
-addi $hp $hp 4
-li $a0 0
-li $t1 0
-sw $a0 12($t1) 1
-addi $hp $hp 1
-li $t1 0
-lw $a0 4($t1) 4
-push $a0 4
-li $t1 0
-lw $a0 8($t1) 4
+li $a0 8
 lw $t1 0($sp) 4
 pop 4
-bgt $t1 $a0 label7
-li $a0 0
-b label8
-label7:
-li $a0 1
-label8:
-li $t1 0
 beq $a0 $t1 label5
-li $t1 0
-lw $a0 12($t1) 1
-li $t1 0
-beq $a0 $t1 label9
 li $a0 0
-b label10
-label9:
-li $a0 1
-label10:
-li $t1 0
-beq $a0 $t1 label5
-li $a0 1
 b label6
 label5:
-li $a0 0
+li $a0 1
 label6:
 li $t1 1
 beq $a0 $t1 label3
-li $t1 0
-lw $a0 8($t1) 4
-lw $ra -4($fp) 4
-addi $sp $sp 8
-lw $fp 0($sp) 4
-pop 4
-jr
 b label4
 label3:
+label4:
 li $t1 0
-lw $a0 4($t1) 4
+lw $a0 0($t1) 4
 lw $ra -4($fp) 4
 addi $sp $sp 8
 lw $fp 0($sp) 4
 pop 4
 jr
-label4:
 lw $ra 0($sp) 4
 addi $sp $sp 8
 lw $fp 0($sp) 4
 pop 4
 jr
 label2:
-b label11
+b label7
 label1:
 move $fp $sp
 push $ra 4
 move $al $fp
 lw $a0 4($al) 4
 push $a0 4
-li $a0 1
+li $a0 4
 lw $t1 0($sp) 4
 pop 4
-beq $a0 $t1 label14
+bgt $t1 $a0 label10
 li $a0 0
-b label15
-label14:
+b label11
+label10:
 li $a0 1
-label15:
-li $t1 1
-beq $a0 $t1 label12
-b label13
-label12:
-li $a0 1
-lw $ra -4($fp) 4
-addi $sp $sp 16
-lw $fp 0($sp) 4
-pop 4
-jr
-label13:
-push $fp 4
-move $al $fp
-lw $al 0($al) 4
-push $al 4
-jal label0
-li $t1 0
-sw $a0 8($t1) 4
-move $al $fp
-lw $a0 4($al) 4
-push $a0 4
-move $al $fp
-lw $a0 8($al) 4
-lw $a0 0($a0) 4
-lw $t1 0($sp) 4
-add $a0 $t1 $a0
-pop 4
-print
-move $al $fp
-lw $a0 4($al) 4
-push $a0 4
-move $al $fp
-lw $a0 8($al) 4
-lw $a0 0($a0) 4
-lw $t1 0($sp) 4
-pop 4
-bgt $t1 $a0 label18
-li $a0 0
-b label19
-label18:
-li $a0 1
-label19:
-li $t1 1
-beq $a0 $t1 label16
-b label17
-label16:
-label17:
-move $al $fp
-lw $a0 4($al) 4
-push $a0 4
-li $a0 1
-lw $t1 0($sp) 4
-sub $a0 $t1 $a0
-pop 4
-move $t1 $a0
-move $al $fp
-lw $a0 4($al) 4
-sw $t1 4($al) 4
-push $fp 4
-move $al $fp
-lw $a0 8($al) 4
-push $a0 4
-move $al $fp
-lw $a0 4($al) 4
-push $a0 4
-move $al $fp
-lw $al 0($al) 4
-push $al 4
-jal label1
-lw $ra -4($fp) 4
-addi $sp $sp 16
-lw $fp 0($sp) 4
-pop 4
-jr
-lw $ra 0($sp) 4
-addi $sp $sp 16
-lw $fp 0($sp) 4
-pop 4
-jr
 label11:
-push $fp 4
+li $t1 1
+beq $a0 $t1 label8
 li $a0 0
-addi $a0 $a0 0
-push $a0 4
-li $t1 0
-lw $a0 0($t1) 4
-push $a0 4
-move $al $fp
-push $al 4
-jal label1
 lw $ra -4($fp) 4
-addi $sp $sp 16
+addi $sp $sp 12
 lw $fp 0($sp) 4
 pop 4
 jr
+b label9
+label8:
+li $a0 1
+lw $ra -4($fp) 4
+addi $sp $sp 12
+lw $fp 0($sp) 4
+pop 4
+jr
+label9:
+lw $ra 0($sp) 4
+addi $sp $sp 12
+lw $fp 0($sp) 4
+pop 4
+jr
+label7:

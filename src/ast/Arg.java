@@ -44,7 +44,7 @@ public class Arg extends ElementBase {
 	public Type inferType() {
 		if (EType.VOID.equalsTo(type)) 
 			TypeErrorsStorage.addError(new TypeError("Parameter type cannot be void", line, column));
-		return EType.VOID.getType();
+		return null;
 	}
 
 	public String getId() {

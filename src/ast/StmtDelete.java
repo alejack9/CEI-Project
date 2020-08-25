@@ -76,7 +76,7 @@ public class StmtDelete extends Stmt {
 	public Type inferType() {
 		if(EType.FUNCTION.equalsTo(idEntry.getType()))
 			TypeErrorsStorage.addError(new TypeError("Cannot delete a function", line, column));
-		return EType.VOID.getType();
+		return null;
 	}
 
 	@Override

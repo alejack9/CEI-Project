@@ -35,7 +35,7 @@ public class StmtPrint extends Stmt {
 	public Type inferType() {
 		if(EType.VOID.equalsTo(exp.inferType()))
 			TypeErrorsStorage.addError(new TypeError("Cannot print void expression", this.exp.line, this.exp.column));
-		return EType.VOID.getType();
+		return null;
 	}
 
 	@Override
