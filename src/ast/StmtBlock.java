@@ -3,14 +3,18 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.border.EtchedBorder;
+
 import ast.types.EType;
 import ast.types.Type;
 import support.CustomStringBuilder;
 import util_analysis.Environment;
+import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
+import ast.errors.TypeError;
 
 public class StmtBlock extends Stmt {
 	
@@ -79,14 +83,60 @@ public class StmtBlock extends Stmt {
 	}
 	@Override
 	public Type inferType() {
-		Type toRet = EType.VOID.getType();
-		
-		// assignment is not an heavy operation and we should
-		// make further checks using another approaches
-		for (Stmt c : children)
+		Type toRet = null;
+		EType lastRetT = null;
+		boolean changed = false;
+		boolean safe = false;
+	
+		for (Stmt c : children) {
 			toRet = c.inferType();
+			
+			if (toRet != null) {
+				if (lastRetT != null && !lastRetT.equalsTo(toRet))
+					changed = true;
+				else lastRetT = toRet.getType();
+				if (c instanceof StmtIte) {
+					if (((StmtIte)c).hasElseStmt()) safe = true;
+				}
+				else safe = true;
+			}
+		
+		}
+
+		if (changed)
+			TypeErrorsStorage.addError(new TypeError("Inconsistent return types in this block", line, column));
+
+		
+		if (!safe && toRet != null && !EType.VOID.equalsTo(toRet))
+			TypeErrorsStorage.addError(new TypeError("Unsafe return (the function does not always return)", line, column));
 		
 		return toRet;
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+//			
+//			
+//			if (!EType.VOID.equalsTo(toRet) && !toRet.getType().equalsTo(newType))
+//				changed = true;
+//			if (c instanceof StmtIte && ((StmtIte)c).hasElseStmt() || c instanceof StmtRet)
+//				safe = true;
+//			
+//			toRet = newType;
+//		}
+		
+		
 	}
 
 	@Override
