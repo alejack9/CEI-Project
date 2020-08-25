@@ -230,6 +230,28 @@ class FinalTests {
 	}
 	
 	@Test
+	void correctCode8() throws IOException {
+		correctCode(String.join("\r\n" 
+				,"{"
+				,"	int fun() {"
+				,"		int x = 7;"
+				,"		if (x == 8) { }"
+				,"		return x;"
+				,"	}"
+				,"	bool fun1(int y) {"
+				,"		if (y > 4) {"
+				,"			return true;"
+				,"		} else {"
+				,"			return false;"
+				,"		}"
+				,"	}"
+				,"}"
+				)
+		);
+	}
+	
+	
+	@Test
 	void cannotChangeTypeAfterDelete() throws IOException {
 		semanticErrors(String.join("\r\n" 
 				, "{"
