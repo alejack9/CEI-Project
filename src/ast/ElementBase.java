@@ -36,13 +36,30 @@ public abstract class ElementBase {
 	
 	public abstract void _codeGen(int nl, CustomStringBuilder sb);	
 	
-	public final String codeGen(int nl, StringBuilder sb) {
-		CustomStringBuilder csb = new CustomStringBuilder(sb);
+	public final void codeGen(int nl, CustomStringBuilder csb) {
 		_codeGen(nl, csb);
-		return csb.toString();
 	}
 	
 	public final String codeGen() {
-		return codeGen(0, new StringBuilder());
+		CustomStringBuilder csb = new CustomStringBuilder(new StringBuilder());
+		csb.newLine("b CALLMAIN");
+		csb.newLine("MAIN:");
+		csb.newLine("move $fp $sp");
+		csb.newLine("push $ra 4");
+		csb.newLine();
+		codeGen(0, csb);
+		csb.newLine();
+		csb.newLine("lw $ra 0($sp) 4");
+		csb.newLine("addi $sp $sp 8");
+		csb.newLine("lw $fp 0($sp) 4");
+		csb.newLine("pop 4");
+		csb.newLine("jr");
+		csb.newLine("CALLMAIN:");
+		csb.newLine("push $fp 4");
+		csb.newLine("move $al $fp");
+		csb.newLine("push $al 4");
+		csb.newLine("jal MAIN");
+		
+		return csb.toString();
 	}
 }
