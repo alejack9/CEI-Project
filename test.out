@@ -1,77 +1,57 @@
-b label2
-label0:
+b CALLMAIN
+MAIN:
 move $fp $sp
 push $ra 4
-li $a0 7
+
 li $t1 0
 sw $a0 0($t1) 4
 addi $hp $hp 4
+li $a0 4
+move $t1 $a0
 li $t1 0
-lw $a0 0($t1) 4
-push $a0 4
-li $a0 8
-lw $t1 0($sp) 4
-pop 4
-beq $a0 $t1 label5
-li $a0 0
-b label6
-label5:
-li $a0 1
-label6:
-li $t1 1
-beq $a0 $t1 label3
-b label4
-label3:
-label4:
-li $t1 0
-lw $a0 0($t1) 4
-lw $ra -4($fp) 4
-addi $sp $sp 8
-lw $fp 0($sp) 4
-pop 4
-jr
-lw $ra 0($sp) 4
-addi $sp $sp 8
-lw $fp 0($sp) 4
-pop 4
-jr
-label2:
-b label7
-label1:
+sw $a0 0($t1) 4
+b label1
+label0:
 move $fp $sp
 push $ra 4
 move $al $fp
 lw $a0 4($al) 4
-push $a0 4
-li $a0 4
-lw $t1 0($sp) 4
-pop 4
-bgt $t1 $a0 label10
-li $a0 0
-b label11
-label10:
-li $a0 1
-label11:
-li $t1 1
-beq $a0 $t1 label8
-li $a0 0
+lw $a0 0($a0) 4
+print
+move $al $fp
+lw $a0 4($al) 4
+lw $a0 0($a0) 4
 lw $ra -4($fp) 4
 addi $sp $sp 12
 lw $fp 0($sp) 4
 pop 4
 jr
-b label9
-label8:
-li $a0 1
-lw $ra -4($fp) 4
-addi $sp $sp 12
-lw $fp 0($sp) 4
-pop 4
-jr
-label9:
 lw $ra 0($sp) 4
 addi $sp $sp 12
 lw $fp 0($sp) 4
 pop 4
 jr
-label7:
+label1:
+push $fp 4
+li $a0 0
+addi $a0 $a0 0
+push $a0 4
+move $al $fp
+push $al 4
+jal label0
+lw $ra -4($fp) 4
+addi $sp $sp 8
+lw $fp 0($sp) 4
+pop 4
+jr
+
+lw $ra 0($sp) 4
+addi $sp $sp 8
+lw $fp 0($sp) 4
+pop 4
+jr
+CALLMAIN:
+push $fp 4
+move $al $fp
+push $al 4
+jal MAIN
