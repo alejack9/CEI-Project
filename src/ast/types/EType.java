@@ -18,7 +18,7 @@ public enum EType {
 	}
 	
 	public boolean equalsTo(Type type) {
-		return this.compareTo(type.getType()) == 0;
+		return (this == VOID && type == null) || (type != null && this.compareTo(type.getType()) == 0);
 	}
 
 	public Type getType(boolean isParameter, boolean isRef) {

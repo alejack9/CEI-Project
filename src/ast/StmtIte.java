@@ -85,7 +85,7 @@ public class StmtIte extends Stmt {
 		if(this.elseStmt != null) {
 			Type elseT = this.elseStmt.inferType();
 			
-			if (!(thenT == null && elseT == null) && !elseT.getType().equalsTo(thenT))
+			if (elseT != null && !elseT.getType().equalsTo(thenT) || thenT != null && !elseT.getType().equalsTo(thenT))
 				TypeErrorsStorage.addError(new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")", this.thenStmt.line, this.thenStmt.column));
 		}
 		return thenT;
