@@ -145,7 +145,7 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 				args.add(visitArg(spArg));
 				lastArgsDimension.add(args.get(args.size()-1).getType().getDimension());
 			}
-		return new StmtDecFun(
+		StmtDecFun toRet = new StmtDecFun(
 			EType.getEnum(ctx.type().getText()).getType(),
 			ctx.ID().getText(),
 			args,
@@ -153,6 +153,8 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 			ctx.start.getLine(),
 			ctx.start.getCharPositionInLine()
 		);
+		lastArgsDimension = new LinkedList<Integer>();
+		return toRet;
 	}
 	
 	@Override
