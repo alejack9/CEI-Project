@@ -3,8 +3,6 @@ package ast;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.border.EtchedBorder;
-
 import ast.types.EType;
 import ast.types.Type;
 import support.CustomStringBuilder;
@@ -85,11 +83,12 @@ public class StmtBlock extends Stmt {
 	public Type inferType() {
 		Type toRet = null;
 		EType lastRetT = null;
-		boolean changed = false;
-		boolean safe = false;
+		boolean changed = false,
+				safe = false;
 	
 		for (Stmt c : children) {
-			toRet = c.inferType();
+			Type candidate = c.inferType();
+			toRet = candidate != null ? candidate : toRet ;
 			
 			if (toRet != null) {
 				if (lastRetT != null && !lastRetT.equalsTo(toRet))
@@ -100,7 +99,6 @@ public class StmtBlock extends Stmt {
 				}
 				else safe = true;
 			}
-		
 		}
 
 		if (changed)
