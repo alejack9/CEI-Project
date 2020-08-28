@@ -16,9 +16,9 @@ public class ExecuteVM {
 
 	public ExecuteVM(int[] code) {
 		this.code = code;
-		
+
 		setRegValue(Regs.$sp, MEMSIZE);
-		setRegValue(Regs.$fp, MEMSIZE-4);
+		setRegValue(Regs.$fp, MEMSIZE - 4);
 	}
 
 	public void cpu() {
@@ -29,7 +29,7 @@ public class ExecuteVM {
 			}
 			int bytecode = code[ip++]; // fetch
 			int v1;
-			
+
 			switch (bytecode) {
 			case 0:
 				return;
@@ -41,25 +41,24 @@ public class ExecuteVM {
 				break;
 			case SVMParser.PUSH:
 				setRegValue(Regs.$sp, getRegValue(Regs.$sp) - code[ip + 1]);
-				for(v1 = 0; v1 < code[ip + 1]; v1++)
-					memory[getRegValue(Regs.$sp) + v1] = decToByte(regs[code[ip]], (byte) (code[ip+1] - v1 - 1));
+				for (v1 = 0; v1 < code[ip + 1]; v1++)
+					memory[getRegValue(Regs.$sp) + v1] = decToByte(regs[code[ip]], (byte) (code[ip + 1] - v1 - 1));
 				ip += 2;
 				break;
 			case SVMParser.LOADWORD:
-				if (code[ip + 3] == 1) 
-					regs[code[ip]] = byteToDec((byte) 0,(byte) 0, (byte) 0, memory[code[ip + 1] + regs[code[ip + 2]]]);
+				if (code[ip + 3] == 1)
+					regs[code[ip]] = byteToDec((byte) 0, (byte) 0, (byte) 0, memory[code[ip + 1] + regs[code[ip + 2]]]);
 				else
-					regs[code[ip]] = byteToDec(
-							memory[code[ip + 1] + regs[code[ip + 2]]],
+					regs[code[ip]] = byteToDec(memory[code[ip + 1] + regs[code[ip + 2]]],
 							memory[code[ip + 1] + regs[code[ip + 2]] + 1],
 							memory[code[ip + 1] + regs[code[ip + 2]] + 2],
-							memory[code[ip + 1] + regs[code[ip + 2]] + 3]
-					);
+							memory[code[ip + 1] + regs[code[ip + 2]] + 3]);
 				ip += 4;
 				break;
 			case SVMParser.STOREWORD:
-				for(v1 = 0; v1 < code[ip + 3]; v1++)
-					memory[code[ip + 1] + regs[code[ip + 2]] + v1] = decToByte(regs[code[ip]], (byte) (code[ip + 3] - v1 - 1));
+				for (v1 = 0; v1 < code[ip + 3]; v1++)
+					memory[code[ip + 1] + regs[code[ip + 2]] + v1] = decToByte(regs[code[ip]],
+							(byte) (code[ip + 3] - v1 - 1));
 				ip += 4;
 				break;
 			case SVMParser.ADD:
@@ -75,30 +74,40 @@ public class ExecuteVM {
 				regs[code[ip++]] = regs[code[ip++]] / regs[code[ip++]];
 				break;
 			case SVMParser.POP:
-				setRegValue(Regs.$sp, getRegValue(Regs.$sp) + code[ip++] );
+				setRegValue(Regs.$sp, getRegValue(Regs.$sp) + code[ip++]);
 				break;
 			case SVMParser.BRANCHEQ:
-				if (regs[code[ip++]] == regs[code[ip++]]) ip = code[ip];
-				else ip++;
+				if (regs[code[ip++]] == regs[code[ip++]])
+					ip = code[ip];
+				else
+					ip++;
 				break;
 			case SVMParser.BRANCHGT:
-				if (regs[code[ip++]] > regs[code[ip++]]) ip = code[ip];
-				else ip++;
+				if (regs[code[ip++]] > regs[code[ip++]])
+					ip = code[ip];
+				else
+					ip++;
 				break;
 
 			case SVMParser.BRANCHGE:
-				if (regs[code[ip++]] >= regs[code[ip++]]) ip = code[ip];
-				else ip++;
+				if (regs[code[ip++]] >= regs[code[ip++]])
+					ip = code[ip];
+				else
+					ip++;
 				break;
 
 			case SVMParser.BRANCHLT:
-				if (regs[code[ip++]] < regs[code[ip++]]) ip = code[ip];
-				else ip++;
+				if (regs[code[ip++]] < regs[code[ip++]])
+					ip = code[ip];
+				else
+					ip++;
 				break;
 
 			case SVMParser.BRANCHLE:
-				if (regs[code[ip++]] <= regs[code[ip++]]) ip = code[ip];
-				else ip++;
+				if (regs[code[ip++]] <= regs[code[ip++]])
+					ip = code[ip];
+				else
+					ip++;
 				break;
 
 			case SVMParser.NEG:
@@ -132,28 +141,25 @@ public class ExecuteVM {
 			}
 		}
 	}
-	
+
 	private int getRegValue(Regs reg) {
 		return regs[reg.ordinal()];
 	}
-	
+
 	private void setRegValue(Regs reg, int value) {
 		regs[reg.ordinal()] = value;
 	}
 
-	
 	private static byte decToByte(int number, byte i) {
 		return (byte) (number >> 8 * i);
 	}
-	
+
 	// 3 2 1 0
 	private static int byteToDec(byte... numbers) {
-		// "& 0xFF" turns signed number to binary value, so we can shift this without be aware of the sign
-		return 	  ((numbers[0] & 0xFF) << 24)
-				| ((numbers[1] & 0xFF) << 16)
-				| ((numbers[2] & 0xFF) << 8)
-				| ((numbers[3] & 0xFF) << 0);	
+		// "& 0xFF" turns signed number to binary value, so we can shift this without be
+		// aware of the sign
+		return ((numbers[0] & 0xFF) << 24) | ((numbers[1] & 0xFF) << 16) | ((numbers[2] & 0xFF) << 8)
+				| ((numbers[3] & 0xFF) << 0);
 
-		
 	}
 }

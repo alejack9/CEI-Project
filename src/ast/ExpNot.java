@@ -27,18 +27,19 @@ public class ExpNot extends Exp {
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		
+
 		toRet.addAll(exp.checkSemantics(e));
-			
+
 		return toRet;
 	}
 
 	@Override
 	public Type inferType() {
 		Type expT = this.exp.inferType();
-		if(!EType.BOOL.equalsTo(expT))
-			TypeErrorsStorage.addError(new TypeError("Expression type is \"" + expT + "\" but it must be bool.", exp.line, exp.column));
-		
+		if (!EType.BOOL.equalsTo(expT))
+			TypeErrorsStorage.addError(
+					new TypeError("Expression type is \"" + expT + "\" but it must be bool.", exp.line, exp.column));
+
 		return EType.BOOL.getType();
 	}
 
@@ -48,10 +49,10 @@ public class ExpNot extends Exp {
 	}
 
 	@Override
-	public  void _codeGen(int nl, CustomStringBuilder sb) {
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		String one = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
-		
+
 		exp._codeGen(nl, sb);
 		sb.newLine("li $t1 0");
 		sb.newLine("beq $a0 $t1 ", one);
@@ -59,7 +60,7 @@ public class ExpNot extends Exp {
 		sb.newLine("b ", end);
 		sb.newLine(one, ":");
 		sb.newLine("li $a0 1");
-		sb.newLine(end, ":");	
+		sb.newLine(end, ":");
 	}
 
 }

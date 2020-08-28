@@ -10,7 +10,7 @@ public class ExpDiff extends ExpBinArithm {
 	protected String getOp() {
 		return "-";
 	}
-	
+
 	@Override
 	public String cGenOperator() {
 		return "sub";

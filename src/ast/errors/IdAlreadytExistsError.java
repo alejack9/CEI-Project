@@ -7,7 +7,7 @@ public class IdAlreadytExistsError extends BehaviourError {
 	private static final long serialVersionUID = 1L;
 
 	public IdAlreadytExistsError(String id, int line, int col) {
-		super(id,line, col);
+		super(id, line, col);
 	}
 
 	@Override

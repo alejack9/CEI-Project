@@ -1,7 +1,7 @@
 package ast;
 
 public class ExpSum extends ExpBinArithm {
-	
+
 	public ExpSum(Exp leftSide, Exp rightSide, int line, int column) {
 		super(leftSide, rightSide, line, column);
 	}

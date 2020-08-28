@@ -5,6 +5,7 @@ public class IntType extends Type {
 	public IntType(boolean isParameter, boolean isRef) {
 		super(isParameter, isRef);
 	}
+
 	public IntType() {
 		this(false, false);
 	}
@@ -13,7 +14,7 @@ public class IntType extends Type {
 	public EType getType() {
 		return EType.INT;
 	}
-	
+
 	@Override
 	public int _getDimension() {
 		return 4;

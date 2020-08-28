@@ -10,24 +10,24 @@ import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 
 public abstract class ExpBin extends Exp {
-	
+
 	protected Exp leftSide, rightSide;
 
 	protected abstract String getOp();
-	
+
 	protected ExpBin(Exp left, Exp right, int line, int column) {
 		super(line, column);
 		this.leftSide = left;
 		this.rightSide = right;
 	}
-	
+
 	@Override
 	public final List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		
+
 		toRet.addAll(leftSide.checkSemantics(e));
 		toRet.addAll(rightSide.checkSemantics(e));
-			
+
 		return toRet;
 	}
 

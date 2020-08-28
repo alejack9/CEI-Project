@@ -31,15 +31,14 @@ public class StmtIte extends Stmt {
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		
+
 		toRet.addAll(exp.checkSemantics(e));
 
-		if(elseStmt != null) {
+		if (elseStmt != null)
 			toRet.addAll(elseStmt.checkSemantics((Environment<STEntry>) e.clone()));
-		}
-		
-		toRet.addAll(thenStmt.checkSemantics((Environment<STEntry>) e.clone()));		
-		
+
+		toRet.addAll(thenStmt.checkSemantics((Environment<STEntry>) e.clone()));
+
 		return toRet;
 
 	}
@@ -48,45 +47,48 @@ public class StmtIte extends Stmt {
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-		
+
 		toRet.addAll(exp.inferBehaviour(e));
-		
+
 		Environment<BTEntry> tempE = null;
-		
+
 		if (elseStmt != null) {
 			tempE = (Environment<BTEntry>) e.clone();
 			analyseStmtBehaviour(tempE, elseStmt, toRet);
 		}
-		
+
 		analyseStmtBehaviour(e, thenStmt, toRet);
-		
-		if(tempE != null)
+
+		if (tempE != null)
 			BTHelper.maxModifyEnv(e, tempE);
-			
+
 		return toRet;
 	}
 
-	private void analyseStmtBehaviour(Environment<BTEntry> e, Stmt stmt, List<BehaviourError> errors){
-		if (stmt instanceof StmtBlock) errors.addAll(stmt.inferBehaviour(e));
+	private void analyseStmtBehaviour(Environment<BTEntry> e, Stmt stmt, List<BehaviourError> errors) {
+		if (stmt instanceof StmtBlock)
+			errors.addAll(stmt.inferBehaviour(e));
 		else {
 			e.openScope();
 			errors.addAll(stmt.inferBehaviour(e));
 			e.closeScope();
 		}
 	}
-	
+
 	@Override
 	public Type inferType() {
-		if(!EType.BOOL.equalsTo(exp.inferType()))
+		if (!EType.BOOL.equalsTo(exp.inferType()))
 			TypeErrorsStorage.addError(new TypeError("Condition must be bool type", exp.line, exp.column));
-		
+
 		Type thenT = this.thenStmt.inferType();
-		
-		if(this.elseStmt != null) {
+
+		if (this.elseStmt != null) {
 			Type elseT = this.elseStmt.inferType();
-			
+
 			if (elseT != null && !elseT.getType().equalsTo(thenT) || thenT != null && !elseT.getType().equalsTo(thenT))
-				TypeErrorsStorage.addError(new TypeError("Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")", this.thenStmt.line, this.thenStmt.column));
+				TypeErrorsStorage.addError(new TypeError(
+						"Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")",
+						this.thenStmt.line, this.thenStmt.column));
 		}
 		return thenT;
 	}
@@ -99,14 +101,14 @@ public class StmtIte extends Stmt {
 		exp._codeGen(nl, sb);
 		sb.newLine("li $t1 1");
 		sb.newLine("beq $a0 $t1 ", T);
-		if(elseStmt != null)
+		if (elseStmt != null)
 			elseStmt._codeGen(nl, sb);
 		sb.newLine("b ", end);
 		sb.newLine(T, ":");
 		thenStmt._codeGen(nl, sb);
 		sb.newLine(end, ":");
 	}
-	
+
 	public boolean hasElseStmt() {
 		return elseStmt != null;
 	}

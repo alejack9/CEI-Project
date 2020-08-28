@@ -21,9 +21,6 @@ public class LoggerFactory {
 	 */
 	private static Map<String, Logger> filesLoggers = new HashMap<String, Logger>();
 
-	/**
-	 * Not instantiable
-	 */
 	private LoggerFactory() {
 	}
 
@@ -36,7 +33,6 @@ public class LoggerFactory {
 		return consoleLogger;
 	}
 
-	
 	/**
 	 * @param fileName
 	 * @return A unique logger that writes on the file

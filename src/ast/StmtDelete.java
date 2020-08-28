@@ -25,6 +25,7 @@ public class StmtDelete extends Stmt {
 
 	/**
 	 * Creates a delete statement
+	 * 
 	 * @param id the variable we want to delete
 	 */
 	public StmtDelete(String id, int line, int column) {
@@ -33,25 +34,26 @@ public class StmtDelete extends Stmt {
 	}
 
 	/*
-	 * Checks if the variable in use exists. if it doesn't then add an error, 
-	 * if it does then remove it from the current scope
+	 * Checks if the variable in use exists. if it doesn't then add an error, if it
+	 * does then remove it from the current scope
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		STEntry candidate = e.getLocalIDEntry(id);
-		if(candidate != null  && !candidate.isDeleted() && !candidate.getType().IsParameter())
+		if (candidate != null && !candidate.isDeleted() && !candidate.getType().IsParameter())
 			idEntry = e.deleteVariable(id);
 		else {
 			candidate = e.getIDEntry(id);
-			if(candidate == null || candidate.isDeleted())
+			if (candidate == null || candidate.isDeleted())
 				toRet.add(new VariableNotExistsError(id, line, column));
-			else if(!candidate.getType().IsRef())
+			else if (!candidate.getType().IsRef())
 				if (candidate.getType().IsParameter())
 					toRet.add(new VariableNotVarError(id, line, column));
 				else
-					// la variabile esiste in un altro scope (non è un param ma non è locale! (passiamo funenv))
+					// la variabile esiste in un altro scope (non è un param ma non è locale!
+					// (passiamo funenv))
 //					toRet.add(new LocalVariableDoesntExistsError(id, line, column));
 					idEntry = e.deleteVariable(id);
 			else
@@ -63,18 +65,18 @@ public class StmtDelete extends Stmt {
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-		
+
 		e.getIDEntry(id).setLocalEffect(BTHelper.seq(e.getIDEntry(id).getLocalEffect(), EEffect.D));
-		
-		if(e.getIDEntry(id).getLocalEffect().equals(EEffect.T))
+
+		if (e.getIDEntry(id).getLocalEffect().equals(EEffect.T))
 			toRet.add(new DeletedVariableError(id, line, column));
-		
+
 		return toRet;
 	}
 
 	@Override
 	public Type inferType() {
-		if(EType.FUNCTION.equalsTo(idEntry.getType()))
+		if (EType.FUNCTION.equalsTo(idEntry.getType()))
 			TypeErrorsStorage.addError(new TypeError("Cannot delete a function", line, column));
 		return null;
 	}

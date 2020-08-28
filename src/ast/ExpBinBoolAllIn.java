@@ -11,30 +11,33 @@ import util_analysis.TypeErrorsStorage;
  * Represents boolean expressions that require all type of input (except VOID)
  */
 public abstract class ExpBinBoolAllIn extends ExpBin {
-	
-	Type leftType;
-	
+
+	private Type leftType;
+
 	protected ExpBinBoolAllIn(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);
 	}
-	
+
 	@Override
 	public final Type inferType() {
 		leftType = this.leftSide.inferType();
 		Type rightSideT = this.rightSide.inferType();
-		
-		if(!leftType.getType().equalsTo(rightSideT))
-			TypeErrorsStorage.addError(new TypeError("In condition \"" + this.getOp() + "\", left expression's type (" + leftType + ") does not equal to the right's type (" + rightSideT + ")", line, column));
 
-		if(EType.VOID.equalsTo(leftType))
-			TypeErrorsStorage.addError(new TypeError("Expressions must not be \"void\" type in operation \"" + this.getOp() + "\"", line, column));
-		
+		if (!leftType.getType().equalsTo(rightSideT))
+			TypeErrorsStorage.addError(new TypeError("In condition \"" + this.getOp() + "\", left expression's type ("
+					+ leftType + ") does not equal to the right's type (" + rightSideT + ")", line, column));
+
+		if (EType.VOID.equalsTo(leftType))
+			TypeErrorsStorage.addError(new TypeError(
+					"Expressions must not be \"void\" type in operation \"" + this.getOp() + "\"", line, column));
+
 		return EType.BOOL.getType();
 	}
 
 	protected abstract String trueReturn();
+
 	protected abstract String falseReturn();
-	
+
 	@Override
 	public final void _codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();

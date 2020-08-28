@@ -15,7 +15,7 @@ import ast.errors.SemanticError;
 import ast.errors.TypeError;
 
 public class StmtBlock extends Stmt {
-	
+
 	private List<Stmt> children;
 
 	public StmtBlock(List<Stmt> children, int line, int column) {
@@ -24,117 +24,95 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * It checks the semantic for every child in order item by item
-	 * It creates a new scope for the elements that will be found inside
-	 * Each element may add new elements to the environment inside the current scope
-	 * After finishing drop the newly created scope
+	 * It checks the semantic for every child in order item by item It creates a new
+	 * scope for the elements that will be found inside Each element may add new
+	 * elements to the environment inside the current scope After finishing drop the
+	 * newly created scope
 	 */
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
-		//initialize result variable
+		// initialize result variable
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		
-		//create scope for inner elements
-		e.openScope(); 
+
+		// create scope for inner elements
+		e.openScope();
 		int oldOffset = e.getOffset();
 		toRet.addAll(checkSemanticsSameScope(e));
-		//close scope for this block
+		// close scope for this block
 		e.closeScope();
 		e.setOffset(oldOffset);
-		
+
 		return toRet;
 	}
-	public List<SemanticError> checkSemanticsSameScope(Environment<STEntry> e){
-		//initialize result variable
+
+	public List<SemanticError> checkSemanticsSameScope(Environment<STEntry> e) {
+		// initialize result variable
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		//check children semantics
-		if(children != null)
-			for(Stmt el : children)
+		// check children semantics
+		if (children != null)
+			for (Stmt el : children)
 				toRet.addAll(el.checkSemantics(e));
 		return toRet;
 	}
+
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
-		//initialize result variable
+		// initialize result variable
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-		
-		//create scope for inner elements
+
+		// create scope for inner elements
 		e.openScope();
-		
+
 		toRet.addAll(inferBehaviourSameScope(e));
-		
-		//close scope for this block
+
+		// close scope for this block
 		e.closeScope();
-		
+
 		return toRet;
 	}
-	
-	public List<BehaviourError> inferBehaviourSameScope(Environment<BTEntry> e){
-		//initialize result variable
+
+	public List<BehaviourError> inferBehaviourSameScope(Environment<BTEntry> e) {
+		// initialize result variable
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-				
-		//check children semantics
-		if(children != null)
-			for(Stmt el : children)
+
+		// check children semantics
+		if (children != null)
+			for (Stmt el : children)
 				toRet.addAll(el.inferBehaviour(e));
-		
+
 		return toRet;
 	}
+
 	@Override
 	public Type inferType() {
 		Type toRet = null;
 		EType lastRetT = null;
-		boolean changed = false,
-				safe = false;
-	
+		boolean changed = false, safe = false;
+
 		for (Stmt c : children) {
 			Type candidate = c.inferType();
-			toRet = candidate != null ? candidate : toRet ;
-			
+			toRet = candidate != null ? candidate : toRet;
+
 			if (toRet != null) {
 				if (lastRetT != null && !lastRetT.equalsTo(toRet))
 					changed = true;
-				else lastRetT = toRet.getType();
+				else
+					lastRetT = toRet.getType();
 				if (c instanceof StmtIte) {
-					if (((StmtIte)c).hasElseStmt()) safe = true;
-				}
-				else safe = true;
+					if (((StmtIte) c).hasElseStmt())
+						safe = true;
+				} else
+					safe = true;
 			}
 		}
 
 		if (changed)
 			TypeErrorsStorage.addError(new TypeError("Inconsistent return types in this block", line, column));
 
-		
 		if (!safe && toRet != null && !EType.VOID.equalsTo(toRet))
-			TypeErrorsStorage.addError(new TypeError("Unsafe return (the function does not always return)", line, column));
-		
+			TypeErrorsStorage
+					.addError(new TypeError("Unsafe return (the function does not always return)", line, column));
+
 		return toRet;
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-//			
-//			
-//			if (!EType.VOID.equalsTo(toRet) && !toRet.getType().equalsTo(newType))
-//				changed = true;
-//			if (c instanceof StmtIte && ((StmtIte)c).hasElseStmt() || c instanceof StmtRet)
-//				safe = true;
-//			
-//			toRet = newType;
-//		}
-		
-		
 	}
 
 	@Override
@@ -142,5 +120,4 @@ public class StmtBlock extends Stmt {
 		for (Stmt c : children)
 			c._codeGen(nl, sb);
 	}
-
 }

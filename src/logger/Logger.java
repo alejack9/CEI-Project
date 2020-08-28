@@ -2,7 +2,6 @@ package logger;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.time.LocalDateTime;
 
 /**
  * Default logger: handles print outputs;
@@ -18,9 +17,9 @@ public abstract class Logger {
 		this.out = out;
 	}
 
-
 	/**
 	 * Writes a new line through the PrintStream
+	 * 
 	 * @param message The message to print
 	 * @throws IOException
 	 */
@@ -30,6 +29,7 @@ public abstract class Logger {
 
 	/**
 	 * Writes a string through the PrintStream
+	 * 
 	 * @param message The message to print
 	 * @throws IOException
 	 */
@@ -39,6 +39,7 @@ public abstract class Logger {
 
 	/**
 	 * Writes a new line through the PrintStream
+	 * 
 	 * @throws IOException
 	 */
 	public void writeLine() throws IOException {

@@ -5,31 +5,40 @@ import ast.types.Type;
 
 public class STEntry extends Entry {
 	private Type type;
-	private int nestingLevel;
-	private int offset;
-	
+
+	public int nestingLevel;
+	public int offset;
 	public String label;
-	
+
 	public STEntry(Type type) {
 		this.type = type;
 	}
-	
+
 	public Type getType() {
 		return type;
 	}
-	public int getNestingLevel() {
-		return nestingLevel;
+
+	@Override
+	public boolean isFunction() {
+		return type.getType().compareTo(EType.FUNCTION) == 0;
 	}
-	public void setNestingLevel(int val) {
-		nestingLevel = val;
+
+	@Override
+	public boolean _equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (this == obj)
+			return true;
+		if (!(obj instanceof STEntry))
+			return false;
+		STEntry casted = (STEntry) obj;
+
+		if (!type.equals(casted.type) || nestingLevel != casted.nestingLevel || offset != casted.offset)
+			return false;
+
+		return true;
 	}
-	public int getOffset() {
-		return offset;
-	}
-	public void setOffset(int val) {
-		offset = val;
-	}
-	
+
 	@Override
 	public Object clone() {
 		STEntry st = new STEntry((Type) type.clone());
@@ -37,24 +46,6 @@ public class STEntry extends Entry {
 		st.offset = offset;
 		st.label = label;
 		return st;
-	}
-
-	@Override
-	public boolean IsFunction() {
-		return type.getType().compareTo(EType.FUNCTION) == 0;
-	}
-
-	@Override
-	public boolean _equals(Object obj) {
-		if(obj == null) return false;
-		if(this == obj) return true;
-		if(!(obj instanceof STEntry)) return false;
-		STEntry casted = (STEntry) obj;
-		
-		if(!type.equals(casted.type)
-				|| nestingLevel != casted.nestingLevel || offset != casted.offset) return false;
-		
-		return true;
 	}
 
 }

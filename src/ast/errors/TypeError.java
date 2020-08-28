@@ -5,7 +5,7 @@ public class TypeError extends Error {
 	private static final long serialVersionUID = 1L;
 	private int line;
 	private int column;
-	
+
 	public TypeError(String message, int line, int column) {
 		super(message);
 		this.line = line;
@@ -14,6 +14,6 @@ public class TypeError extends Error {
 
 	@Override
 	public String toString() {
-		return "[ "+ line + " : " + column +" ] - " + this.getMessage();
+		return "[ " + line + " : " + column + " ] - " + this.getMessage();
 	}
 }

@@ -14,7 +14,7 @@ public class ArrowType extends Type {
 	public List<Type> getParamTypes() {
 		return paramTypes;
 	}
-	
+
 	public Type getReturnType() {
 		return retType;
 	}
@@ -26,7 +26,7 @@ public class ArrowType extends Type {
 	public void setRetType(Type retType) {
 		this.retType = retType;
 	}
-	
+
 	@Override
 	public Object clone() {
 		ArrowType toRet = (ArrowType) EType.FUNCTION.getType(isParameter, isRef);

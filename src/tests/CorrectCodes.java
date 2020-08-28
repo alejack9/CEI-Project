@@ -16,10 +16,9 @@ class CorrectCodes {
 
 	@Test
 	void correctCode1() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
-				, "    int x = 3;"
-				, "    int f(int var a, bool b) {"
+				, "    int x = 3;", "    int f(int var a, bool b) {"
 				, "        if(b == true) {"
 				, "            return a;"
 				, "        }"
@@ -38,12 +37,12 @@ class CorrectCodes {
 				, "    f(x, false);"
 				, "    print x;"
 				, "}")
-		);
+			);
 	}
-	
+
 	@Test
 	void correctCode2() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
 				, "    int x = -1511 + 201;"
 				, "    int fun(int y) {"
@@ -53,24 +52,24 @@ class CorrectCodes {
 				, "    x = fun(4);"
 				, "    print x;"
 				, "}")
-		);
+			);
 	}
 
 	@Test
 	void correctCode3() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
 				, "    int x;"
 				, "    if(x == 3) {"
 				, "        delete x;"
 				, "    } else int x;"
 				, "}")
-		);
+			);
 	}
 
 	@Test
 	void correctCode4() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
 				, "    int x;"
 				, "    if(x == 3) {"
@@ -79,12 +78,12 @@ class CorrectCodes {
 				, ""
 				, "    int x = 3;"
 				, "}")
-		);
+			);
 	}
 
 	@Test
 	void correctCode5() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
 				, "    int x;"
 				, "    if(x == 3) {"
@@ -94,12 +93,12 @@ class CorrectCodes {
 				, ""
 				, "    int x = 3;"
 				, "}")
-		);
+			);
 	}
 
 	@Test
 	void correctCode6() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
 				, "    int x;"
 				, "    "
@@ -117,14 +116,13 @@ class CorrectCodes {
 				, "        int y;"
 				, "        g(y);"
 				, "    }"
-				, "    f(x);"
-				, "}")
-		);
+				, "    f(x);", "}")
+			);
 	}
 
 	@Test
 	void correctCode7() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
 				, "    int a = 4;"
 				, "    int b;"
@@ -139,12 +137,12 @@ class CorrectCodes {
 				, "    g(a,b);"
 				, "    print a;"
 				, "}")
-		);
+			);
 	}
-	
+
 	@Test
 	void correctCode8() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
 				, "    int fun() {"
 				, "        int x = 7;"
@@ -158,14 +156,13 @@ class CorrectCodes {
 				, "            return false;"
 				, "        }"
 				, "    }"
-				, "    print fun1(1);"
-				, "}")
-		);
+				, "    print fun1(1);", "}")
+			);
 	}
-	
+
 	@Test
 	void correctCode9() throws IOException {
-		Utils.correctCode(String.join("\r\n" 
+		Utils.correctCode(String.join("\r\n"
 				, "{"
 				, "    int a = 4;"
 				, "    int g(int var y) {"
@@ -174,6 +171,6 @@ class CorrectCodes {
 				, "    }"
 				, "    return g(a);"
 				, "}")
-		);
+			);
 	}
 }

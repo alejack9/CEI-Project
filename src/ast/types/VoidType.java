@@ -5,7 +5,7 @@ public class VoidType extends Type {
 	public VoidType(boolean isParameter, boolean isRef) {
 		super(isParameter, isRef);
 	}
-	
+
 	public VoidType() {
 		super(false, false);
 	}
@@ -14,7 +14,7 @@ public class VoidType extends Type {
 	public EType getType() {
 		return EType.VOID;
 	}
-	
+
 	@Override
 	public int _getDimension() {
 		return 0;

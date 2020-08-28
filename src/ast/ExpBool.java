@@ -16,7 +16,7 @@ import ast.errors.SemanticError;
 public class ExpBool extends Exp {
 
 	private boolean value;
-	
+
 	public ExpBool(boolean value, int line, int column) {
 		super(line, column);
 		this.value = value;

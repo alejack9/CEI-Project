@@ -15,29 +15,30 @@ import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 
 public class ExpNeg extends Exp {
-	
+
 	private Exp exp;
 
 	public ExpNeg(Exp exp, int line, int column) {
 		super(line, column);
-		this.exp = exp;		
+		this.exp = exp;
 	}
 
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		
+
 		toRet.addAll(exp.checkSemantics(e));
-			
+
 		return toRet;
 	}
 
 	@Override
 	public Type inferType() {
 		Type expT = this.exp.inferType();
-		if(!EType.INT.equalsTo(expT))
-			TypeErrorsStorage.addError(new TypeError("Expression type is \"" + expT + "\" but it must be int.", exp.line, exp.column));
-		
+		if (!EType.INT.equalsTo(expT))
+			TypeErrorsStorage.addError(
+					new TypeError("Expression type is \"" + expT + "\" but it must be int.", exp.line, exp.column));
+
 		return EType.INT.getType();
 	}
 

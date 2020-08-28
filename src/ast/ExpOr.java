@@ -8,20 +8,20 @@ public class ExpOr extends ExpBinBoolBoolIn {
 	public ExpOr(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);
 	}
-	
+
 	@Override
 	protected String getOp() {
 		return "||";
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) { 
+	public void _codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
-		
+
 		valutate(leftSide, nl, T, sb);
 		valutate(rightSide, nl, T, sb);
-		
+
 		sb.newLine("li $a0 0");
 		sb.newLine("b ", end);
 		sb.newLine(T, ":");

@@ -13,7 +13,7 @@ import ast.errors.SemanticError;
 public class ExpCall extends Exp {
 
 	private StmtCall call;
-	
+
 	public ExpCall(StmtCall call, int line, int column) {
 		super(line, column);
 		this.call = call;
@@ -38,5 +38,4 @@ public class ExpCall extends Exp {
 	public void _codeGen(int nl, CustomStringBuilder sb) {
 		call._codeGen(nl, sb);
 	}
-	
 }

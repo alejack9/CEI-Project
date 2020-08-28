@@ -12,12 +12,12 @@ public class LexicalError extends Error {
 		this.errorLine = errorLine;
 		this.errorColumn = errorColumn;
 	}
-	
+
 	protected String getPosition() {
 		// asserting that, if "errorLine" is set, then "errorColumn" is set
-		return "[ "+ errorLine + " : " + errorColumn +" ]";
+		return "[ " + errorLine + " : " + errorColumn + " ]";
 	}
-	
+
 	@Override
 	public String getMessage() {
 		return toString();

@@ -1,4 +1,4 @@
-package main;
+package listeners;
 
 import java.io.IOException;
 
@@ -23,10 +23,9 @@ public class SimpleSintaxErrorListener extends SimpleErrorListener {
 	public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
 			String msg, RecognitionException e) {
 		try {
-			// specify that it is a syntax error
 			logger.write("SYNTAX ERROR: ");
 		} catch (IOException e1) {
-			
+
 			e1.printStackTrace();
 		}
 		super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);

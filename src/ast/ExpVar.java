@@ -20,13 +20,12 @@ public class ExpVar extends Exp {
 
 	private String id;
 	private STEntry idEntry;
-	
 
 	public ExpVar(String id, int line, int column) {
 		super(line, column);
 		this.id = id;
 	}
-	
+
 	/**
 	 * Checks if the variable in use exists. if it doesn't then add an error.
 	 */
@@ -35,40 +34,36 @@ public class ExpVar extends Exp {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		idEntry = e.getIDEntry(id);
-		
-		if(idEntry == null)
+
+		if (idEntry == null)
 			toRet.add(new VariableNotExistsError(id, line, column));
-		
+
 		return toRet;
 	}
 
 	@Override
-	public Type inferType() {		
+	public Type inferType() {
 		return this.idEntry.getType();
 	}
 
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-		
+
 		BTEntry current = e.getIDEntry(id);
-		
-		current.setLocalEffect(BTHelper.seq(
-				current.getLocalEffect(),
-				EEffect.RW));
-		
-		if(e.getIDEntry(id)
-				.getLocalEffect()
-				.compareTo(EEffect.T) == 0)
+
+		current.setLocalEffect(BTHelper.seq(current.getLocalEffect(), EEffect.RW));
+
+		if (e.getIDEntry(id).getLocalEffect().compareTo(EEffect.T) == 0)
 			toRet.add(new DeletedVariableError(id, line, column));
-		
+
 		return toRet;
 	}
 
 	public String getId() {
 		return id;
 	}
-	
+
 	public STEntry getIdEntry() {
 		return idEntry;
 	}
@@ -76,16 +71,16 @@ public class ExpVar extends Exp {
 	// scrive sempre il valore in $a0
 	@Override
 	public void _codeGen(int nl, CustomStringBuilder sb) {
-		if(idEntry.getType().IsParameter()) {
+		if (idEntry.getType().IsParameter()) {
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
-			
-			if(idEntry.getType().IsRef()) {
+
+			if (idEntry.getType().IsRef()) {
 				sb.newLine("lw $a0 0($a0) 4");
 			}
-		}
-		else {
+		} else {
 			sb.newLine("li $t1 0");
-			sb.newLine("lw $a0 ", Integer.toString(idEntry.getOffset()), "($t1) ", Integer.toString(idEntry.getType().getDimension()));
+			sb.newLine("lw $a0 ", Integer.toString(idEntry.offset), "($t1) ",
+					Integer.toString(idEntry.getType().getDimension()));
 		}
 	}
 }

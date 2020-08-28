@@ -26,7 +26,7 @@ public class ExpAnd extends ExpBinBoolBoolIn {
 		sb.newLine("li $a0 0");
 		sb.newLine(end, ":");
 	}
-	
+
 	private void valutate(Exp side, int nl, String label, CustomStringBuilder sb) {
 		side._codeGen(nl, sb);
 		sb.newLine("li $t1 0");

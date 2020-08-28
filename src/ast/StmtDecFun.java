@@ -25,7 +25,7 @@ public class StmtDecFun extends StmtDec {
 	private List<Arg> args;
 	private StmtBlock block;
 	private STEntry idEntry;
-	
+
 	public StmtDecFun(Type type, String ID, List<Arg> args, StmtBlock block, int line, int column) {
 		super(line, column);
 		this.type = type;
@@ -33,41 +33,42 @@ public class StmtDecFun extends StmtDec {
 		this.args = args;
 		this.block = block;
 	}
-	
+
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		ArrowType t = (ArrowType) EType.FUNCTION.getType();
-		
+
 		idEntry = new STEntry(t);
 		idEntry.label = CodeGenUtils.freshLabel();
 
 		if (!e.add(ID, idEntry))
 			toRet.add(new IdAlreadytExistsError(ID, line, column));
-		
-		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions(), e.getOffset(), e.getNestingLevel());
+
+		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions(), e.getOffset(),
+				e.getNestingLevel());
 		funEnv.setOffset(e.getOffset());
-		
+
 		funEnv.openScope();
 		funEnv.increaseNestingLevel();
 		List<Type> argsT = new LinkedList<Type>();
 		int paroffset = 4; // access link dimension
 		int oldEnvOffset = funEnv.getOffset();
-		for(int i = 0; i < args.size(); i++) {
+		for (int i = 0; i < args.size(); i++) {
 			STEntry toAdd = new STEntry(args.get(i).getType());
-	    	  argsT.add(toAdd.getType());
-	    	  if(!funEnv.add(args.get(i).getId(), toAdd))
-	    		  toRet.add(new IdAlreadytExistsError(args.get(i).getId(), args.get(i).line, args.get(i).column));
-	    	  else
-	    		  toAdd.setOffset(paroffset);
-	    	  paroffset += args.get(i).getType().getDimension();
+			argsT.add(toAdd.getType());
+			if (!funEnv.add(args.get(i).getId(), toAdd))
+				toRet.add(new IdAlreadytExistsError(args.get(i).getId(), args.get(i).line, args.get(i).column));
+			else
+				toAdd.offset = paroffset;
+			paroffset += args.get(i).getType().getDimension();
 		}
-		
+
 		t.setParamTypes(argsT);
 		t.setRetType(type);
 		funEnv.setOffset(oldEnvOffset);
-		
+
 		toRet.addAll(block.checkSemanticsSameScope(funEnv));
 
 		funEnv.closeScope();
@@ -79,43 +80,46 @@ public class StmtDecFun extends StmtDec {
 	@Override
 	public Type inferType() {
 		this.args.forEach(Arg::inferType);
-		
+
 		Type blockT = this.block.inferType();
-		blockT = blockT == null? EType.VOID.getType() : blockT;
-		if(!blockT.getType().equalsTo(type))
-			TypeErrorsStorage.addError(new TypeError("Block return type (" + blockT + ") not equals to function return type (" + type + ")", this.block.line, this.block.column)); 
+		blockT = blockT == null ? EType.VOID.getType() : blockT;
+		if (!blockT.getType().equalsTo(type))
+			TypeErrorsStorage.addError(new TypeError(
+					"Block return type (" + blockT + ") not equals to function return type (" + type + ")",
+					this.block.line, this.block.column));
 		return null;
 	}
-	
+
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-		
-		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions(), e.getOffset(), e.getNestingLevel());
-		
+
+		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions(), e.getOffset(),
+				e.getNestingLevel());
+
 		List<BTEntry> e0 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e0.add(new BTEntry()));
 		List<BTEntry> e1 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e1.add(new BTEntry()));
 		List<BTEntry> e1_1 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e1_1.add(new BTEntry()));
-		
+
 		funEnv.add(ID, new BTEntry(e0));
 		do {
 			funEnv.openScope();
 			toRet = new LinkedList<BehaviourError>(); // stampa più volte lo stesso messaggio d'errore
-			for(int i = 0; i < e0.size(); i++)
+			for (int i = 0; i < e0.size(); i++)
 				funEnv.add(args.get(i).getId(), (BTEntry) e0.get(i).clone());
 			toRet.addAll(block.inferBehaviourSameScope(funEnv));
-			for(int i = 0; i < e0.size(); i++) {
-				e1.set(i, (BTEntry)e1_1.get(i).clone());
+			for (int i = 0; i < e0.size(); i++) {
+				e1.set(i, (BTEntry) e1_1.get(i).clone());
 				e1_1.set(i, funEnv.getIDEntry(args.get(i).getId()));
 			}
 			funEnv.closeScope();
 			funEnv.update(ID, new BTEntry(e1_1));
-		} while(!BTEntry.areEqual(e1, e1_1));
+		} while (!BTEntry.areEqual(e1, e1_1));
 		e.add(ID, funEnv.getIDEntry(ID));
-		
+
 		return toRet;
 	}
 
@@ -126,9 +130,10 @@ public class StmtDecFun extends StmtDec {
 		sb.newLine(idEntry.label, ":");
 		sb.newLine("move $fp $sp");
 		sb.newLine("push $ra 4");
-		block._codeGen(nl+1, sb);
+		block._codeGen(nl + 1, sb);
 		sb.newLine("lw $ra 0($sp) 4");
-		sb.newLine("addi $sp $sp ", Integer.toString(args.stream().map(Arg::getType).map(Type::getDimension).reduce((a,b) -> a + b).orElse(0) + 8));
+		sb.newLine("addi $sp $sp ", Integer.toString(
+				args.stream().map(Arg::getType).map(Type::getDimension).reduce((a, b) -> a + b).orElse(0) + 8));
 		sb.newLine("lw $fp 0($sp) 4");
 		sb.newLine("pop 4");
 		sb.newLine("jr");

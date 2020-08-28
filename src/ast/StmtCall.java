@@ -38,115 +38,114 @@ public class StmtCall extends Stmt {
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		
+
 		idEntry = e.getIDEntry(ID);
-		
-		if(idEntry == null) {
+
+		if (idEntry == null)
 			toRet.add(new FunctionNotExistsError(ID, line, column));
-		}
 		else {
 			Type funT = idEntry.getType();
 			if (!EType.FUNCTION.equalsTo(funT))
 				toRet.add(new FunctionNotExistsError(ID, line, column));
 			else {
 				List<Type> params = ((ArrowType) funT).getParamTypes();
-				if(exps.size() != params.size())
+				if (exps.size() != params.size())
 					toRet.add(new ParametersMismatchError(params.size(), exps.size(), line, column));
-				for(int i = 0; i < Math.min(exps.size(), params.size()); i++) {
-					if(params.get(i).IsRef() && !(exps.get(i) instanceof ExpVar)) {
-						toRet.add(new PassedReferenceNotVarError(i+1, ID, exps.get(i).line, exps.get(i).column));
-					}
-				}
+				for (int i = 0; i < Math.min(exps.size(), params.size()); i++)
+					if (params.get(i).IsRef() && !(exps.get(i) instanceof ExpVar))
+						toRet.add(new PassedReferenceNotVarError(i + 1, ID, exps.get(i).line, exps.get(i).column));
 			}
 		}
-		
+
 		for (Exp exp : exps)
 			toRet.addAll(exp.checkSemantics(e));
-		
+
 		return toRet;
 	}
 
-	
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
-		
+
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-		
+
 		List<Type> types = ((ArrowType) idEntry.getType()).getParamTypes();
-		
+
 		List<BTEntry> e1 = e.getIDEntry(ID).getE1();
-		
+
 		HashMap<String, List<EEffect>> ePrimo = new HashMap<>();
-		
-		for(int i = 0; i < types.size(); i++) {
-			if(types.get(i).IsRef()) {
+
+		for (int i = 0; i < types.size(); i++) {
+			if (types.get(i).IsRef()) {
 				BTEntry prev = e.getIDEntry(((ExpVar) exps.get(i)).getId());
 				BTEntry next = e1.get(i);
 
 				List<EEffect> btList = ePrimo.getOrDefault(((ExpVar) exps.get(i)).getId(), new LinkedList<>());
-				
+
 				btList.add(BTHelper.invocationSeq(prev, next));
 				ePrimo.put(((ExpVar) exps.get(i)).getId(), btList);
 			}
 		}
-				
+
 		ePrimo.entrySet().forEach(entry -> {
-			e.getIDEntry(entry.getKey()).setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
-			
-			if(e.getIDEntry(entry.getKey()).getRefEffect().compareTo(EEffect.T) == 0)
+			e.getIDEntry(entry.getKey())
+					.setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
+
+			if (e.getIDEntry(entry.getKey()).getRefEffect().compareTo(EEffect.T) == 0)
 				toRet.add(new AliasingError(entry.getKey(), ID, line, column));
 		});
-		
+
 		return toRet;
 	}
 
 	@Override
 	public Type inferType() {
-		if(!EType.FUNCTION.equalsTo(idEntry.getType()))
-			TypeErrorsStorage.addError(new TypeError("Called ID must be a function (actual type: " + idEntry.getType() + ")", line, column));
-		
+		if (!EType.FUNCTION.equalsTo(idEntry.getType()))
+			TypeErrorsStorage.addError(new TypeError(
+					"Called ID must be a function (actual type: " + idEntry.getType() + ")", line, column));
+
 		ArrowType funT = (ArrowType) idEntry.getType();
-		
+
 		List<Type> parTs = funT.getParamTypes();
-		
-		for(int i = 0; i < parTs.size(); i++) {
+
+		for (int i = 0; i < parTs.size(); i++) {
 			Type parT = parTs.get(i);
-			Type expT = exps.get(i).inferType(); 
-			if(!parT.getType().equalsTo(expT))
-				TypeErrorsStorage.addError(new TypeError("#" + (i + 1) + " parameter type (" + parT + ") is not equal to expression type (" + expT + ")", line, column));
+			Type expT = exps.get(i).inferType();
+			if (!parT.getType().equalsTo(expT))
+				TypeErrorsStorage.addError(new TypeError(
+						"#" + (i + 1) + " parameter type (" + parT + ") is not equal to expression type (" + expT + ")",
+						line, column));
 		}
-		
+
 		return funT.getReturnType();
 	}
 
 	@Override
 	public void _codeGen(int nl, CustomStringBuilder sb) {
 		sb.newLine("push $fp 4");
-		List<Type> paramsType = ((ArrowType) idEntry.getType()).getParamTypes(); 
-		for(int i = exps.size() - 1; i >= 0; i--) {
-			if(!paramsType.get(i).IsRef())
+		List<Type> paramsType = ((ArrowType) idEntry.getType()).getParamTypes();
+		for (int i = exps.size() - 1; i >= 0; i--) {
+			if (!paramsType.get(i).IsRef())
 				exps.get(i)._codeGen(nl, sb);
 			else {
-				STEntry var = ((ExpVar)exps.get(i)).getIdEntry();
-				if(!var.getType().IsParameter()) {
+				STEntry var = ((ExpVar) exps.get(i)).getIdEntry();
+				if (!var.getType().IsParameter()) {
 					sb.newLine("li $a0 0");
-					sb.newLine("addi $a0 $a0 ", Integer.toString(var.getOffset()));
-				}
-				else {
-					if(var.getType().IsRef())
+					sb.newLine("addi $a0 $a0 ", Integer.toString(var.offset));
+				} else {
+					if (var.getType().IsRef())
 						CodeGenUtils.getVariableCodeGen(var, nl, sb);
 					else {
 						sb.newLine("move $al $fp");
-						for(int j = 0; j < nl - var.getNestingLevel(); j++)
+						for (int j = 0; j < nl - var.nestingLevel; j++)
 							sb.newLine("lw $al 0($al) 4");
-						sb.newLine("addi $a0 $al ", Integer.toString(var.getOffset()));
+						sb.newLine("addi $a0 $al ", Integer.toString(var.offset));
 					}
 				}
 			}
 			sb.newLine("push $a0 ", Integer.toString(paramsType.get(i).getDimension()));
 		}
 		sb.newLine("move $al $fp");
-		for(int i = 0; i < nl - idEntry.getNestingLevel(); i++)
+		for (int i = 0; i < nl - idEntry.nestingLevel; i++)
 			sb.newLine("lw $al 0($al) 4");
 		sb.newLine("push $al 4");
 		sb.newLine("jal ", idEntry.label);

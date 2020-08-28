@@ -13,7 +13,6 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
-
 public class ExpVal extends Exp {
 
 	private int value;
