@@ -87,68 +87,68 @@ public class Main {
 		// visit the root, this will recursively visit the whole tree
 		StmtBlock mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
 
-		logger.writeLine("Checking Lexical...");
+		logger.write("Checking Lexical ... ");
 
 		if (lexer.errors.size() > 0) {
+			logger.writeLine("failed", true);
 			for (LexicalError error : lexer.errors)
 				logger.writeLine("Lexical Error: " + error.toString());
 			quit(logger);
 		}
 
-		logger.writeLine("... Lexical Check succeeded");
+		logger.writeLine("succeeded", true);
 
 		if (sl != null && sl.errorsDetected())
 			quit(logger);
 
-		logger.writeLine("Checking Semantic...");
+		logger.write("Checking Semantic ... ");
 
 		List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
 
 		if (errors.size() > 0) {
+			logger.writeLine("failed", true);
 			for (SemanticError err : errors)
 				logger.writeLine(err.toString());
 			quit(logger);
 		}
 
-		logger.writeLine("... Semantic Check succeeded");
+		logger.writeLine("succeeded", true);
 
-		logger.writeLine();
-
-		logger.writeLine("Checking Types...");
+		logger.write("Checking Types ... ");
 
 		mainBlock.inferType();
 
 		if (TypeErrorsStorage.getTypeErrors().size() > 0) {
+			logger.writeLine("failed", true);
 			for (TypeError err : TypeErrorsStorage.getTypeErrors())
 				logger.writeLine(err.toString());
 			quit(logger);
 		}
 
-		logger.writeLine("... Type check succeeded");
-
-		logger.writeLine();
+		logger.writeLine("succeeded", true);
 
 		List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
 
-		logger.writeLine("Analysing Behaviour...");
+		logger.write("Analysing Behaviour ... ");
 
 		if (bErrors.size() > 0) {
+			logger.writeLine("failed", true);
 			for (SemanticError bErr : bErrors)
 				logger.writeLine(bErr.toString());
 			quit(logger);
 		}
 
-		logger.writeLine("... Behavioural analysis succeeded");
-		logger.writeLine();
+		logger.writeLine("succeeded", true);
 
-		logger.writeLine("Generating Code...");
+		logger.write("Generating Code ... ");
 
 		generateOutCode(mainBlock.codeGen());
 
-		logger.writeLine("... Code generated");
+		logger.writeLine("done", true);
 
+		logger.writeLine("Launching program (Following output)");
+		
 		logger.writeLine();
-		logger.writeLine("Launching program");
 
 		runCode();
 	}

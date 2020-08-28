@@ -24,13 +24,25 @@ public abstract class Logger {
 	 * @throws IOException
 	 */
 	public void writeLine(String message) throws IOException {
-		this.out.println(message);
+		this.writeLine(message, false);
 	};
 
 	/**
 	 * Writes a string through the PrintStream
 	 * 
 	 * @param message The message to print
+	 * @param hideDateTime
+	 * @throws IOException
+	 */
+	public void writeLine(String message, boolean hideDateTime) throws IOException {
+		this.out.println(message);
+	}
+	
+	/**
+	 * Writes a string through the PrintStream
+	 * 
+	 * @param message The message to print
+	 * @param hideDateTime
 	 * @throws IOException
 	 */
 	public void write(String message) throws IOException {

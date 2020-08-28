@@ -13,6 +13,7 @@ class ConsoleOutputLogger extends Logger {
 		super(System.out);
 	}
 
+	@Override
 	/**
 	 * Writes a new line through the PrintStream
 	 * 
@@ -23,6 +24,18 @@ class ConsoleOutputLogger extends Logger {
 		this.out.println(LocalDateTime.now().toString() + " - " + message);
 	};
 
+	@Override
+	/**
+	 * Writes a new line through the PrintStream
+	 * 
+	 * @param message The message to print
+	 * @throws IOException
+	 */
+	public void writeLine(String message, boolean hideDateTime) throws IOException {
+		this.out.println((hideDateTime ? "" : (LocalDateTime.now().toString() + " - ")) + message);
+	};
+
+	@Override
 	/**
 	 * Writes a string through the PrintStream
 	 * 
