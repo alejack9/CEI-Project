@@ -22,11 +22,11 @@ public abstract class Type implements Cloneable {
 		return isRef ? 4 : _getDimension();
 	}
 
-	public boolean IsParameter() {
+	public boolean isParameter() {
 		return this.isParameter;
 	}
 
-	public boolean IsRef() {
+	public boolean isRef() {
 		return this.isRef;
 	}
 

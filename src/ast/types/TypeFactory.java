@@ -19,8 +19,4 @@ class TypeFactory {
 			return null;
 		}
 	}
-
-	public static Type getType(EType type) {
-		return getType(type);
-	}
 }

@@ -3,47 +3,33 @@ MAIN:
 move $fp $sp
 push $ra 4
 
-li $t1 0
-sw $a0 0($t1) 4
-addi $hp $hp 4
-li $a0 4
-move $t1 $a0
-li $t1 0
-sw $a0 0($t1) 4
 b label1
 label0:
 move $fp $sp
 push $ra 4
+li $a0 4
+move $t1 $a0
 move $al $fp
 lw $a0 4($al) 4
-lw $a0 0($a0) 4
-print
-move $al $fp
-lw $a0 4($al) 4
-lw $a0 0($a0) 4
-lw $ra -4($fp) 4
-addi $sp $sp 12
-lw $fp 0($sp) 4
-pop 4
-jr
+sw $t1 0($a0) 4
 lw $ra 0($sp) 4
 addi $sp $sp 12
 lw $fp 0($sp) 4
 pop 4
 jr
 label1:
+li $t1 0
+sw $a0 0($t1) 4
+addi $hp $hp 4
 push $fp 4
 li $a0 0
-addi $a0 $a0 0
 push $a0 4
 move $al $fp
 push $al 4
 jal label0
-lw $ra -4($fp) 4
-addi $sp $sp 8
-lw $fp 0($sp) 4
-pop 4
-jr
+li $t1 0
+lw $a0 0($t1) 4
+print
 
 lw $ra 0($sp) 4
 addi $sp $sp 8

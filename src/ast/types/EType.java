@@ -23,12 +23,8 @@ public enum EType {
 		return TypeFactory.getType(this, isParameter, isRef);
 	}
 
-	public Type getType(boolean isParameter) {
-		return this.getType(isParameter, false);
-	}
-
 	public Type getType() {
-		return this.getType(false);
+		return this.getType(false, false);
 	}
 
 	public static EType getEnum(String value) {

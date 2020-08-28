@@ -42,23 +42,26 @@ public class StmtDelete extends Stmt {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
 		STEntry candidate = e.getLocalIDEntry(id);
-		if (candidate != null && !candidate.isDeleted() && !candidate.getType().IsParameter())
+
+		if (candidate != null && !candidate.isDeleted() && !candidate.getType().isParameter()) {
 			idEntry = e.deleteVariable(id);
-		else {
-			candidate = e.getIDEntry(id);
-			if (candidate == null || candidate.isDeleted())
-				toRet.add(new VariableNotExistsError(id, line, column));
-			else if (!candidate.getType().IsRef())
-				if (candidate.getType().IsParameter())
-					toRet.add(new VariableNotVarError(id, line, column));
-				else
-					// la variabile esiste in un altro scope (non è un param ma non è locale!
-					// (passiamo funenv))
-//					toRet.add(new LocalVariableDoesntExistsError(id, line, column));
-					idEntry = e.deleteVariable(id);
-			else
-				idEntry = e.deleteVariable(id);
+			return toRet;
 		}
+		
+		// candidate is not local
+		candidate = e.getIDEntry(id);
+		if (candidate == null || candidate.isDeleted()) {
+			toRet.add(new VariableNotExistsError(id, line, column));
+			return toRet;
+		}
+		
+		if(candidate.getType().isRef() || !candidate.getType().isParameter()) {
+			idEntry = e.deleteVariable(id);
+			return toRet;
+		}
+		
+		toRet.add(new VariableNotVarError(id, line, column));
+		
 		return toRet;
 	}
 

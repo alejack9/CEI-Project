@@ -6,10 +6,6 @@ public class BoolType extends Type {
 		super(isParameter, isRef);
 	}
 
-	public BoolType() {
-		this(false, false);
-	}
-
 	@Override
 	public EType getType() {
 		return EType.BOOL;

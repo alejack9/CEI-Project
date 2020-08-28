@@ -6,10 +6,6 @@ public class VoidType extends Type {
 		super(isParameter, isRef);
 	}
 
-	public VoidType() {
-		super(false, false);
-	}
-
 	@Override
 	public EType getType() {
 		return EType.VOID;

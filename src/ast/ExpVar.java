@@ -51,6 +51,9 @@ public class ExpVar extends Exp {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 
 		BTEntry current = e.getIDEntry(id);
+		
+		if(EEffect.T.compareTo(current.getLocalEffect()) == 0)
+			return toRet;
 
 		current.setLocalEffect(BTHelper.seq(current.getLocalEffect(), EEffect.RW));
 
@@ -71,10 +74,10 @@ public class ExpVar extends Exp {
 	// scrive sempre il valore in $a0
 	@Override
 	public void _codeGen(int nl, CustomStringBuilder sb) {
-		if (idEntry.getType().IsParameter()) {
+		if (idEntry.getType().isParameter()) {
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
 
-			if (idEntry.getType().IsRef()) {
+			if (idEntry.getType().isRef()) {
 				sb.newLine("lw $a0 0($a0) 4");
 			}
 		} else {

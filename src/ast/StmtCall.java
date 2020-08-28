@@ -52,7 +52,7 @@ public class StmtCall extends Stmt {
 				if (exps.size() != params.size())
 					toRet.add(new ParametersMismatchError(params.size(), exps.size(), line, column));
 				for (int i = 0; i < Math.min(exps.size(), params.size()); i++)
-					if (params.get(i).IsRef() && !(exps.get(i) instanceof ExpVar))
+					if (params.get(i).isRef() && !(exps.get(i) instanceof ExpVar))
 						toRet.add(new PassedReferenceNotVarError(i + 1, ID, exps.get(i).line, exps.get(i).column));
 			}
 		}
@@ -75,7 +75,7 @@ public class StmtCall extends Stmt {
 		HashMap<String, List<EEffect>> ePrimo = new HashMap<>();
 
 		for (int i = 0; i < types.size(); i++) {
-			if (types.get(i).IsRef()) {
+			if (types.get(i).isRef()) {
 				BTEntry prev = e.getIDEntry(((ExpVar) exps.get(i)).getId());
 				BTEntry next = e1.get(i);
 
@@ -124,15 +124,14 @@ public class StmtCall extends Stmt {
 		sb.newLine("push $fp 4");
 		List<Type> paramsType = ((ArrowType) idEntry.getType()).getParamTypes();
 		for (int i = exps.size() - 1; i >= 0; i--) {
-			if (!paramsType.get(i).IsRef())
+			if (!paramsType.get(i).isRef())
 				exps.get(i)._codeGen(nl, sb);
 			else {
 				STEntry var = ((ExpVar) exps.get(i)).getIdEntry();
-				if (!var.getType().IsParameter()) {
-					sb.newLine("li $a0 0");
-					sb.newLine("addi $a0 $a0 ", Integer.toString(var.offset));
-				} else {
-					if (var.getType().IsRef())
+				if (!var.getType().isParameter())
+					sb.newLine("li $a0 ", Integer.toString(var.offset));
+				else {
+					if (var.getType().isRef())
 						CodeGenUtils.getVariableCodeGen(var, nl, sb);
 					else {
 						sb.newLine("move $al $fp");

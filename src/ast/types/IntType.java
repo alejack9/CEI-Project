@@ -6,10 +6,6 @@ public class IntType extends Type {
 		super(isParameter, isRef);
 	}
 
-	public IntType() {
-		this(false, false);
-	}
-
 	@Override
 	public EType getType() {
 		return EType.INT;
