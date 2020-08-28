@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.LinkedList;
@@ -14,15 +17,33 @@ import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ExpNeg.
+ */
 public class ExpNeg extends Exp {
 
+	/** The exp. */
 	private Exp exp;
 
+	/**
+	 * Instantiates a new exp neg.
+	 *
+	 * @param exp the exp
+	 * @param line the line
+	 * @param column the column
+	 */
 	public ExpNeg(Exp exp, int line, int column) {
 		super(line, column);
 		this.exp = exp;
 	}
 
+	/**
+	 * Check semantics.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -32,6 +53,11 @@ public class ExpNeg extends Exp {
 		return toRet;
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		Type expT = this.exp.inferType();
@@ -42,14 +68,26 @@ public class ExpNeg extends Exp {
 		return EType.INT.getType();
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return exp.inferBehaviour(e);
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
-		exp._codeGen(nl, sb);
+	protected void codeGen(int nl, CustomStringBuilder sb) {
+		exp.codeGen(nl, sb);
 		sb.newLine("neg $a0");
 	}
 }

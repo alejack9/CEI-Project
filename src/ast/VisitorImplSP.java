@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.Collections;
@@ -28,43 +31,90 @@ import parser.SimplePlusParser.StatementContext;
 import parser.SimplePlusParser.ValExpContext;
 import parser.SimplePlusParser.VarExpContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VisitorImplSP.
+ */
 public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 
+	/** The last args dimension. */
 	private List<Integer> lastArgsDimension = new LinkedList<Integer>();
 
+	/**
+	 * Visit statement.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt
+	 */
 	@Override
 	public Stmt visitStatement(StatementContext ctx) {
 		return (Stmt) visit(ctx.getChild(0));
 	}
 
+	/**
+	 * Visit declaration.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt dec
+	 */
 	@Override
 	public StmtDec visitDeclaration(DeclarationContext ctx) {
 		return (StmtDec) visit(ctx.getChild(0));
 	}
 
+	/**
+	 * Visit assignment.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt assignment
+	 */
 	@Override
 	public StmtAssignment visitAssignment(AssignmentContext ctx) {
 		return new StmtAssignment(ctx.ID().getText(), (Exp) visit(ctx.exp()), ctx.start.getLine(),
 				ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit deletion.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt delete
+	 */
 	@Override
 	public StmtDelete visitDeletion(DeletionContext ctx) {
 		return new StmtDelete(ctx.ID().getText(), ctx.ID().getSymbol().getLine(),
 				ctx.ID().getSymbol().getCharPositionInLine());
 	}
 
+	/**
+	 * Visit print.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt print
+	 */
 	@Override
 	public StmtPrint visitPrint(PrintContext ctx) {
 		return new StmtPrint((Exp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit ret.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt ret
+	 */
 	@Override
 	public StmtRet visitRet(RetContext ctx) {
 		return new StmtRet(ctx.exp() == null ? null : (Exp) visit(ctx.exp()), lastArgsDimension, ctx.start.getLine(),
 				ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit ite.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt ite
+	 */
 	@Override
 	public StmtIte visitIte(IteContext ctx) {
 		return new StmtIte((Exp) visit(ctx.exp()), visitStatement(ctx.statement(0)),
@@ -72,6 +122,12 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 				ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit call.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt call
+	 */
 	@Override
 	public StmtCall visitCall(CallContext ctx) {
 		List<Exp> exps = ctx.exp() == null ? Collections.emptyList()
@@ -79,27 +135,57 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 		return new StmtCall(ctx.ID().getText(), exps, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit block.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt block
+	 */
 	@Override
 	public StmtBlock visitBlock(BlockContext ctx) {
 		List<Stmt> children = ctx.statement().stream().map(this::visitStatement).collect(Collectors.toList());
 		return new StmtBlock(children, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit base exp.
+	 *
+	 * @param ctx the ctx
+	 * @return the exp
+	 */
 	@Override
 	public Exp visitBaseExp(BaseExpContext ctx) {
 		return (Exp) visit(ctx.exp());
 	}
 
+	/**
+	 * Visit neg exp.
+	 *
+	 * @param ctx the ctx
+	 * @return the exp neg
+	 */
 	@Override
 	public ExpNeg visitNegExp(NegExpContext ctx) {
 		return new ExpNeg((Exp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit not exp.
+	 *
+	 * @param ctx the ctx
+	 * @return the exp not
+	 */
 	@Override
 	public ExpNot visitNotExp(NotExpContext ctx) {
 		return new ExpNot((Exp) visit(ctx.exp()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit bin exp.
+	 *
+	 * @param ctx the ctx
+	 * @return the exp
+	 */
 	@Override
 	public Exp visitBinExp(BinExpContext ctx) {
 		Exp left = (Exp) visit(ctx.left);
@@ -134,27 +220,57 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 		}
 	}
 
+	/**
+	 * Visit call exp.
+	 *
+	 * @param ctx the ctx
+	 * @return the exp call
+	 */
 	@Override
 	public ExpCall visitCallExp(CallExpContext ctx) {
 		return new ExpCall(visitCall(ctx.call()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit bool exp.
+	 *
+	 * @param ctx the ctx
+	 * @return the exp bool
+	 */
 	@Override
 	public ExpBool visitBoolExp(BoolExpContext ctx) {
 		return new ExpBool(ctx.getText().equals("true"), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit var exp.
+	 *
+	 * @param ctx the ctx
+	 * @return the exp var
+	 */
 	@Override
 	public ExpVar visitVarExp(VarExpContext ctx) {
 		return new ExpVar(ctx.ID().getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit val exp.
+	 *
+	 * @param ctx the ctx
+	 * @return the exp val
+	 */
 	@Override
 	public ExpVal visitValExp(ValExpContext ctx) {
 		return new ExpVal(Integer.parseInt(ctx.NUMBER().getText()), ctx.start.getLine(),
 				ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit dec fun.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt dec fun
+	 */
 	@Override
 	public StmtDecFun visitDecFun(DecFunContext ctx) {
 		List<Arg> args = new LinkedList<Arg>();
@@ -170,12 +286,24 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 		return toRet;
 	}
 
+	/**
+	 * Visit arg.
+	 *
+	 * @param ctx the ctx
+	 * @return the arg
+	 */
 	@Override
 	public Arg visitArg(ArgContext ctx) {
 		return new Arg(ctx.type().getText(), ctx.ID().getText(), ctx.ref() != null, ctx.start.getLine(),
 				ctx.start.getCharPositionInLine());
 	}
 
+	/**
+	 * Visit dec var.
+	 *
+	 * @param ctx the ctx
+	 * @return the stmt dec var
+	 */
 	@Override
 	public StmtDecVar visitDecVar(DecVarContext ctx) {
 		return new StmtDecVar(EType.getEnum(ctx.type().getText()).getType(), ctx.ID().getText(),

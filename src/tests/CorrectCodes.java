@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package tests;
 
 import java.io.IOException;
@@ -9,6 +12,9 @@ import util_analysis.TypeErrorsStorage;
 
 class CorrectCodes {
 
+	/**
+	 * Reset type errors storage.
+	 */
 	@AfterEach
 	public void resetTypeErrorsStorage() {
 		TypeErrorsStorage.clear();
@@ -18,7 +24,8 @@ class CorrectCodes {
 	void correctCode1() throws IOException {
 		Utils.correctCode(String.join("\r\n"
 				, "{"
-				, "    int x = 3;", "    int f(int var a, bool b) {"
+				, "    int x = 3;"
+				, "    int f(int var a, bool b) {"
 				, "        if(b == true) {"
 				, "            return a;"
 				, "        }"
@@ -116,7 +123,8 @@ class CorrectCodes {
 				, "        int y;"
 				, "        g(y);"
 				, "    }"
-				, "    f(x);", "}")
+				, "    f(x);"
+				, "}")
 			);
 	}
 

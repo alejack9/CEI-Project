@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.LinkedList;
@@ -15,11 +18,27 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StmtIte.
+ */
 public class StmtIte extends Stmt {
 
+	/** The exp. */
 	private Exp exp;
+	
+	/** The else stmt. */
 	private Stmt thenStmt, elseStmt;
 
+	/**
+	 * Instantiates a new stmt ite.
+	 *
+	 * @param exp the exp
+	 * @param thenStmt the then stmt
+	 * @param elseStmt the else stmt
+	 * @param line the line
+	 * @param column the column
+	 */
 	public StmtIte(Exp exp, Stmt thenStmt, Stmt elseStmt, int line, int column) {
 		super(line, column);
 		this.exp = exp;
@@ -27,6 +46,12 @@ public class StmtIte extends Stmt {
 		this.elseStmt = elseStmt;
 	}
 
+	/**
+	 * Check semantics.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -43,6 +68,12 @@ public class StmtIte extends Stmt {
 
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -65,6 +96,13 @@ public class StmtIte extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Analyse stmt behaviour.
+	 *
+	 * @param e the e
+	 * @param stmt the stmt
+	 * @param errors the errors
+	 */
 	private void analyseStmtBehaviour(Environment<BTEntry> e, Stmt stmt, List<BehaviourError> errors) {
 		if (stmt instanceof StmtBlock)
 			errors.addAll(stmt.inferBehaviour(e));
@@ -75,6 +113,11 @@ public class StmtIte extends Stmt {
 		}
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		if (!EType.BOOL.equalsTo(exp.inferType()))
@@ -96,22 +139,33 @@ public class StmtIte extends Stmt {
 		return thenT;
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	protected void codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 
-		exp._codeGen(nl, sb);
+		exp.codeGen(nl, sb);
 		sb.newLine("li $t1 1");
 		sb.newLine("beq $a0 $t1 ", T);
 		if (elseStmt != null)
-			elseStmt._codeGen(nl, sb);
+			elseStmt.codeGen(nl, sb);
 		sb.newLine("b ", end);
 		sb.newLine(T, ":");
-		thenStmt._codeGen(nl, sb);
+		thenStmt.codeGen(nl, sb);
 		sb.newLine(end, ":");
 	}
 
+	/**
+	 * Checks for else stmt.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasElseStmt() {
 		return elseStmt != null;
 	}

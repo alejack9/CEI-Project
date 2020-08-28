@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package logger;
 
 import java.io.File;
@@ -6,25 +9,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: Auto-generated Javadoc
 /**
- * Factory that generates Loggers
+ * Factory that generates Loggers.
  */
 public class LoggerFactory {
-	/**
-	 * the unique instance of the logger that writes on console
-	 */
+	
+	/** the unique instance of the logger that writes on console. */
 	private static Logger consoleLogger;
 
-	/**
-	 * a Map containing entries with <fileName,Logger> pattern: contains loggers
-	 * that writes on a specified file
-	 */
+	/** a Map containing entries with <fileName,Logger> pattern: contains loggers that writes on a specified file. */
 	private static Map<String, Logger> filesLoggers = new HashMap<String, Logger>();
 
+	/**
+	 * Instantiates a new logger factory.
+	 */
 	private LoggerFactory() {
 	}
 
 	/**
+	 * Gets the logger.
+	 *
 	 * @return A unique logger
 	 */
 	public static Logger getLogger() {
@@ -34,9 +39,11 @@ public class LoggerFactory {
 	}
 
 	/**
-	 * @param fileName
+	 * Gets the logger.
+	 *
+	 * @param fileName the file name
 	 * @return A unique logger that writes on the file
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static Logger getLogger(String fileName) throws IOException {
 		// if the file is not registered

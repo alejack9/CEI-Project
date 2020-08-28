@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -25,11 +28,23 @@ import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 
+/**
+ * The Class useful for testing routines.
+ */
 class Utils {
+	
 	private Utils() {
 	}
 
-	public static StmtBlock lexerErrors(String code, int number) throws IOException {
+	/**
+	 * Asserts that the lexical errors counted are the same as the passed number.
+	 *
+	 * @param code the code
+	 * @param number the expected number of errors
+	 * @return the main block
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public static StmtBlock lexicalErrors(String code, int number) throws IOException {
 		SimplePlusLexer lexer = new SimplePlusLexer(new ANTLRInputStream(new ByteArrayInputStream(code.getBytes())));
 
 		SimplePlusParser parser = new SimplePlusParser(new CommonTokenStream(lexer));
@@ -45,8 +60,16 @@ class Utils {
 		return mainBlock;
 	}
 
+	/**
+	 * Asserts that the semantic errors counted are the same as the passed number.
+	 * 
+	 * @param code the code
+	 * @param number the expected number of errors
+	 * @return the main block
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static StmtBlock semanticErrors(String code, int number) throws IOException {
-		StmtBlock mainBlock = lexerErrors(code, 0);
+		StmtBlock mainBlock = lexicalErrors(code, 0);
 
 		List<SemanticError> semanticErrors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
 
@@ -54,6 +77,14 @@ class Utils {
 		return mainBlock;
 	}
 
+	/**
+	 * Asserts that the type errors counted are the same as the passed number.
+	 * 
+	 * @param code the code
+	 * @param number the expected number of errors
+	 * @return the main block
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static StmtBlock typeErrors(String code, int number) throws IOException {
 		StmtBlock mainBlock = semanticErrors(code, 0);
 
@@ -64,6 +95,14 @@ class Utils {
 
 	}
 
+	/**
+	 * Asserts that the behaviour errors counted are the same as the passed number.
+	 * 
+	 * @param code the code
+	 * @param number the expected number of errors
+	 * @return the main block
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static StmtBlock behaviourErrors(String code, int number) throws IOException {
 		StmtBlock mainBlock = typeErrors(code, 0);
 		List<BehaviourError> behaviourErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
@@ -73,6 +112,12 @@ class Utils {
 		return mainBlock;
 	}
 
+	/**
+	 * Runs the passed code.
+	 *
+	 * @param code the code
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void runCode(String code) throws IOException {
 		SVMParser SVMparser = new SVMParser(new CommonTokenStream(new SVMLexer(
 				new ANTLRInputStream(new ByteArrayInputStream(code.replaceFirst("\r\n", "").getBytes())))));
@@ -86,6 +131,12 @@ class Utils {
 		assertDoesNotThrow(() -> new ExecuteVM(SVMVisitor.getCode()).cpu());
 	}
 
+	/**
+	 * Asserts that there are no errors in the passed code and run it
+	 *
+	 * @param code the code
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void correctCode(String code) throws IOException {
 		StmtBlock mainBlock = behaviourErrors(code, 0);
 		runCode(mainBlock.codeGen());

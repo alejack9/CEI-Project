@@ -1,20 +1,45 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.HashMap;
 import parser.*;
 import support.Regs;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VisitorImplSVM.
+ */
 public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 
+	/** The code. */
 	private int[] code = new int[ExecuteVM.CODESIZE];
+	
+	/** The i. */
 	private int i = 0;
+	
+	/** The labels indexes. */
 	private HashMap<String, Integer> labelsIndexes = new HashMap<String, Integer>();
+	
+	/** The label ref. */
 	private HashMap<Integer, String> labelRef = new HashMap<Integer, String>();
 
+	/**
+	 * Gets the code.
+	 *
+	 * @return the code
+	 */
 	public int[] getCode() {
 		return code;
 	}
 
+	/**
+	 * Visit assembly.
+	 *
+	 * @param ctx the ctx
+	 * @return the void
+	 */
 	@Override
 	public Void visitAssembly(SVMParser.AssemblyContext ctx) {
 		visitChildren(ctx);
@@ -24,6 +49,12 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 		return null;
 	}
 
+	/**
+	 * Visit instruction.
+	 *
+	 * @param ctx the ctx
+	 * @return the void
+	 */
 	@Override
 	public Void visitInstruction(SVMParser.InstructionContext ctx) {
 		switch (ctx.getStart().getType()) {

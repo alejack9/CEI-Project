@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import ast.errors.TypeError;
@@ -8,16 +11,29 @@ import support.CustomStringBuilder;
 import util_analysis.TypeErrorsStorage;
 
 /**
- * Represents boolean expressions that require all type of input (except VOID)
+ * The base class of boolean expressions between all types.
  */
 public abstract class ExpBinBoolAllIn extends ExpBin {
 
+	/** The type of the left side */
 	private Type leftType;
 
+	/**
+	 * @param left   the left side of the expression
+	 * @param right  the right side of the expression
+	 * @param line   the line of the code
+	 * @param column the column of the code
+	 */
 	protected ExpBinBoolAllIn(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);
 	}
 
+	/**
+	 * Check that left and right sides of the expression are the same type (but not
+	 * VOID) and returns a boolean type
+	 *
+	 * @return the type
+	 */
 	@Override
 	public final Type inferType() {
 		leftType = this.leftSide.inferType();
@@ -34,17 +50,29 @@ public abstract class ExpBinBoolAllIn extends ExpBin {
 		return EType.BOOL.getType();
 	}
 
+	/**
+	 * the true return to put in the generated code ("0" in "not equals", "1"
+	 * otherwise).
+	 *
+	 * @return the string
+	 */
 	protected abstract String trueReturn();
 
+	/**
+	 * the false return to put in the generated code ("1" in "not equals", "0"
+	 * otherwise).
+	 *
+	 * @return the string
+	 */
 	protected abstract String falseReturn();
 
 	@Override
-	public final void _codeGen(int nl, CustomStringBuilder sb) {
+	protected final void codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
-		leftSide._codeGen(nl, sb);
+		leftSide.codeGen(nl, sb);
 		sb.newLine("push $a0 ", Integer.toString(leftType.getDimension()));
-		rightSide._codeGen(nl, sb);
+		rightSide.codeGen(nl, sb);
 		sb.newLine("lw $t1 0($sp) ", Integer.toString(leftType.getDimension()));
 		sb.newLine("pop ", Integer.toString(leftType.getDimension()));
 		sb.newLine("beq $a0 $t1 ", T);

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.HashMap;
@@ -23,18 +26,41 @@ import ast.errors.ParametersMismatchError;
 import ast.errors.PassedReferenceNotVarError;
 import ast.errors.SemanticError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StmtCall.
+ */
 public class StmtCall extends Stmt {
 
+	/** The exps. */
 	private List<Exp> exps;
+	
+	/** The id. */
 	private String ID;
+	
+	/** The id entry. */
 	private STEntry idEntry;
 
+	/**
+	 * Instantiates a new stmt call.
+	 *
+	 * @param ID the id
+	 * @param exps the exps
+	 * @param line the line
+	 * @param column the column
+	 */
 	public StmtCall(String ID, List<Exp> exps, int line, int column) {
 		super(line, column);
 		this.ID = ID;
 		this.exps = exps;
 	}
 
+	/**
+	 * Check semantics.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -63,6 +89,12 @@ public class StmtCall extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 
@@ -97,6 +129,11 @@ public class StmtCall extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		if (!EType.FUNCTION.equalsTo(idEntry.getType()))
@@ -119,13 +156,19 @@ public class StmtCall extends Stmt {
 		return funT.getReturnType();
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	protected void codeGen(int nl, CustomStringBuilder sb) {
 		sb.newLine("push $fp 4");
 		List<Type> paramsType = ((ArrowType) idEntry.getType()).getParamTypes();
 		for (int i = exps.size() - 1; i >= 0; i--) {
 			if (!paramsType.get(i).isRef())
-				exps.get(i)._codeGen(nl, sb);
+				exps.get(i).codeGen(nl, sb);
 			else {
 				STEntry var = ((ExpVar) exps.get(i)).getIdEntry();
 				if (!var.getType().isParameter())

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.LinkedList;
@@ -17,18 +20,41 @@ import ast.errors.BehaviourError;
 import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StmtAssignment.
+ */
 public class StmtAssignment extends Stmt {
 
+	/** The id. */
 	private String id;
+	
+	/** The id entry. */
 	private STEntry idEntry;
+	
+	/** The exp. */
 	private Exp exp;
 
+	/**
+	 * Instantiates a new stmt assignment.
+	 *
+	 * @param id the id
+	 * @param exp the exp
+	 * @param line the line
+	 * @param column the column
+	 */
 	public StmtAssignment(String id, Exp exp, int line, int column) {
 		super(line, column);
 		this.id = id;
 		this.exp = exp;
 	}
 
+	/**
+	 * Check semantics.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -43,6 +69,12 @@ public class StmtAssignment extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -57,6 +89,11 @@ public class StmtAssignment extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		Type expType = exp.inferType();
@@ -68,9 +105,15 @@ public class StmtAssignment extends Stmt {
 		return null;
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
-		exp._codeGen(nl, sb);
+	protected void codeGen(int nl, CustomStringBuilder sb) {
+		exp.codeGen(nl, sb);
 		sb.newLine("move $t1 $a0");
 		
 		if(!idEntry.getType().isParameter()) {

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.LinkedList;
@@ -18,14 +21,37 @@ import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 import ast.errors.SemanticError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StmtDecFun.
+ */
 public class StmtDecFun extends StmtDec {
 
+	/** The type. */
 	private Type type;
+	
+	/** The id. */
 	private String ID;
+	
+	/** The args. */
 	private List<Arg> args;
+	
+	/** The block. */
 	private StmtBlock block;
+	
+	/** The id entry. */
 	private STEntry idEntry;
 
+	/**
+	 * Instantiates a new stmt dec fun.
+	 *
+	 * @param type the type
+	 * @param ID the id
+	 * @param args the args
+	 * @param block the block
+	 * @param line the line
+	 * @param column the column
+	 */
 	public StmtDecFun(Type type, String ID, List<Arg> args, StmtBlock block, int line, int column) {
 		super(line, column);
 		this.type = type;
@@ -34,6 +60,12 @@ public class StmtDecFun extends StmtDec {
 		this.block = block;
 	}
 
+	/**
+	 * Check semantics.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -77,6 +109,11 @@ public class StmtDecFun extends StmtDec {
 		return toRet;
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		this.args.forEach(Arg::inferType);
@@ -90,6 +127,12 @@ public class StmtDecFun extends StmtDec {
 		return null;
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -107,7 +150,7 @@ public class StmtDecFun extends StmtDec {
 		funEnv.add(ID, new BTEntry(e0));
 		do {
 			funEnv.openScope();
-			toRet = new LinkedList<BehaviourError>(); // stampa più volte lo stesso messaggio d'errore
+			toRet = new LinkedList<BehaviourError>(); // stampa piï¿½ volte lo stesso messaggio d'errore
 			for (int i = 0; i < e0.size(); i++)
 				funEnv.add(args.get(i).getId(), (BTEntry) e0.get(i).clone());
 			toRet.addAll(block.inferBehaviourSameScope(funEnv));
@@ -123,14 +166,20 @@ public class StmtDecFun extends StmtDec {
 		return toRet;
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	protected void codeGen(int nl, CustomStringBuilder sb) {
 		String end = CodeGenUtils.freshLabel();
 		sb.newLine("b ", end);
 		sb.newLine(idEntry.label, ":");
 		sb.newLine("move $fp $sp");
 		sb.newLine("push $ra 4");
-		block._codeGen(nl + 1, sb);
+		block.codeGen(nl + 1, sb);
 		sb.newLine("lw $ra 0($sp) 4");
 		sb.newLine("addi $sp $sp ", Integer.toString(
 				args.stream().map(Arg::getType).map(Type::getDimension).reduce((a, b) -> a + b).orElse(0) + 8));
