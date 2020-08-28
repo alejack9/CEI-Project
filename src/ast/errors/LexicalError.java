@@ -1,5 +1,8 @@
 package ast.errors;
 
+/**
+ * Represents a lexical error
+ */
 public class LexicalError extends Error {
 	private static final long serialVersionUID = 1L;
 
@@ -13,6 +16,9 @@ public class LexicalError extends Error {
 		this.errorColumn = errorColumn;
 	}
 
+	/**
+	 * @return a string with the line and the column where there is an error
+	 */
 	protected String getPosition() {
 		// asserting that, if "errorLine" is set, then "errorColumn" is set
 		return "[ " + errorLine + " : " + errorColumn + " ]";

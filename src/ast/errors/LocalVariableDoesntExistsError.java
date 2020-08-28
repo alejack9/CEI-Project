@@ -1,8 +1,7 @@
 package ast.errors;
 
 /**
- * Represents a semantic error, in particular the used variable does not exist
- * in the local scope
+ * Represents a semantic error, in particular the used variable does not exist in the local scope
  */
 public class LocalVariableDoesntExistsError extends SemanticError {
 	private static final long serialVersionUID = 1L;

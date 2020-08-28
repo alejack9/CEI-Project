@@ -1,5 +1,8 @@
 package ast.errors;
 
+/**
+ * Represents a type error
+ */
 public class TypeError extends Error {
 
 	private static final long serialVersionUID = 1L;

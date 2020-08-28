@@ -10,7 +10,13 @@ public class CodeGenUtils {
 	}
 
 	public static String k;
-
+	
+	/**
+	 * Access to a variable in the same or external activation record
+	 * @param variable
+	 * @param nl
+	 * @param sb
+	 */
 	public static void getVariableCodeGen(STEntry variable, int nl, CustomStringBuilder sb) {
 		sb.newLine("move $al $fp");
 		for (int i = 0; i < nl - variable.nestingLevel; i++)
@@ -19,6 +25,10 @@ public class CodeGenUtils {
 				Integer.toString(variable.getType().getDimension()));
 	}
 
+	/**
+	 * Create label
+	 * @return label
+	 */
 	public static String freshLabel() {
 		return "label" + id++;
 	}

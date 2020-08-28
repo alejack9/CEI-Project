@@ -1,5 +1,8 @@
 package ast.errors;
 
+/**
+ * Represents a semantic error, in particular the number of actual parameters is non the same of formal parameters
+ */
 public class ParametersMismatchError extends SemanticError {
 	private static final long serialVersionUID = 1L;
 	private int params;
