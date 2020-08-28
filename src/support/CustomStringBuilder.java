@@ -7,6 +7,10 @@ public class CustomStringBuilder {
 		this.sb = sb;
 	}
 
+	/**
+	 * Write new line composed of the strings passed
+	 * @param toAppend
+	 */
 	public void newLine(String... toAppend) {
 		sb.append("\r\n");
 		for (String s : toAppend)

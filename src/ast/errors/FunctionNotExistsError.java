@@ -1,8 +1,7 @@
 package ast.errors;
 
 /**
- * Represents a semantic error, in particular the called function does not
- * exists
+ * Represents a semantic error, in particular the called function does not exists
  */
 public class FunctionNotExistsError extends SemanticError {
 	private static final long serialVersionUID = 1L;
