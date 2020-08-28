@@ -1,7 +1,7 @@
 package ast.errors;
 
 /**
- * Represents a behaviour error, in particular the declared id is already used
+ * Represents a behaviour error, in particular the declared id is already used.
  */
 public class IdAlreadytExistsError extends BehaviourError {
 	private static final long serialVersionUID = 1L;

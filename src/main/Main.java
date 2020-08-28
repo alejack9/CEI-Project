@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import ast.StmtBlock;
 import ast.VisitorImplSP;
@@ -33,20 +32,27 @@ import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 
+/**
+ * The Class Main.
+ */
 public class Main {
-
 	private Logger logger;
+	
 	private String inFileName = "test.spl";
 	private String errorsFileName = null;
 	private String outCodeFileName;
-
+	
 	private StmtBlock mainBlock;
 	private SimplePlusLexer lexer;
 	SimpleErrorListener sl = null;
 
+	/**
+	 * Check lexical step
+	 */
 	private Step checkLexicalStep = () -> {
 		logger.write("Checking Lexical ... ");
 
+		// Stop the execution if there is lexical error
 		if (lexer.errors.size() > 0) {
 			logger.writeLine("failed", true);
 			for (LexicalError error : lexer.errors)
@@ -62,6 +68,9 @@ public class Main {
 		return true;
 	};
 
+	/**
+	 * Check semantic step
+	 */
 	private Step checkSemanticStep = () -> {
 		logger.write("Checking Semantic ... ");
 
@@ -80,6 +89,9 @@ public class Main {
 		return true;
 	};
 
+	/**
+	 * Check types step
+	 */
 	private Step checkTypesStep = () -> {
 		logger.write("Checking Types ... ");
 
@@ -98,7 +110,11 @@ public class Main {
 		return true;
 	};
 
+	/**
+	 * Analyse behaviour step
+	 */
 	private Step analyseBehaviourStep = () -> {
+		// Behaviour analysis
 		List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
 
 		logger.write("Analysing Behaviour ... ");
@@ -115,6 +131,9 @@ public class Main {
 		return true;
 	};
 
+	/**
+	 * Generation code step
+	 */
 	private Step generateCodeStep = () -> {
 		logger.write("Generating Code ... ");
 
@@ -125,6 +144,9 @@ public class Main {
 		return true;
 	};
 
+	/**
+	 * Run code step
+	 */
 	private Step runCodeStep = () -> {
 		logger.writeLine("Lanching program (Following output)");
 		logger.writeLine();
@@ -164,10 +186,10 @@ public class Main {
 	}
 
 	/**
-	 * Compile a SimplePlus program, generate code and execute the code
-	 * 
-	 * @param args
-	 * @throws IOException
+	 * Compile a SimplePlus program, generate code and execute the generated code.
+	 *
+	 * @param args the args
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void start(String[] args) throws IOException {
 		manipulateArgs(args);
@@ -214,13 +236,16 @@ public class Main {
 		// Visit the root, this will recursively visit the whole tree
 		mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
 
+		// Execute one step at time
 		for (Step step : steps)
 			if(!step.get())
 				quit(logger);
 	}
 
-	/*
+	/**
 	 * Set inFileName or/and errorsFileName if were specified
+	 * 
+	 * @param args
 	 */
 	private void manipulateArgs(String[] args) {
 		switch (args.length) {
@@ -239,14 +264,22 @@ public class Main {
 		outCodeFileName = inFileName.replaceFirst("[.][^.]+$", "") + ".out";
 	}
 
-	/*
+	/**
 	 * Write the generated code on file
+	 *
+	 * @param code the code
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void generateOutCode(String code) throws IOException {
 		LoggerFactory.getLogger(outCodeFileName).write(code.replaceFirst("\r\n", ""));
 	}
 
-	// Stop the execution
+	/**
+	 * Stop the execution
+	 *
+	 * @param clogger the clogger
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void quit(Logger clogger) throws IOException {
 		clogger.writeLine("Quitting compiling");
 		System.exit(-1);

@@ -1,7 +1,7 @@
 package ast.errors;
 
 /**
- * Represents a semantic error, in particular the declared id is not the same of the variable deleted
+ * Represents a semantic error, in particular the declared id is not the same of the variable deleted.
  */
 public class DifferentVarTypeError extends SemanticError {
 	private static final long serialVersionUID = 1L;

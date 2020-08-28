@@ -1,7 +1,7 @@
 package ast.errors;
 
 /**
- * Represents a behaviour error
+ * Represents a behaviour error.
  */
 public abstract class BehaviourError extends SemanticError {
 	private static final long serialVersionUID = 1L;
