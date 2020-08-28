@@ -1,11 +1,11 @@
 package ast.errors;
 
 /**
- * Represents a semantic error
+ * Represents a semantic error.
  */
 public abstract class SemanticError extends Error {
+	
 	private static final long serialVersionUID = 1L;
-
 	protected String id;
 	protected int errorLine;
 	protected int errorColumn;
@@ -19,6 +19,8 @@ public abstract class SemanticError extends Error {
 	}
 
 	/**
+	 * Gets the position.
+	 *
 	 * @return a string with the line and the column where there is an error
 	 */
 	protected String getPosition() {

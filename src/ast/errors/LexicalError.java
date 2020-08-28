@@ -1,11 +1,11 @@
 package ast.errors;
 
 /**
- * Represents a lexical error
+ * Represents a lexical error.
  */
 public class LexicalError extends Error {
 	private static final long serialVersionUID = 1L;
-
+	
 	protected String character;
 	protected int errorLine;
 	protected int errorColumn;
@@ -17,6 +17,8 @@ public class LexicalError extends Error {
 	}
 
 	/**
+	 * Gets the position.
+	 *
 	 * @return a string with the line and the column where there is an error
 	 */
 	protected String getPosition() {

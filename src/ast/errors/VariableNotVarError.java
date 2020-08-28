@@ -1,7 +1,7 @@
 package ast.errors;
 
 /**
- * Represents a semantic error, in particular the variable is not referenced
+ * Represents a semantic error, in particular the variable is not referenced.
  */
 public class VariableNotVarError extends SemanticError {
 	private static final long serialVersionUID = 1L;
