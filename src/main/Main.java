@@ -2,7 +2,9 @@ package main;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import ast.StmtBlock;
 import ast.VisitorImplSP;
@@ -33,13 +35,128 @@ import util_analysis.entries.STEntry;
 
 public class Main {
 
-	private final Logger logger;
+	private Logger logger;
 	private String inFileName = "test.spl";
 	private String errorsFileName = null;
 	private String outCodeFileName;
 
+	private StmtBlock mainBlock;
+	private SimplePlusLexer lexer;
+	SimpleErrorListener sl = null;
+
+	private Step checkLexicalStep = () -> {
+		logger.write("Checking Lexical ... ");
+
+		if (lexer.errors.size() > 0) {
+			logger.writeLine("failed", true);
+			for (LexicalError error : lexer.errors)
+				logger.writeLine("Lexical Error: " + error.toString());
+			return false;
+		}
+
+		if (sl != null && sl.errorsDetected())
+			return false;
+
+		logger.writeLine("succeeded", true);
+
+		return true;
+	};
+
+	private Step checkSemanticStep = () -> {
+		logger.write("Checking Semantic ... ");
+
+		// Check semantics
+		List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
+
+		// Stop the execution if there is semantic error
+		if (errors.size() > 0) {
+			logger.writeLine("failed", true);
+			for (SemanticError err : errors)
+				logger.writeLine(err.toString());
+			return false;
+		}
+
+		logger.writeLine("succeeded", true);
+		return true;
+	};
+
+	private Step checkTypesStep = () -> {
+		logger.write("Checking Types ... ");
+
+		// Check types
+		mainBlock.inferType();
+
+		// Stop the execution if there is types error
+		if (TypeErrorsStorage.getTypeErrors().size() > 0) {
+			logger.writeLine("failed", true);
+			for (TypeError err : TypeErrorsStorage.getTypeErrors())
+				logger.writeLine(err.toString());
+			return false;
+		}
+
+		logger.writeLine("succeeded", true);
+		return true;
+	};
+
+	private Step analyseBehaviourStep = () -> {
+		List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
+
+		logger.write("Analysing Behaviour ... ");
+
+		// Stop the execution if there is behavioural error
+		if (bErrors.size() > 0) {
+			logger.writeLine("failed", true);
+			for (SemanticError bErr : bErrors)
+				logger.writeLine(bErr.toString());
+			return false;
+		}
+
+		logger.writeLine("succeeded", true);
+		return true;
+	};
+
+	private Step generateCodeStep = () -> {
+		logger.write("Generating Code ... ");
+
+		// Code generation
+		generateOutCode(mainBlock.codeGen());
+
+		logger.writeLine("done", true);
+		return true;
+	};
+
+	private Step runCodeStep = () -> {
+		logger.writeLine("Lanching program (Following output)");
+		logger.writeLine();
+
+		// Create parser for SVM
+		SVMParser SVMparser = new SVMParser(
+				new CommonTokenStream(new SVMLexer(new ANTLRInputStream(new FileInputStream(outCodeFileName)))));
+
+		// Tell the parser to build the AST for SVM
+		SVMparser.setBuildParseTree(true);
+
+		// Build custom visitor
+		VisitorImplSVM SVMVisitor = new VisitorImplSVM();
+
+		SVMVisitor.visitAssembly(SVMparser.assembly());
+
+		// Run the code
+		new ExecuteVM(SVMVisitor.getCode()).cpu();
+		
+		return true;
+	};
+	
+	private List<Step> steps = new LinkedList<Step>();
+
 	private Main(Logger logger) {
 		this.logger = logger;
+		this.steps.add(checkLexicalStep);
+		this.steps.add(checkSemanticStep);
+		this.steps.add(checkTypesStep);
+		this.steps.add(analyseBehaviourStep);
+		this.steps.add(generateCodeStep);
+		this.steps.add(runCodeStep);
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -48,25 +165,25 @@ public class Main {
 
 	/**
 	 * Compile a SimplePlus program, generate code and execute the code
+	 * 
 	 * @param args
 	 * @throws IOException
 	 */
 	private void start(String[] args) throws IOException {
 		manipulateArgs(args);
+		
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(inFileName));
 
 		logger.writeLine("Input File Name: " + inFileName);
 		logger.writeLine("Code File Name: " + outCodeFileName);
-
 		logger.writeLine();
 
 		// Create Lexer
-		SimplePlusLexer lexer = new SimplePlusLexer(input);
+		lexer = new SimplePlusLexer(input);
 
 		// Disable default ANTLR lexer listener (to override default behavior)
 		lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
-		SimpleErrorListener sl = null;
-		
+
 		// Check if was specified the parameter for the lexical errors file name
 		if (errorsFileName != null) {
 			logger.writeLine("Errors File Name: " + errorsFileName);
@@ -82,7 +199,7 @@ public class Main {
 
 		// Disable default ANTLR syntax listener (to override default behavior)
 		parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
-		
+
 		// Check if was specified the parameter for the syntax errors file name
 		if (errorsFileName != null)
 			parser.addErrorListener(sl);
@@ -95,82 +212,11 @@ public class Main {
 		VisitorImplSP visitor = new VisitorImplSP();
 
 		// Visit the root, this will recursively visit the whole tree
-		StmtBlock mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
+		mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
 
-		logger.write("Checking Lexical ... ");
-
-		
-		if (lexer.errors.size() > 0) {
-			logger.writeLine("failed", true);
-			for (LexicalError error : lexer.errors)
-				logger.writeLine("Lexical Error: " + error.toString());
-			quit(logger);
-		}
-
-		logger.writeLine("succeeded", true);
-
-		// Stop the execution if there is lexical error
-		if (sl != null && sl.errorsDetected())
-			quit(logger);
-
-		logger.write("Checking Semantic ... ");
-
-		// Check semantics
-		List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
-
-		// Stop the execution if there is semantic error
-		if (errors.size() > 0) {
-			logger.writeLine("failed", true);
-			for (SemanticError err : errors)
-				logger.writeLine(err.toString());
-			quit(logger);
-		}
-
-		logger.writeLine("succeeded", true);
-
-		logger.write("Checking Types ... ");
-
-		// Check types
-		mainBlock.inferType();
-
-		// Stop the execution if there is types error
-		if (TypeErrorsStorage.getTypeErrors().size() > 0) {
-			logger.writeLine("failed", true);
-			for (TypeError err : TypeErrorsStorage.getTypeErrors())
-				logger.writeLine(err.toString());
-			quit(logger);
-		}
-
-		logger.writeLine("succeeded", true);
-
-		// Bheaviour analysis
-		List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
-
-		logger.write("Analysing Behaviour ... ");
-
-		// Stop the execution if there is behavioural error
-		if (bErrors.size() > 0) {
-			logger.writeLine("failed", true);
-			for (SemanticError bErr : bErrors)
-				logger.writeLine(bErr.toString());
-			quit(logger);
-		}
-
-		logger.writeLine("succeeded", true);
-
-		logger.write("Generating Code ... ");
-
-		// Code generation
-		generateOutCode(mainBlock.codeGen());
-
-		logger.writeLine("done", true);
-
-		logger.writeLine("Launching program (Following output)");
-		
-		logger.writeLine();
-
-		// Code execution
-		runCode();
+		for (Step step : steps)
+			if(!step.get())
+				quit(logger);
 	}
 
 	/*
@@ -198,27 +244,6 @@ public class Main {
 	 */
 	private void generateOutCode(String code) throws IOException {
 		LoggerFactory.getLogger(outCodeFileName).write(code.replaceFirst("\r\n", ""));
-	}
-
-	/**
-	 * Run the generated code
-	 * @throws IOException
-	 */
-	private void runCode() throws IOException {
-		// Create parser for SVM
-		SVMParser SVMparser = new SVMParser(
-				new CommonTokenStream(new SVMLexer(new ANTLRInputStream(new FileInputStream(outCodeFileName)))));
-
-		// Tell the parser to build the AST for SVM
-		SVMparser.setBuildParseTree(true);
-
-		// Build custom visitor
-		VisitorImplSVM SVMVisitor = new VisitorImplSVM();
-
-		SVMVisitor.visitAssembly(SVMparser.assembly());
-
-		// Run the code
-		new ExecuteVM(SVMVisitor.getCode()).cpu();
 	}
 
 	// Stop the execution
