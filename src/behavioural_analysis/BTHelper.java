@@ -34,7 +34,7 @@ public class BTHelper {
 
 		if (max.compareTo(EEffect.RW) <= 0)
 			return max;
-
+		
 		if (a.compareTo(EEffect.RW) <= 0 && b.compareTo(EEffect.D) == 0
 				|| a.compareTo(EEffect.D) == 0 && b.compareTo(EEffect.BOTTOM) == 0)
 			return EEffect.D;

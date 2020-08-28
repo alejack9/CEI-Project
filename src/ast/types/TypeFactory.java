@@ -1,10 +1,21 @@
 package ast.types;
 
+/**
+ * A factory for creating Type objects
+ */
 class TypeFactory {
 
 	private TypeFactory() {
 	}
 
+	/**
+	 * Creates the type associated to a <li>Etype</li> value.
+	 *
+	 * @param type the Etype value
+	 * @param isParameter the related variable is a parameter
+	 * @param isRef the related variable is a parameter passed by reference
+	 * @return the Type object
+	 */
 	public static Type getType(EType type, boolean isParameter, boolean isRef) {
 		switch (type) {
 		case INT:

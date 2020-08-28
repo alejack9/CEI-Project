@@ -1,5 +1,8 @@
 package ast.types;
 
+/**
+ * Represents Integer type 
+ */
 public class IntType extends Type {
 
 	public IntType(boolean isParameter, boolean isRef) {
