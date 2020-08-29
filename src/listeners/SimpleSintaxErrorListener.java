@@ -13,7 +13,7 @@ import logger.Logger;
 public class SimpleSintaxErrorListener extends SimpleErrorListener {
 
 	/**
-	 * @param logger The logger in which write
+	 * @param logger - The logger in which write
 	 */
 	public SimpleSintaxErrorListener(Logger logger) {
 		super(logger);

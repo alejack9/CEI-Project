@@ -12,10 +12,12 @@ public class CodeGenUtils {
 	public static String k;
 	
 	/**
-	 * Access to a variable in the same or external activation record
-	 * @param variable
-	 * @param nl
-	 * @param sb
+	 * Access to a variable in the same or external activation record.
+	 * <br>Load in the register "$a0" the variable required.
+	 * 
+	 * @param variable - the variable to access
+	 * @param nl - the current nesting level
+	 * @param sb - the string to add the assembly command
 	 */
 	public static void getVariableCodeGen(STEntry variable, int nl, CustomStringBuilder sb) {
 		sb.newLine("move $al $fp");
@@ -27,7 +29,7 @@ public class CodeGenUtils {
 
 	/**
 	 * Create label
-	 * @return label
+	 * @return label - the label
 	 */
 	public static String freshLabel() {
 		return "label" + id++;
