@@ -20,32 +20,24 @@ import ast.errors.DifferentVarTypeError;
 import ast.errors.IdAlreadytExistsError;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StmtDecVar.
+ * The class of variable declaration statements ("int x" or "int y = 3").
  */
 public class StmtDecVar extends StmtDec {
 
-	/** The type. */
 	private Type type;
-	
-	/** The id. */
+
 	private String ID;
-	
-	/** The exp. */
-	private Exp exp;
-	
-	/** The id entry. */
 	private STEntry idEntry;
 
+	private Exp exp;
+
 	/**
-	 * Instantiates a new stmt dec var.
-	 *
-	 * @param type the type
-	 * @param ID the id
-	 * @param exp the exp
-	 * @param line the line
-	 * @param column the column
+	 * @param type   the type of the variable
+	 * @param ID     the id of the variable
+	 * @param exp    the expression on the right side
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public StmtDecVar(Type type, String ID, Exp exp, int line, int column) {
 		super(line, column);
@@ -84,10 +76,27 @@ public class StmtDecVar extends StmtDec {
 	}
 
 	/**
-	 * Infer behaviour.
+	 * Checks that the variable type is not VOID and checks the expression type.
 	 *
-	 * @param e the e
-	 * @return the list
+	 * @return null
+	 */
+	@Override
+	public Type inferType() {
+		if (EType.VOID.equalsTo(type))
+			TypeErrorsStorage.addError(new TypeError("Variable type cannot be void", line, column));
+
+		if (exp != null) {
+			Type expType = exp.inferType();
+			if (!type.getType().equalsTo(expType))
+				TypeErrorsStorage.addError(
+						new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")",
+								this.exp.line, this.exp.column));
+		}
+		return null;
+	}
+
+	/**
+	 * Infer behaviour.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -95,15 +104,14 @@ public class StmtDecVar extends StmtDec {
 
 		BTEntry prev = e.getLocalIDEntry(ID);
 
-		// Should be added after the exp check (if any) but this needs two "exp == null"
-		// controls instead of one
-		// "checkSemantics" checks the correct usage of the variable so we can skip the
-		// check
 		if (prev != null) {
+			// if was not deleted, there's an error
 			if (prev.getLocalEffect().compareTo(EEffect.D) < 0) {
 				prev.setLocalEffect(EEffect.T);
 				toRet.add(new IdAlreadytExistsError(ID, line, column));
-			} else if (prev.getLocalEffect().compareTo(EEffect.D) == 0)
+			}
+			// if it is not top, add the "BOTTOM" effect
+			else if (prev.getLocalEffect().compareTo(EEffect.D) == 0)
 				e.getIDEntry(ID).addEffect(EEffect.BOTTOM);
 		} else
 			e.add(ID, new BTEntry());
@@ -116,43 +124,18 @@ public class StmtDecVar extends StmtDec {
 		return toRet;
 	}
 
-	/**
-	 * Infer type.
-	 *
-	 * @return the type
-	 */
-	@Override
-	public Type inferType() {
-		if (EType.VOID.equalsTo(type))
-			TypeErrorsStorage.addError(new TypeError("Variable type cannot be void", line, column));
-
-		if (exp != null) {
-			Type expType = exp.inferType();
-			if (!expType.getType().equalsTo(type))
-				TypeErrorsStorage.addError(
-						new TypeError("Expression type (" + expType + ") is not equal to variable type (" + type + ")",
-								this.exp.line, this.exp.column));
-		}
-
-		return null;
-	}
-
-	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
-	 */
 	@Override
 	protected void codeGen(int nl, CustomStringBuilder sb) {
 		if (exp != null)
 			exp.codeGen(nl, sb);
 		sb.newLine("li $t1 0");
+		// always saves the value of $a0 in the variable value by default
 		sb.newLine("sw $a0 ", Integer.toString(idEntry.offset), "($t1) ", Integer.toString(type.getDimension()));
+		// if the variable was been deleted, the code sets it to non-deleted, otherwise
+		// increases the heap pointer ($hp)
 		if (idEntry.isDeleted())
 			idEntry.setDeleted(false);
 		else
 			sb.newLine("addi $hp $hp ", Integer.toString(type.getDimension()));
 	}
-
 }

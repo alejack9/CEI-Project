@@ -21,7 +21,7 @@ import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
 
 /**
- * The class of assignment expressions ("x = 3" or "x = y").
+ * The class of assignment statements ("x = 3" or "x = y").
  */
 public class StmtAssignment extends Stmt {
 

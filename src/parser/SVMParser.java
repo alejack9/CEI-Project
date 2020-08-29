@@ -1,4 +1,4 @@
-// Generated from SVM.g4 by ANTLR 4.6
+// Generated from SVM.g4 by ANTLR 4.4
 package parser;
 
 import java.util.HashMap;
@@ -14,69 +14,34 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SVMParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.6", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, PRINT=3, JUMPREG=4, JUMPLABEL=5, ADDINTEGER=6, MOVE=7, 
+		T__1=1, T__0=2, PRINT=3, JUMPREG=4, JUMPLABEL=5, ADDINTEGER=6, MOVE=7, 
 		BRANCHEQ=8, BRANCHGT=9, BRANCHGE=10, BRANCHLT=11, BRANCHLE=12, POP=13, 
 		LOADWORD=14, STOREWORD=15, PUSH=16, ADD=17, SUB=18, MUL=19, DIV=20, NEG=21, 
 		LOADINTEGER=22, BRANCH=23, REG=24, COL=25, LABEL=26, NUMBER=27, WHITESP=28, 
 		ERR=29;
+	public static final String[] tokenNames = {
+		"<INVALID>", "'('", "')'", "'print'", "'jr'", "'jal'", "'addi'", "'move'", 
+		"'beq'", "'bgt'", "'bge'", "'blt'", "'ble'", "'pop'", "'lw'", "'sw'", 
+		"'push'", "'add'", "'sub'", "'mul'", "'div'", "'neg'", "'li'", "'b'", 
+		"REG", "':'", "LABEL", "NUMBER", "WHITESP", "ERR"
+	};
 	public static final int
 		RULE_assembly = 0, RULE_instruction = 1;
 	public static final String[] ruleNames = {
 		"assembly", "instruction"
 	};
 
-	private static final String[] _LITERAL_NAMES = {
-		null, "'('", "')'", "'print'", "'jr'", "'jal'", "'addi'", "'move'", "'beq'", 
-		"'bgt'", "'bge'", "'blt'", "'ble'", "'pop'", "'lw'", "'sw'", "'push'", 
-		"'add'", "'sub'", "'mul'", "'div'", "'neg'", "'li'", "'b'", null, "':'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, "PRINT", "JUMPREG", "JUMPLABEL", "ADDINTEGER", "MOVE", 
-		"BRANCHEQ", "BRANCHGT", "BRANCHGE", "BRANCHLT", "BRANCHLE", "POP", "LOADWORD", 
-		"STOREWORD", "PUSH", "ADD", "SUB", "MUL", "DIV", "NEG", "LOADINTEGER", 
-		"BRANCH", "REG", "COL", "LABEL", "NUMBER", "WHITESP", "ERR"
-	};
-	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
-
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
-	@Deprecated
-	public static final String[] tokenNames;
-	static {
-		tokenNames = new String[_SYMBOLIC_NAMES.length];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = VOCABULARY.getLiteralName(i);
-			if (tokenNames[i] == null) {
-				tokenNames[i] = VOCABULARY.getSymbolicName(i);
-			}
-
-			if (tokenNames[i] == null) {
-				tokenNames[i] = "<INVALID>";
-			}
-		}
-	}
-
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
-	}
-
-	@Override
-
-	public Vocabulary getVocabulary() {
-		return VOCABULARY;
-	}
-
 	@Override
 	public String getGrammarFileName() { return "SVM.g4"; }
+
+	@Override
+	public String[] getTokenNames() { return tokenNames; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -92,11 +57,11 @@ public class SVMParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class AssemblyContext extends ParserRuleContext {
-		public List<InstructionContext> instruction() {
-			return getRuleContexts(InstructionContext.class);
-		}
 		public InstructionContext instruction(int i) {
 			return getRuleContext(InstructionContext.class,i);
+		}
+		public List<InstructionContext> instruction() {
+			return getRuleContexts(InstructionContext.class);
 		}
 		public AssemblyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -122,8 +87,7 @@ public class SVMParser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << JUMPREG) | (1L << JUMPLABEL) | (1L << ADDINTEGER) | (1L << MOVE) | (1L << BRANCHEQ) | (1L << BRANCHGT) | (1L << BRANCHGE) | (1L << BRANCHLT) | (1L << BRANCHLE) | (1L << POP) | (1L << LOADWORD) | (1L << STOREWORD) | (1L << PUSH) | (1L << ADD) | (1L << SUB) | (1L << MUL) | (1L << DIV) | (1L << NEG) | (1L << LOADINTEGER) | (1L << BRANCH) | (1L << LABEL))) != 0)) {
 				{
 				{
-				setState(4);
-				instruction();
+				setState(4); instruction();
 				}
 				}
 				setState(9);
@@ -150,37 +114,37 @@ public class SVMParser extends Parser {
 		public Token dimension;
 		public Token dest;
 		public Token origin;
-		public TerminalNode LOADINTEGER() { return getToken(SVMParser.LOADINTEGER, 0); }
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode BRANCH() { return getToken(SVMParser.BRANCH, 0); }
+		public TerminalNode ADDINTEGER() { return getToken(SVMParser.ADDINTEGER, 0); }
+		public TerminalNode BRANCHLT() { return getToken(SVMParser.BRANCHLT, 0); }
+		public TerminalNode BRANCHLE() { return getToken(SVMParser.BRANCHLE, 0); }
 		public TerminalNode REG(int i) {
 			return getToken(SVMParser.REG, i);
 		}
-		public List<TerminalNode> NUMBER() { return getTokens(SVMParser.NUMBER); }
+		public TerminalNode MUL() { return getToken(SVMParser.MUL, 0); }
+		public TerminalNode NEG() { return getToken(SVMParser.NEG, 0); }
+		public TerminalNode BRANCHEQ() { return getToken(SVMParser.BRANCHEQ, 0); }
+		public TerminalNode LOADINTEGER() { return getToken(SVMParser.LOADINTEGER, 0); }
+		public TerminalNode JUMPLABEL() { return getToken(SVMParser.JUMPLABEL, 0); }
+		public TerminalNode ADD() { return getToken(SVMParser.ADD, 0); }
+		public TerminalNode COL() { return getToken(SVMParser.COL, 0); }
+		public TerminalNode BRANCHGE() { return getToken(SVMParser.BRANCHGE, 0); }
+		public TerminalNode DIV() { return getToken(SVMParser.DIV, 0); }
 		public TerminalNode NUMBER(int i) {
 			return getToken(SVMParser.NUMBER, i);
 		}
-		public TerminalNode BRANCH() { return getToken(SVMParser.BRANCH, 0); }
-		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public TerminalNode COL() { return getToken(SVMParser.COL, 0); }
-		public TerminalNode PUSH() { return getToken(SVMParser.PUSH, 0); }
-		public TerminalNode LOADWORD() { return getToken(SVMParser.LOADWORD, 0); }
-		public TerminalNode STOREWORD() { return getToken(SVMParser.STOREWORD, 0); }
-		public TerminalNode POP() { return getToken(SVMParser.POP, 0); }
-		public TerminalNode ADD() { return getToken(SVMParser.ADD, 0); }
-		public TerminalNode SUB() { return getToken(SVMParser.SUB, 0); }
-		public TerminalNode MUL() { return getToken(SVMParser.MUL, 0); }
-		public TerminalNode DIV() { return getToken(SVMParser.DIV, 0); }
-		public TerminalNode BRANCHEQ() { return getToken(SVMParser.BRANCHEQ, 0); }
 		public TerminalNode BRANCHGT() { return getToken(SVMParser.BRANCHGT, 0); }
-		public TerminalNode BRANCHGE() { return getToken(SVMParser.BRANCHGE, 0); }
-		public TerminalNode BRANCHLT() { return getToken(SVMParser.BRANCHLT, 0); }
-		public TerminalNode BRANCHLE() { return getToken(SVMParser.BRANCHLE, 0); }
-		public TerminalNode NEG() { return getToken(SVMParser.NEG, 0); }
-		public TerminalNode MOVE() { return getToken(SVMParser.MOVE, 0); }
-		public TerminalNode ADDINTEGER() { return getToken(SVMParser.ADDINTEGER, 0); }
-		public TerminalNode JUMPLABEL() { return getToken(SVMParser.JUMPLABEL, 0); }
-		public TerminalNode JUMPREG() { return getToken(SVMParser.JUMPREG, 0); }
 		public TerminalNode PRINT() { return getToken(SVMParser.PRINT, 0); }
+		public TerminalNode SUB() { return getToken(SVMParser.SUB, 0); }
+		public TerminalNode MOVE() { return getToken(SVMParser.MOVE, 0); }
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public TerminalNode PUSH() { return getToken(SVMParser.PUSH, 0); }
+		public TerminalNode POP() { return getToken(SVMParser.POP, 0); }
+		public TerminalNode JUMPREG() { return getToken(SVMParser.JUMPREG, 0); }
+		public TerminalNode LOADWORD() { return getToken(SVMParser.LOADWORD, 0); }
+		public List<TerminalNode> NUMBER() { return getTokens(SVMParser.NUMBER); }
+		public TerminalNode STOREWORD() { return getToken(SVMParser.STOREWORD, 0); }
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
 		public InstructionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -198,93 +162,66 @@ public class SVMParser extends Parser {
 		int _la;
 		try {
 			setState(57);
-			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LOADINTEGER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(10);
-				match(LOADINTEGER);
-				setState(11);
-				match(REG);
-				setState(12);
-				match(NUMBER);
+				setState(10); match(LOADINTEGER);
+				setState(11); match(REG);
+				setState(12); match(NUMBER);
 				}
 				break;
 			case BRANCH:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(13);
-				match(BRANCH);
-				setState(14);
-				match(LABEL);
+				setState(13); match(BRANCH);
+				setState(14); match(LABEL);
 				}
 				break;
 			case LABEL:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(15);
-				match(LABEL);
-				setState(16);
-				match(COL);
+				setState(15); match(LABEL);
+				setState(16); match(COL);
 				}
 				break;
 			case PUSH:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(17);
-				match(PUSH);
-				setState(18);
-				match(REG);
-				setState(19);
-				match(NUMBER);
+				setState(17); match(PUSH);
+				setState(18); match(REG);
+				setState(19); match(NUMBER);
 				}
 				break;
 			case LOADWORD:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(20);
-				match(LOADWORD);
-				setState(21);
-				((InstructionContext)_localctx).r1 = match(REG);
-				setState(22);
-				((InstructionContext)_localctx).offset = match(NUMBER);
-				setState(23);
-				match(T__0);
-				setState(24);
-				((InstructionContext)_localctx).r2 = match(REG);
-				setState(25);
-				match(T__1);
-				setState(26);
-				((InstructionContext)_localctx).dimension = match(NUMBER);
+				setState(20); match(LOADWORD);
+				setState(21); ((InstructionContext)_localctx).r1 = match(REG);
+				setState(22); ((InstructionContext)_localctx).offset = match(NUMBER);
+				setState(23); match(T__1);
+				setState(24); ((InstructionContext)_localctx).r2 = match(REG);
+				setState(25); match(T__0);
+				setState(26); ((InstructionContext)_localctx).dimension = match(NUMBER);
 				}
 				break;
 			case STOREWORD:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(27);
-				match(STOREWORD);
-				setState(28);
-				((InstructionContext)_localctx).r1 = match(REG);
-				setState(29);
-				((InstructionContext)_localctx).offset = match(NUMBER);
-				setState(30);
-				match(T__0);
-				setState(31);
-				((InstructionContext)_localctx).r2 = match(REG);
-				setState(32);
-				match(T__1);
-				setState(33);
-				((InstructionContext)_localctx).dimension = match(NUMBER);
+				setState(27); match(STOREWORD);
+				setState(28); ((InstructionContext)_localctx).r1 = match(REG);
+				setState(29); ((InstructionContext)_localctx).offset = match(NUMBER);
+				setState(30); match(T__1);
+				setState(31); ((InstructionContext)_localctx).r2 = match(REG);
+				setState(32); match(T__0);
+				setState(33); ((InstructionContext)_localctx).dimension = match(NUMBER);
 				}
 				break;
 			case POP:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(34);
-				match(POP);
-				setState(35);
-				match(NUMBER);
+				setState(34); match(POP);
+				setState(35); match(NUMBER);
 				}
 				break;
 			case ADD:
@@ -298,17 +235,10 @@ public class SVMParser extends Parser {
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ADD) | (1L << SUB) | (1L << MUL) | (1L << DIV))) != 0)) ) {
 				_errHandler.recoverInline(this);
 				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
-					consume();
-				}
-				setState(37);
-				((InstructionContext)_localctx).dest = match(REG);
-				setState(38);
-				((InstructionContext)_localctx).r1 = match(REG);
-				setState(39);
-				((InstructionContext)_localctx).r2 = match(REG);
+				consume();
+				setState(37); ((InstructionContext)_localctx).dest = match(REG);
+				setState(38); ((InstructionContext)_localctx).r1 = match(REG);
+				setState(39); ((InstructionContext)_localctx).r2 = match(REG);
 				}
 				break;
 			case BRANCHEQ:
@@ -323,73 +253,53 @@ public class SVMParser extends Parser {
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BRANCHEQ) | (1L << BRANCHGT) | (1L << BRANCHGE) | (1L << BRANCHLT) | (1L << BRANCHLE))) != 0)) ) {
 				_errHandler.recoverInline(this);
 				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
-					consume();
-				}
-				setState(41);
-				((InstructionContext)_localctx).r1 = match(REG);
-				setState(42);
-				((InstructionContext)_localctx).r2 = match(REG);
-				setState(43);
-				match(LABEL);
+				consume();
+				setState(41); ((InstructionContext)_localctx).r1 = match(REG);
+				setState(42); ((InstructionContext)_localctx).r2 = match(REG);
+				setState(43); match(LABEL);
 				}
 				break;
 			case NEG:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(44);
-				match(NEG);
-				setState(45);
-				match(REG);
+				setState(44); match(NEG);
+				setState(45); match(REG);
 				}
 				break;
 			case MOVE:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(46);
-				match(MOVE);
-				setState(47);
-				((InstructionContext)_localctx).dest = match(REG);
-				setState(48);
-				((InstructionContext)_localctx).origin = match(REG);
+				setState(46); match(MOVE);
+				setState(47); ((InstructionContext)_localctx).dest = match(REG);
+				setState(48); ((InstructionContext)_localctx).origin = match(REG);
 				}
 				break;
 			case ADDINTEGER:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(49);
-				match(ADDINTEGER);
-				setState(50);
-				((InstructionContext)_localctx).dest = match(REG);
-				setState(51);
-				((InstructionContext)_localctx).r1 = match(REG);
-				setState(52);
-				match(NUMBER);
+				setState(49); match(ADDINTEGER);
+				setState(50); ((InstructionContext)_localctx).dest = match(REG);
+				setState(51); ((InstructionContext)_localctx).r1 = match(REG);
+				setState(52); match(NUMBER);
 				}
 				break;
 			case JUMPLABEL:
 				enterOuterAlt(_localctx, 13);
 				{
-				setState(53);
-				match(JUMPLABEL);
-				setState(54);
-				match(LABEL);
+				setState(53); match(JUMPLABEL);
+				setState(54); match(LABEL);
 				}
 				break;
 			case JUMPREG:
 				enterOuterAlt(_localctx, 14);
 				{
-				setState(55);
-				match(JUMPREG);
+				setState(55); match(JUMPREG);
 				}
 				break;
 			case PRINT:
 				enterOuterAlt(_localctx, 15);
 				{
-				setState(56);
-				match(PRINT);
+				setState(56); match(PRINT);
 				}
 				break;
 			default:

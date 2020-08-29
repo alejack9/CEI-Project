@@ -18,7 +18,7 @@ import ast.errors.SemanticError;
 import ast.errors.TypeError;
 
 /**
- * The class of block expressions ("{ ... }").
+ * The class of block statements ("{ ... }").
  */
 public class StmtBlock extends Stmt {
 

@@ -21,24 +21,18 @@ import ast.errors.TypeError;
 import ast.errors.VariableNotExistsError;
 import ast.errors.VariableNotVarError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StmtDelete.
+ * The class of delete statements ("delete x").
  */
 public class StmtDelete extends Stmt {
 
-	/** The id. */
 	private String id;
-	
-	/** The id entry. */
 	private STEntry idEntry;
 
 	/**
-	 * Creates a delete statement.
-	 *
-	 * @param id the variable we want to delete
-	 * @param line the line
-	 * @param column the column
+	 * @param id     the id of the variable to delete
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public StmtDelete(String id, int line, int column) {
 		super(line, column);
@@ -46,14 +40,11 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
-	/*
-	 * Checks if the variable in use exists. if it doesn't then add an error, if it
-	 * does then remove it from the current scope
+	 * Searches for the variable in the local and the global scope.<br />
+	 * If the variable is local, then sets it as deleted if is not deleted and is
+	 * not a parameter<br />
+	 * Otherwise, checks in all scopes and, if deleted, adds an error. If the
+	 * variable is a reference or is not a parameter, then sets it as deleted
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -65,29 +56,39 @@ public class StmtDelete extends Stmt {
 			idEntry = e.deleteVariable(id);
 			return toRet;
 		}
-		
+
 		// candidate is not local
 		candidate = e.getIDEntry(id);
 		if (candidate == null || candidate.isDeleted()) {
 			toRet.add(new VariableNotExistsError(id, line, column));
 			return toRet;
 		}
-		
-		if(candidate.getType().isRef() || !candidate.getType().isParameter()) {
+
+		if (candidate.getType().isRef() || !candidate.getType().isParameter()) {
 			idEntry = e.deleteVariable(id);
 			return toRet;
 		}
-		
+
 		toRet.add(new VariableNotVarError(id, line, column));
-		
+
 		return toRet;
 	}
 
 	/**
-	 * Infer behaviour.
+	 * Checks that the user does not want to delete a function.
 	 *
-	 * @param e the e
-	 * @return the list
+	 * @return null
+	 */
+	@Override
+	public Type inferType() {
+		if (EType.FUNCTION.equalsTo(idEntry.getType()))
+			TypeErrorsStorage.addError(new TypeError("Cannot delete a function", line, column));
+		return null;
+	}
+
+	/**
+	 * Sets the local effect of the pointed variable to "D" and, if its effect is
+	 * "D", adds an error.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -102,22 +103,7 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
-	 */
-	@Override
-	public Type inferType() {
-		if (EType.FUNCTION.equalsTo(idEntry.getType()))
-			TypeErrorsStorage.addError(new TypeError("Cannot delete a function", line, column));
-		return null;
-	}
-
-	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
+	 * Sets the pointed variable as deleted
 	 */
 	@Override
 	protected void codeGen(int nl, CustomStringBuilder sb) {
