@@ -13,7 +13,7 @@ public abstract class Type implements Cloneable {
 	public abstract EType getType();
 
 	protected boolean isParameter;
-	
+
 	protected boolean isRef;
 
 	protected Type(boolean isParameter, boolean isRef) {
@@ -33,9 +33,10 @@ public abstract class Type implements Cloneable {
 	protected abstract int _getDimension();
 
 	/**
-	 * Gets the byte dimension of the type
-	 * <br>
-	 * If type is related to a variable passed by reference, then returns 4 as address dimension
+	 * Gets the byte dimension of the type <br>
+	 * If type is related to a variable passed by reference, then returns 4 as
+	 * address dimension
+	 * 
 	 * @return the dimension
 	 */
 	public int getDimension() {

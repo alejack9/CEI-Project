@@ -75,15 +75,9 @@ public class StmtBlock extends Stmt {
 		EType lastRetT = null;
 
 		/*
-		 * int g() {
-		 *    return g();
-		 * }
-		 * int f() {
-		 *    g();
-		 *    print x;
-		 * }
+		 * int g() { return g(); } int f() { g(); print x; }
 		 */
-		
+
 		boolean changed = false, safe = false;
 
 		for (Stmt c : children) {

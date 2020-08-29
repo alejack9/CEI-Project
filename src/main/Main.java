@@ -46,11 +46,11 @@ public class Main {
 	private SimplePlusLexer lexer;
 	SimpleErrorListener sl = null;
 
-
 	/**
-	 * The step that perform lexical check.
-	 * <br>Step is a variant of Supplier, created in order to generate exceptions.
-	 * <br>Has a boolean value returned by "get" method, see: {@link main.Step#get get()}
+	 * The step that perform lexical check. <br>
+	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
+	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
+	 * get()}
 	 */
 	private Step checkLexicalStep = () -> {
 		logger.write("Checking Lexical ... ");
@@ -73,9 +73,10 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform semantic check.
-	 * <br>Step is a variant of Supplier, created in order to generate exceptions.
-	 * <br>Has a boolean value returned by "get" method, see: {@link main.Step#get get()}
+	 * The step that perform semantic check. <br>
+	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
+	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
+	 * get()}
 	 */
 	private Step checkSemanticStep = () -> {
 		logger.write("Checking Semantic ... ");
@@ -95,9 +96,10 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform type check.
-	 * <br>Step is a variant of Supplier, created in order to generate exceptions.
-	 * <br>Has a boolean value returned by "get" method, see: {@link main.Step#get get()}
+	 * The step that perform type check. <br>
+	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
+	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
+	 * get()}
 	 */
 	private Step checkTypesStep = () -> {
 		logger.write("Checking Types ... ");
@@ -117,9 +119,10 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform bahviour analysis.
-	 * <br>Step is a variant of Supplier, created in order to generate exceptions.
-	 * <br>Has a boolean value returned by "get" method, see: {@link main.Step#get get()}
+	 * The step that perform bahviour analysis. <br>
+	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
+	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
+	 * get()}
 	 */
 	private Step analyseBehaviourStep = () -> {
 		List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
@@ -139,9 +142,9 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform the code generation.
-	 * <br>Step is a variant of Supplier, created in order to generate exceptions.
-	 * <br>Return a boolean value by "get" method, see: {@link main.Step#get get()}
+	 * The step that perform the code generation. <br>
+	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
+	 * Return a boolean value by "get" method, see: {@link main.Step#get get()}
 	 */
 	private Step generateCodeStep = () -> {
 		logger.write("Generating Code ... ");
@@ -154,9 +157,10 @@ public class Main {
 	};
 
 	/**
-	 * The step that run the generated code.
-	 * <br>Step is a variant of Supplier, created in order to generate exceptions.
-	 * <br>Has a boolean value returned by "get" method, see: {@link main.Step#get get()}
+	 * The step that run the generated code. <br>
+	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
+	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
+	 * get()}
 	 */
 	private Step runCodeStep = () -> {
 		logger.writeLine("Lanching program (Following output)");
@@ -176,13 +180,14 @@ public class Main {
 
 		// Run the code
 		new ExecuteVM(SVMVisitor.getCode()).cpu();
-		
+
 		return true;
 	};
-	
+
 	/**
-	 * List of delegated suppliers.
-	 * <br>Steps are functional interfaces that return boolean by "get" method, see: {@link main.Step#get get()}
+	 * List of delegated suppliers. <br>
+	 * Steps are functional interfaces that return boolean by "get" method, see:
+	 * {@link main.Step#get get()}
 	 */
 	private List<Step> steps = new LinkedList<Step>();
 
@@ -208,7 +213,7 @@ public class Main {
 	 */
 	private void start(String[] args) throws IOException {
 		manipulateArgs(args);
-		
+
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(inFileName));
 
 		logger.writeLine("Input File Name: " + inFileName);
@@ -253,14 +258,16 @@ public class Main {
 
 		// Execute one step at time
 		for (Step step : steps)
-			if(!step.get())
+			if (!step.get())
 				quit(logger);
 	}
 
 	/**
-	 * Handle parameters of the terminal command for execution of .jar file.
-	 * <br> If input file is specified set "inFileName". If was specified also errors file, then set errorsFileName.
-	 * <br> Finally, set outCodeFileName with the same name of the input file but different extension.
+	 * Handle parameters of the terminal command for execution of .jar file. <br>
+	 * If input file is specified set "inFileName". If was specified also errors
+	 * file, then set errorsFileName. <br>
+	 * Finally, set outCodeFileName with the same name of the input file but
+	 * different extension.
 	 * 
 	 * @param args - the arguments of the terminal command.
 	 */
@@ -278,7 +285,7 @@ public class Main {
 		default:
 			System.out.println("Usage: \"java -jar .\\exportedJar.jar input_file [errors_file]\"");
 		}
-		
+
 		outCodeFileName = inFileName.replaceFirst("[.][^.]+$", "") + ".out";
 	}
 

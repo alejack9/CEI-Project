@@ -86,9 +86,9 @@ public class StmtCall extends Stmt {
 	}
 
 	/**
-	 * Infer type.
+	 * Infers type.
 	 *
-	 * @return the type
+	 * @return the function type
 	 */
 	@Override
 	public Type inferType() {

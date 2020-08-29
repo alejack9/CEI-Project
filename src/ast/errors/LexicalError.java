@@ -5,7 +5,7 @@ package ast.errors;
  */
 public class LexicalError extends Error {
 	private static final long serialVersionUID = 1L;
-	
+
 	protected String character;
 	protected int errorLine;
 	protected int errorColumn;
@@ -19,7 +19,8 @@ public class LexicalError extends Error {
 	/**
 	 * Gets position of an error.
 	 *
-	 * @return string - a string with the line and the column where there is an error
+	 * @return string - a string with the line and the column where there is an
+	 *         error
 	 */
 	protected String getPosition() {
 		/** asserting that, if "errorLine" is set, then "errorColumn" is set */

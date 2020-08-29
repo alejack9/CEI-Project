@@ -3,8 +3,10 @@ package main;
 import java.io.IOException;
 
 /**
- * Functional interface for step. Variant of Supplier that allows to generate exceptions.
- * <br> A Supplier is a functional interface that gives a value, in this case a boolean.
+ * Functional interface for step. Variant of Supplier that allows to generate
+ * exceptions. <br>
+ * A Supplier is a functional interface that gives a value, in this case a
+ * boolean.
  */
 @FunctionalInterface
 public interface Step {

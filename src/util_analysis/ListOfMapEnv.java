@@ -139,7 +139,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		LinkedList<HashMap<String, T>> toRet = new LinkedList<HashMap<String, T>>();
 		scopes.descendingIterator().forEachRemaining(s -> {
 			HashMap<String, T> toAdd = new HashMap<String, T>();
-			
+
 			/**
 			 * <code>e.getValue() != null && (e.getValue().isFunction()</code> checks that
 			 * the current entry is a function

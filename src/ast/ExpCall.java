@@ -21,8 +21,8 @@ public class ExpCall extends Exp {
 	private StmtCall call;
 
 	/**
-	 * @param call the call node
-	 * @param line the line of the code
+	 * @param call   the call node
+	 * @param line   the line of the code
 	 * @param column the column of the code
 	 */
 	public ExpCall(StmtCall call, int line, int column) {
@@ -37,7 +37,7 @@ public class ExpCall extends Exp {
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		return call.checkSemantics(e);
 	}
-	
+
 	/**
 	 * Delegated to the call node
 	 */

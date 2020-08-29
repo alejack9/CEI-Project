@@ -32,14 +32,14 @@ import util_analysis.entries.STEntry;
  * The Class useful for testing routines.
  */
 class Utils {
-	
+
 	private Utils() {
 	}
 
 	/**
 	 * Asserts that the lexical errors counted are the same as the passed number.
 	 *
-	 * @param code the code
+	 * @param code   the code
 	 * @param number the expected number of errors
 	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -63,7 +63,7 @@ class Utils {
 	/**
 	 * Asserts that the semantic errors counted are the same as the passed number.
 	 * 
-	 * @param code the code
+	 * @param code   the code
 	 * @param number the expected number of errors
 	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -80,7 +80,7 @@ class Utils {
 	/**
 	 * Asserts that the type errors counted are the same as the passed number.
 	 * 
-	 * @param code the code
+	 * @param code   the code
 	 * @param number the expected number of errors
 	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -98,7 +98,7 @@ class Utils {
 	/**
 	 * Asserts that the behaviour errors counted are the same as the passed number.
 	 * 
-	 * @param code the code
+	 * @param code   the code
 	 * @param number the expected number of errors
 	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.

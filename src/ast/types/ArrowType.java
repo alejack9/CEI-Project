@@ -6,9 +6,9 @@ import java.util.List;
  * Represents function type
  */
 public class ArrowType extends Type {
-	
+
 	private List<Type> paramTypes;
-	
+
 	private Type retType;
 
 	@Override

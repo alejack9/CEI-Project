@@ -30,10 +30,10 @@ public class ExpAnd extends ExpBinBoolBoolIn {
 	protected void codeGen(int nl, CustomStringBuilder sb) {
 		String falseLabel = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
-		
+
 		getCodeExpIsFalseThenJump(leftSide, nl, falseLabel, sb);
 		getCodeExpIsFalseThenJump(rightSide, nl, falseLabel, sb);
-		
+
 		sb.newLine("li $a0 1");
 		sb.newLine("b ", end);
 		sb.newLine(falseLabel, ":");

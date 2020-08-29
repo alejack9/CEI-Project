@@ -22,17 +22,17 @@ public class Arg extends ElementBase {
 
 	/** The type. */
 	private Type type;
-	
+
 	/** The id. */
 	private String ID;
 
 	/**
 	 * Instantiates a new parameter.
 	 *
-	 * @param type the type
-	 * @param ID the id
-	 * @param ref true if it is a reference, false otherwise
-	 * @param line the line in the code
+	 * @param type   the type
+	 * @param ID     the id
+	 * @param ref    true if it is a reference, false otherwise
+	 * @param line   the line in the code
 	 * @param column the column in the code
 	 */
 	public Arg(String type, String ID, boolean ref, int line, int column) {
@@ -66,7 +66,8 @@ public class Arg extends ElementBase {
 	/**
 	 * Infer type.
 	 *
-	 * @return null because it does not have any type (void is reserved for return statements)
+	 * @return null because it does not have any type (void is reserved for return
+	 *         statements)
 	 */
 	@Override
 	public Type inferType() {

@@ -9,10 +9,10 @@ package ast;
 public class ExpNotEqual extends ExpBinBoolAllIn {
 
 	/**
-	 * @param leftSide the left side of the expression
+	 * @param leftSide  the left side of the expression
 	 * @param rightSide the right side of the expression
-	 * @param line the line in the code
-	 * @param column the column in the code
+	 * @param line      the line in the code
+	 * @param column    the column in the code
 	 */
 	public ExpNotEqual(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);

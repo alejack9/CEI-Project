@@ -12,13 +12,14 @@ public class CustomStringBuilder {
 
 	/**
 	 * Write new line composed of the strings passed
+	 * 
 	 * @param toAppend - list of string
 	 */
 	public void newLine(String... toAppend) {
 		sb.append("\r\n");
 		sameRow(toAppend);
 	}
-	
+
 	/**
 	 * Append to the current string the strings passed as parameters
 	 * 

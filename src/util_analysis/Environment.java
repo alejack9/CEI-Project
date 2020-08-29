@@ -16,7 +16,7 @@ import util_analysis.entries.Entry;
  * @param <T> the entry type
  */
 public interface Environment<T extends Entry> extends MyCloneable {
-	
+
 	/**
 	 * Adds an entry in the current scope.
 	 *

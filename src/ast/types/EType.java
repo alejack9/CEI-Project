@@ -4,11 +4,8 @@ package ast.types;
  * ID and function return types
  */
 public enum EType {
-	
-	INT("int"), 
-	BOOL("bool"), 
-	VOID("void"), 
-	FUNCTION("function");
+
+	INT("int"), BOOL("bool"), VOID("void"), FUNCTION("function");
 
 	private final String type;
 
@@ -32,10 +29,10 @@ public enum EType {
 	}
 
 	/**
-	 * Get <i>Type</i> object from enum value 
+	 * Get <i>Type</i> object from enum value
 	 *
 	 * @param isParameter the ID associated to the type is a parameter
-	 * @param isRef the ID associated to the type is passed by reference
+	 * @param isRef       the ID associated to the type is passed by reference
 	 * @return the related object Type
 	 */
 	public Type getType(boolean isParameter, boolean isRef) {
@@ -43,7 +40,8 @@ public enum EType {
 	}
 
 	/**
-	 * Gets <i>Type</i> object from enum value associated to a not parameter and not referenced ID
+	 * Gets <i>Type</i> object from enum value associated to a not parameter and not
+	 * referenced ID
 	 *
 	 * @return the correspondent object Type
 	 */
@@ -55,7 +53,7 @@ public enum EType {
 	 * Gets the enum value associated to a string value.
 	 *
 	 * @param value the type name
-	 * @return the related enum value 
+	 * @return the related enum value
 	 */
 	public static EType getEnum(String value) {
 		for (EType v : values())

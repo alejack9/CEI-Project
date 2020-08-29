@@ -33,7 +33,7 @@ class ConsoleOutputLogger extends Logger {
 	/**
 	 * Writes a new line including DateTime if specified
 	 * 
-	 * @param message the message
+	 * @param message      the message
 	 * @param hideDateTime true if the date time has not to be shown
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */

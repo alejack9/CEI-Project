@@ -1,7 +1,8 @@
 package ast.errors;
 
 /**
- * Represents a behaviour error, in particular the variable was deleted and trying to use it.
+ * Represents a behaviour error, in particular the variable was deleted and
+ * trying to use it.
  */
 public class DeletedVariableError extends BehaviourError {
 	private static final long serialVersionUID = 1L;
