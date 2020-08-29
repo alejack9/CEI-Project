@@ -181,7 +181,7 @@ public class Main {
 	};
 	
 	/**
-	 * List of delegated supplier.
+	 * List of delegated suppliers.
 	 * <br>Steps are functional interfaces that return boolean by "get" method, see: {@link main.Step#get get()}
 	 */
 	private List<Step> steps = new LinkedList<Step>();
@@ -293,7 +293,7 @@ public class Main {
 	}
 
 	/**
-	 * Stop the execution.
+	 * Stops the build of program.
 	 *
 	 * @param clogger - the logger.
 	 * @throws IOException Signals that an I/O exception has occurred.
