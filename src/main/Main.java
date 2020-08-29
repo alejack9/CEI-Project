@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import ast.StmtBlock;
 import ast.VisitorImplSP;
@@ -36,15 +37,16 @@ import util_analysis.entries.STEntry;
  * The main class.
  */
 public class Main {
+
 	private Logger logger;
-	
 	private String inFileName = "test.spl";
 	private String errorsFileName = null;
 	private String outCodeFileName;
-	
+
 	private StmtBlock mainBlock;
 	private SimplePlusLexer lexer;
 	SimpleErrorListener sl = null;
+
 
 	/**
 	 * The step that perform lexical check.

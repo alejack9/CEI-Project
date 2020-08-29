@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.LinkedList;
@@ -16,11 +19,25 @@ import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
 import ast.errors.VariableNotExistsError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ExpVar.
+ */
 public class ExpVar extends Exp {
 
+	/** The id. */
 	private String id;
+	
+	/** The id entry. */
 	private STEntry idEntry;
 
+	/**
+	 * Instantiates a new exp var.
+	 *
+	 * @param id the id
+	 * @param line the line
+	 * @param column the column
+	 */
 	public ExpVar(String id, int line, int column) {
 		super(line, column);
 		this.id = id;
@@ -28,6 +45,9 @@ public class ExpVar extends Exp {
 
 	/**
 	 * Checks if the variable in use exists. if it doesn't then add an error.
+	 *
+	 * @param e the e
+	 * @return the list
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -41,11 +61,22 @@ public class ExpVar extends Exp {
 		return toRet;
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		return this.idEntry.getType();
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -63,17 +94,33 @@ public class ExpVar extends Exp {
 		return toRet;
 	}
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Gets the id entry.
+	 *
+	 * @return the id entry
+	 */
 	public STEntry getIdEntry() {
 		return idEntry;
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	// scrive sempre il valore in $a0
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	protected void codeGen(int nl, CustomStringBuilder sb) {
 		if (idEntry.getType().isParameter()) {
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
 

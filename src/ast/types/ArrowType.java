@@ -2,8 +2,13 @@ package ast.types;
 
 import java.util.List;
 
+/**
+ * Represents function type
+ */
 public class ArrowType extends Type {
+	
 	private List<Type> paramTypes;
+	
 	private Type retType;
 
 	@Override
@@ -19,10 +24,20 @@ public class ArrowType extends Type {
 		return retType;
 	}
 
+	/**
+	 * Sets the types of function parameters
+	 *
+	 * @param paramTypes the parameters types
+	 */
 	public void setParamTypes(List<Type> paramTypes) {
 		this.paramTypes = paramTypes;
 	}
 
+	/**
+	 * Sets the function return type
+	 *
+	 * @param retType the return type
+	 */
 	public void setRetType(Type retType) {
 		this.retType = retType;
 	}

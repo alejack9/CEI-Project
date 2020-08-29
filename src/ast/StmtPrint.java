@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.List;
@@ -12,25 +15,54 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StmtPrint.
+ */
 public class StmtPrint extends Stmt {
 
+	/** The exp. */
 	private Exp exp;
 
+	/**
+	 * Instantiates a new stmt print.
+	 *
+	 * @param exp the exp
+	 * @param line the line
+	 * @param column the column
+	 */
 	public StmtPrint(Exp exp, int line, int column) {
 		super(line, column);
 		this.exp = exp;
 	}
 
+	/**
+	 * Check semantics.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		return exp.checkSemantics(e);
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return exp.inferBehaviour(e);
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		if (EType.VOID.equalsTo(exp.inferType()))
@@ -38,9 +70,15 @@ public class StmtPrint extends Stmt {
 		return null;
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
-		exp._codeGen(nl, sb);
+	protected void codeGen(int nl, CustomStringBuilder sb) {
+		exp.codeGen(nl, sb);
 		sb.newLine("print");
 	}
 

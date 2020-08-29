@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.LinkedList;
@@ -17,13 +20,33 @@ import ast.errors.DifferentVarTypeError;
 import ast.errors.IdAlreadytExistsError;
 import ast.errors.SemanticError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StmtDecVar.
+ */
 public class StmtDecVar extends StmtDec {
 
+	/** The type. */
 	private Type type;
+	
+	/** The id. */
 	private String ID;
+	
+	/** The exp. */
 	private Exp exp;
+	
+	/** The id entry. */
 	private STEntry idEntry;
 
+	/**
+	 * Instantiates a new stmt dec var.
+	 *
+	 * @param type the type
+	 * @param ID the id
+	 * @param exp the exp
+	 * @param line the line
+	 * @param column the column
+	 */
 	public StmtDecVar(Type type, String ID, Exp exp, int line, int column) {
 		super(line, column);
 		this.type = type;
@@ -31,6 +54,12 @@ public class StmtDecVar extends StmtDec {
 		this.exp = exp;
 	}
 
+	/**
+	 * Check semantics.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -54,6 +83,12 @@ public class StmtDecVar extends StmtDec {
 		return toRet;
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -81,6 +116,11 @@ public class StmtDecVar extends StmtDec {
 		return toRet;
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		if (EType.VOID.equalsTo(type))
@@ -97,10 +137,16 @@ public class StmtDecVar extends StmtDec {
 		return null;
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	protected void codeGen(int nl, CustomStringBuilder sb) {
 		if (exp != null)
-			exp._codeGen(nl, sb);
+			exp.codeGen(nl, sb);
 		sb.newLine("li $t1 0");
 		sb.newLine("sw $a0 ", Integer.toString(idEntry.offset), "($t1) ", Integer.toString(type.getDimension()));
 		if (idEntry.isDeleted())

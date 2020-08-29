@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.List;
@@ -9,49 +12,67 @@ import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 
+/**
+ * The Base class for all elements.
+ */
 public abstract class ElementBase {
 
 	protected int line, column;
 
+	/**
+	 * 
+	 * @param line   the line in the code
+	 * @param column the column in the code
+	 */
 	protected ElementBase(int line, int column) {
 		this.line = line;
 		this.column = column;
 	}
 
 	/**
-	 * checks basic semantic errors: variable
-	 * 
+	 * checks basic semantic errors.
+	 *
 	 * @param e is the current environment where information about existent
 	 *          variables is stored
-	 * @return a list of the semantic problems found
+	 * @return a list of the semantic errors found
 	 */
 	public abstract List<SemanticError> checkSemantics(Environment<STEntry> e);
 
+	/**
+	 * Infer type.
+	 *
+	 * @return null if it does not have any type (void is reserved for return
+	 *         statements), the type of the element otherwise
+	 */
 	public abstract Type inferType();
 
 	/**
-	 * performs behavioral type inference for Simple programs
-	 * 
-	 * @param e is the current environment where the information about existent
-	 *          variables is stored
+	 * performs behavioral analysis.
+	 *
+	 * @param e the environment
 	 * @return the behavior of the expression
 	 */
 	public abstract List<BehaviourError> inferBehaviour(Environment<BTEntry> e);
 
-	public abstract void _codeGen(int nl, CustomStringBuilder sb);
+	protected abstract void codeGen(int nl, CustomStringBuilder csb);
 
-	public final void codeGen(int nl, CustomStringBuilder csb) {
-		_codeGen(nl, csb);
-	}
-
+	/**
+	 * Generates the outCode basing on the code having this element as parent.
+	 */
 	public final String codeGen() {
 		CustomStringBuilder csb = new CustomStringBuilder(new StringBuilder());
+		/**
+		 * Wraps the actual code in a starting AR to avoid errors in case of "return"
+		 * statement in main block
+		 */
 		csb.newLine("b CALLMAIN");
 		csb.newLine("MAIN:");
 		csb.newLine("move $fp $sp");
 		csb.newLine("push $ra 4");
 		csb.newLine();
+
 		codeGen(0, csb);
+
 		csb.newLine();
 		csb.newLine("lw $ra 0($sp) 4");
 		csb.newLine("addi $sp $sp 8");

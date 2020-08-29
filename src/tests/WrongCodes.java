@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package tests;
 
 import java.io.IOException;
@@ -9,13 +12,19 @@ import util_analysis.TypeErrorsStorage;
 
 class WrongCodes {
 
+	/**
+	 * Reset type errors storage after each test.
+	 */
 	@AfterEach
 	public void resetTypeErrorsStorage() {
 		TypeErrorsStorage.clear();
 	}
-
 	
-	
+	/**
+	 * Cannot change variable type after a delete.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void cannotChangeTypeAfterDelete() throws IOException {
 		Utils.semanticErrors(String.join("\r\n" 
@@ -25,6 +34,11 @@ class WrongCodes {
 		, 1);
 	}
 
+	/**
+	 * The variable "a" has been deleted.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void variableAHasBeenDeleted() throws IOException {
 		Utils.behaviourErrors(String.join("\r\n" 
@@ -52,6 +66,11 @@ class WrongCodes {
 		, 1);
 	}
 
+	/**
+	 * The variable "x" has been deleted (a different example).
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void variableXHasBeenDeleted() throws IOException {
 		Utils.behaviourErrors(String.join("\r\n" 
@@ -75,6 +94,11 @@ class WrongCodes {
 		, 3);
 	}
 
+	/**
+	 * The variable "z" has been deleted (a different example).
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void variableZHasBeenDeleted() throws IOException {
 		Utils.behaviourErrors(String.join("\r\n" 
@@ -92,6 +116,11 @@ class WrongCodes {
 		, 1);
 	}
 
+	/**
+	 * Parameters must be compliant.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void paramsMustBeCompliant() throws IOException {
 		Utils.semanticErrors(String.join("\r\n"
@@ -102,6 +131,11 @@ class WrongCodes {
 		, 1);
 	}
 	
+	/**
+	 * Check of passed variables if is required a referenced one.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void refValueCheck() throws IOException {
 		Utils.semanticErrors(String.join("\r\n" 
@@ -117,6 +151,11 @@ class WrongCodes {
 
 
 
+	/**
+	 * Cannot access to global variables.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void cannotAccessToGlobalVariables() throws IOException {
 		Utils.semanticErrors(String.join("\r\n" 
@@ -130,6 +169,11 @@ class WrongCodes {
 		, 1);
 	}
 
+	/**
+	 * Type checking example.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void typeChecking() throws IOException {
 		Utils.typeErrors(String.join("\r\n" 
@@ -143,9 +187,14 @@ class WrongCodes {
 		, 2);
 	}
 	
+	/**
+	 * Lexical error.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	void lexerErrors() throws IOException {
-		Utils.lexerErrors(String.join("\r\n"
+		Utils.lexicalErrors(String.join("\r\n"
 				, "{"
 				, "    bool valu';" 
 				, "}")

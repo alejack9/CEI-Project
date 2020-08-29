@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.LinkedList;
@@ -14,10 +17,22 @@ import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StmtBlock.
+ */
 public class StmtBlock extends Stmt {
 
+	/** The children. */
 	private List<Stmt> children;
 
+	/**
+	 * Instantiates a new stmt block.
+	 *
+	 * @param children the children
+	 * @param line the line
+	 * @param column the column
+	 */
 	public StmtBlock(List<Stmt> children, int line, int column) {
 		super(line, column);
 		this.children = children;
@@ -27,7 +42,10 @@ public class StmtBlock extends Stmt {
 	 * It checks the semantic for every child in order item by item It creates a new
 	 * scope for the elements that will be found inside Each element may add new
 	 * elements to the environment inside the current scope After finishing drop the
-	 * newly created scope
+	 * newly created scope.
+	 *
+	 * @param e the e
+	 * @return the list
 	 */
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		// initialize result variable
@@ -44,6 +62,12 @@ public class StmtBlock extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Check semantics same scope.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	public List<SemanticError> checkSemanticsSameScope(Environment<STEntry> e) {
 		// initialize result variable
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -54,6 +78,12 @@ public class StmtBlock extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		// initialize result variable
@@ -70,6 +100,12 @@ public class StmtBlock extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer behaviour same scope.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	public List<BehaviourError> inferBehaviourSameScope(Environment<BTEntry> e) {
 		// initialize result variable
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -82,6 +118,11 @@ public class StmtBlock extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		Type toRet = null;
@@ -115,9 +156,15 @@ public class StmtBlock extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	protected void codeGen(int nl, CustomStringBuilder sb) {
 		for (Stmt c : children)
-			c._codeGen(nl, sb);
+			c.codeGen(nl, sb);
 	}
 }

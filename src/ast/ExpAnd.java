@@ -1,10 +1,22 @@
+/*
+ * 
+ */
 package ast;
 
 import support.CodeGenUtils;
 import support.CustomStringBuilder;
 
+/**
+ * The AND expression class.
+ */
 public class ExpAnd extends ExpBinBoolBoolIn {
 
+	/**
+	 * @param left the left
+	 * @param right the right
+	 * @param line the line
+	 * @param column the column
+	 */
 	public ExpAnd(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);
 	}
@@ -15,11 +27,11 @@ public class ExpAnd extends ExpBinBoolBoolIn {
 	}
 
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	protected void codeGen(int nl, CustomStringBuilder sb) {
 		String F = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
-		valutate(leftSide, nl, F, sb);
-		valutate(rightSide, nl, F, sb);
+		getCodeExpIsFalseThenJump(leftSide, nl, F, sb);
+		getCodeExpIsFalseThenJump(rightSide, nl, F, sb);
 		sb.newLine("li $a0 1");
 		sb.newLine("b ", end);
 		sb.newLine(F, ":");
@@ -27,8 +39,8 @@ public class ExpAnd extends ExpBinBoolBoolIn {
 		sb.newLine(end, ":");
 	}
 
-	private void valutate(Exp side, int nl, String label, CustomStringBuilder sb) {
-		side._codeGen(nl, sb);
+	private void getCodeExpIsFalseThenJump(Exp side, int nl, String label, CustomStringBuilder sb) {
+		side.codeGen(nl, sb);
 		sb.newLine("li $t1 0");
 		sb.newLine("beq $a0 $t1 ", label);
 	}

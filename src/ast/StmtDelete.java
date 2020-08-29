@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package ast;
 
 import java.util.LinkedList;
@@ -18,21 +21,36 @@ import ast.errors.TypeError;
 import ast.errors.VariableNotExistsError;
 import ast.errors.VariableNotVarError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StmtDelete.
+ */
 public class StmtDelete extends Stmt {
 
+	/** The id. */
 	private String id;
+	
+	/** The id entry. */
 	private STEntry idEntry;
 
 	/**
-	 * Creates a delete statement
-	 * 
+	 * Creates a delete statement.
+	 *
 	 * @param id the variable we want to delete
+	 * @param line the line
+	 * @param column the column
 	 */
 	public StmtDelete(String id, int line, int column) {
 		super(line, column);
 		this.id = id;
 	}
 
+	/**
+	 * Check semantics.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	/*
 	 * Checks if the variable in use exists. if it doesn't then add an error, if it
 	 * does then remove it from the current scope
@@ -65,6 +83,12 @@ public class StmtDelete extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer behaviour.
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -77,6 +101,11 @@ public class StmtDelete extends Stmt {
 		return toRet;
 	}
 
+	/**
+	 * Infer type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public Type inferType() {
 		if (EType.FUNCTION.equalsTo(idEntry.getType()))
@@ -84,8 +113,14 @@ public class StmtDelete extends Stmt {
 		return null;
 	}
 
+	/**
+	 * Code gen.
+	 *
+	 * @param nl the nl
+	 * @param sb the sb
+	 */
 	@Override
-	public void _codeGen(int nl, CustomStringBuilder sb) {
+	protected void codeGen(int nl, CustomStringBuilder sb) {
 		idEntry.setDeleted(true);
 	}
 }

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package tests;
 
 import java.io.IOException;
@@ -9,6 +12,9 @@ import util_analysis.TypeErrorsStorage;
 
 class CorrectCodes {
 
+	/**
+	 * Reset type errors storage.
+	 */
 	@AfterEach
 	public void resetTypeErrorsStorage() {
 		TypeErrorsStorage.clear();
@@ -18,7 +24,8 @@ class CorrectCodes {
 	void correctCode1() throws IOException {
 		Utils.correctCode(String.join("\r\n"
 				, "{"
-				, "    int x = 3;", "    int f(int var a, bool b) {"
+				, "    int x = 3;"
+				, "    int f(int var a, bool b) {"
 				, "        if(b == true) {"
 				, "            return a;"
 				, "        }"
@@ -116,7 +123,8 @@ class CorrectCodes {
 				, "        int y;"
 				, "        g(y);"
 				, "    }"
-				, "    f(x);", "}")
+				, "    f(x);"
+				, "}")
 			);
 	}
 
@@ -168,6 +176,42 @@ class CorrectCodes {
 				, "    int g(int var y) {"
 				, "        print y;"
 				, "        return y;"
+				, "    }"
+				, "    return g(a);"
+				, "}")
+			);
+	}
+
+	/**
+	 * Testing AND
+	 */
+	@Test
+	void correctCode10() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    int a = 4;"
+				, "    void g(int var y) {"
+				, "        if(y == 4 && y + 1 == 5)"
+				, "            print y;"
+				, "    }"
+				, "    return g(a);"
+				, "}")
+			);
+	}
+
+	/**
+	 * Testing OR
+	 */
+	@Test
+	void correctCode11() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    int a = 4;"
+				, "    void g(int var y) {"
+				, "        if(y == 5 || y + 1 == 5)"
+				, "            print y;"
+				, "        if(y == 4 || y + 1 == 6)"
+				, "            print y;"
 				, "    }"
 				, "    return g(a);"
 				, "}")
