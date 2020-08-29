@@ -16,7 +16,7 @@ import util_analysis.entries.STEntry;
 /**
  * The Class ListOfMapEnv.
  *
- * @param <T> the generic type
+ * @param <T> the entry type
  */
 public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 
@@ -30,11 +30,10 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	private int offset = 0;
 
 	/**
-	 * Instantiates a new list of map env.
 	 *
 	 * @param existingScopes the existing scopes
-	 * @param offset the offset
-	 * @param nestingLevel the nesting level
+	 * @param offset         the starting offset
+	 * @param nestingLevel   starting the nesting level
 	 */
 	public ListOfMapEnv(LinkedList<HashMap<String, T>> existingScopes, int offset, int nestingLevel) {
 		this.scopes = existingScopes;
@@ -42,52 +41,34 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		this.nestingLevel = nestingLevel;
 	}
 
-	/**
-	 * Instantiates a new list of map env.
-	 */
-	public ListOfMapEnv() {
-	}
+	public ListOfMapEnv() {}
 
 	/**
-	 * Adds the.
+	 * If deleted, restores the passed id. 
 	 *
-	 * @param id the id
+	 * @param id    the id
 	 * @param entry the entry
 	 * @return true, if successful
 	 */
 	@Override
 	public boolean add(String id, T entry) {
+		T prev = getLocalIDEntry(id);
+		if(prev != null && !prev.isDeleted())
+			return false;
+		
 		entry.setDeleted(false);
-		if (entry instanceof STEntry)
-			return add(id, (STEntry) entry);
-		T prev = getLocalIDEntry(id);
-		if (prev == null || prev.isDeleted()) {
-			scopes.peek().put(id, entry);
-			return true;
-		}
-		return false;
-	}
 
-	/**
-	 * Adds the.
-	 *
-	 * @param id the id
-	 * @param stEntry the st entry
-	 * @return true, if successful
-	 */
-	@SuppressWarnings("unchecked")
-	private boolean add(String id, STEntry stEntry) {
-		T prev = getLocalIDEntry(id);
-		if (prev == null || prev.isDeleted()) {
+		if (entry instanceof STEntry) {
+			STEntry stEntry = (STEntry) entry; 
 			if (prev == null) {
 				stEntry.offset = getOffset();
 				this.offset += stEntry.getType().getDimension();
 				stEntry.nestingLevel = getNestingLevel();
 			}
-			scopes.peek().put(id, (T) stEntry);
-			return true;
 		}
-		return false;
+		
+		scopes.peek().put(id, entry);
+		return true;
 	}
 
 	/**
@@ -172,7 +153,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	/**
 	 * Update.
 	 *
-	 * @param id the id
+	 * @param id    the id
 	 * @param entry the entry
 	 * @return the t
 	 */
