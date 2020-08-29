@@ -9,8 +9,6 @@ public class CodeGenUtils {
 	private CodeGenUtils() {
 	}
 
-	public static String k;
-
 	/**
 	 * Load in the register "$al" the access link that point to the activation record in which is store the variable.
 	 * <br>If the variable was in an external activation record, then go up the access link chain until the variable is found.
