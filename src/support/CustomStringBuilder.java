@@ -19,10 +19,10 @@ public class CustomStringBuilder {
 		sameRow(toAppend);
 	}
 	
-	// TODO
 	/**
+	 * Append to the current string the strings passed as parameters
 	 * 
-	 * @param toAppend
+	 * @param toAppend - list of string
 	 */
 	public void sameRow(String... toAppend) {
 		for (String s : toAppend)
