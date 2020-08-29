@@ -19,7 +19,7 @@ public abstract class SemanticError extends Error {
 	}
 
 	/**
-	 * Gets the position.
+	 * Gets position of an error.
 	 *
 	 * @return string - a string with the line and the column where there is an error
 	 */

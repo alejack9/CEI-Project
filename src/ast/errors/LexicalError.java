@@ -17,12 +17,12 @@ public class LexicalError extends Error {
 	}
 
 	/**
-	 * Gets the position.
+	 * Gets position of an error.
 	 *
 	 * @return string - a string with the line and the column where there is an error
 	 */
 	protected String getPosition() {
-		// asserting that, if "errorLine" is set, then "errorColumn" is set
+		/** asserting that, if "errorLine" is set, then "errorColumn" is set */
 		return "[ " + errorLine + " : " + errorColumn + " ]";
 	}
 
