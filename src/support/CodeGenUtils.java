@@ -13,9 +13,9 @@ public class CodeGenUtils {
 	
 	/**
 	 * Access to a variable in the same or external activation record
-	 * @param variable
-	 * @param nl
-	 * @param sb
+	 * @param variable - the variable to access
+	 * @param nl - the current nesting level
+	 * @param sb - the string to add the assembly command
 	 */
 	public static void getVariableCodeGen(STEntry variable, int nl, CustomStringBuilder sb) {
 		sb.newLine("move $al $fp");
@@ -27,7 +27,7 @@ public class CodeGenUtils {
 
 	/**
 	 * Create label
-	 * @return label
+	 * @return label - the label
 	 */
 	public static String freshLabel() {
 		return "label" + id++;

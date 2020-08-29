@@ -13,7 +13,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import logger.Logger;
 
 /**
- * Default error listener (implements ANTLRErrorListener)
+ * Default error listener (implements ANTLRErrorListener).
  */
 public abstract class SimpleErrorListener implements ANTLRErrorListener {
 
@@ -21,9 +21,9 @@ public abstract class SimpleErrorListener implements ANTLRErrorListener {
 	private boolean errors = false;
 
 	/**
-	 * This class can be instanced by children
+	 * This class can be instanced by children.
 	 * 
-	 * @param logger The logger in which write
+	 * @param logger - The logger in which write
 	 */
 	protected SimpleErrorListener(Logger logger) {
 		this.logger = logger;
