@@ -217,4 +217,20 @@ class CorrectCodes {
 				, "}")
 			);
 	}
+	
+	/**
+	 * Testing function call inside a function call
+	 */
+	@Test
+	void correctCode12() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    int f(int x) {"
+				, "        return x;"
+				, "    }"
+				, "    print f(f(1));"
+				, "}"
+				)
+			);
+	}
 }

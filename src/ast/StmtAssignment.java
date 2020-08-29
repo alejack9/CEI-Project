@@ -20,28 +20,22 @@ import ast.errors.BehaviourError;
 import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StmtAssignment.
+ * The class of assignment expressions ("x = 3" or "x = y").
  */
 public class StmtAssignment extends Stmt {
 
-	/** The id. */
 	private String id;
-	
-	/** The id entry. */
+
 	private STEntry idEntry;
-	
-	/** The exp. */
+
 	private Exp exp;
 
 	/**
-	 * Instantiates a new stmt assignment.
-	 *
-	 * @param id the id
-	 * @param exp the exp
-	 * @param line the line
-	 * @param column the column
+	 * @param id     the variable id
+	 * @param exp    the right expression
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public StmtAssignment(String id, Exp exp, int line, int column) {
 		super(line, column);
@@ -50,10 +44,7 @@ public class StmtAssignment extends Stmt {
 	}
 
 	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Checks that the variable exists and checks the right expression semantic.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -70,10 +61,8 @@ public class StmtAssignment extends Stmt {
 	}
 
 	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Infer expression behaviour and than checks that the entry is not in
+	 * {@link EEffect#T TOP} state.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -90,9 +79,9 @@ public class StmtAssignment extends Stmt {
 	}
 
 	/**
-	 * Infer type.
+	 * Checks that the variable type is the same as the expression type.
 	 *
-	 * @return the type
+	 * @return null
 	 */
 	@Override
 	public Type inferType() {
@@ -105,30 +94,51 @@ public class StmtAssignment extends Stmt {
 		return null;
 	}
 
-	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
-	 */
 	@Override
 	protected void codeGen(int nl, CustomStringBuilder sb) {
+		/** Generates the expression code */
 		exp.codeGen(nl, sb);
-		sb.newLine("move $t1 $a0");
-		
-		if(!idEntry.getType().isParameter()) {
+
+		/** if the entry is not a parameter, save the $a0 value in the heap */
+		if (!idEntry.getType().isParameter()) {
+			/**
+			 * $t1=0 is only used to tell to the executor to get the variable from the heap
+			 */
 			sb.newLine("li $t1 0");
+			/**
+			 * saves the $a0 value into the heap at the position indicated by the offset of
+			 * idEntry
+			 */
 			sb.newLine("sw $a0 ", Integer.toString(idEntry.offset), "($t1) ",
 					Integer.toString(idEntry.getType().getDimension()));
 			return;
 		}
-		
+
+		// The variable is a parameter
+
+		sb.newLine("move $t1 $a0");
+		/**
+		 * Generates code to get the variable value<br />
+		 * NOTE: it also changes the $al value pointing to the correct scope
+		 */
 		CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
 
+		/** prepare $t1 to be saved somewhere */
+		sb.newLine("sw $t1 ");
+
+		/**
+		 * if the variable is a reference, saves in the address retrieved by the
+		 * variable value
+		 */
+		// NOTE: if the variable is a reference, we need to point to the address
+		// written in the $a0 value
 		if (idEntry.getType().isRef())
-			sb.newLine("sw $t1 0($a0) ", Integer.toString(idEntry.getType().getDimension()));
+			sb.sameRow("0($a0) ");
+		/** Otherwise saves in the offset of variable starting from $al value */
 		else
-			sb.newLine("sw $t1 ", Integer.toString(idEntry.offset), "($al) ",
-					Integer.toString(idEntry.getType().getDimension()));
+			sb.sameRow(Integer.toString(idEntry.offset), "($al) ");
+
+		/** add the dimension of the variable to save */
+		sb.sameRow(Integer.toString(idEntry.getType().getDimension()));
 	}
 }

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import util_analysis.entries.Entry;
 import util_analysis.entries.STEntry;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ListOfMapEnv.
  *
@@ -41,10 +40,11 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		this.nestingLevel = nestingLevel;
 	}
 
-	public ListOfMapEnv() {}
+	public ListOfMapEnv() {
+	}
 
 	/**
-	 * If deleted, restores the passed id. 
+	 * If deleted, restores the passed id.
 	 *
 	 * @param id    the id
 	 * @param entry the entry
@@ -53,27 +53,26 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	@Override
 	public boolean add(String id, T entry) {
 		T prev = getLocalIDEntry(id);
-		if(prev != null && !prev.isDeleted())
+		if (prev != null && !prev.isDeleted())
 			return false;
-		
+
 		entry.setDeleted(false);
 
 		if (entry instanceof STEntry) {
-			STEntry stEntry = (STEntry) entry; 
+			STEntry stEntry = (STEntry) entry;
 			if (prev == null) {
 				stEntry.offset = getOffset();
 				this.offset += stEntry.getType().getDimension();
 				stEntry.nestingLevel = getNestingLevel();
 			}
 		}
-		
+
 		scopes.peek().put(id, entry);
 		return true;
 	}
 
 	/**
-	 * Inserts a new scope into the environment. When a scope is inserted old scope
-	 * is clone so previous defined variables still exist
+	 * Inserts a new scope into the environment
 	 */
 	@Override
 	public void openScope() {
@@ -81,21 +80,13 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	}
 
 	/**
-	 * Drops the current scope and returns to the outer scope removing all changes
-	 * and additions done within this scope.
+	 * Drops the current scope
 	 */
 	@Override
 	public void closeScope() {
 		scopes.pop();
 	}
 
-	/**
-	 * Remove the variable with the given id from the first scope that contains it
-	 * notice that if the variable exists in an outer scope it will have that value.
-	 *
-	 * @param id the id
-	 * @return the t
-	 */
 	@Override
 	public T deleteVariable(String id) {
 		T toRet = getIDEntry(id);
@@ -104,12 +95,6 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		return toRet;
 	}
 
-	/**
-	 * Check for variable/function.
-	 *
-	 * @param id of the variable/function
-	 * @return T associated with the variable/function, null if it is not declared
-	 */
 	@Override
 	public T getIDEntry(String id) {
 		for (HashMap<String, T> scope : scopes)
@@ -118,45 +103,16 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		return null;
 	}
 
-	/**
-	 * Check local scope for variable/function.
-	 *
-	 * @param id of the variable/function
-	 * @return T associated with the variable/function in current scope, null
-	 *         otherwise
-	 */
 	@Override
 	public T getLocalIDEntry(String id) {
 		return scopes.peek().get(id);
 	}
 
-	/**
-	 * Gets the nesting level.
-	 *
-	 * @return the nesting level
-	 */
 	@Override
 	public int getNestingLevel() {
 		return nestingLevel;
 	}
 
-	/**
-	 * Gets the offset.
-	 *
-	 * @return the offset
-	 */
-	@Override
-	public int getOffset() {
-		return this.offset;
-	}
-
-	/**
-	 * Update.
-	 *
-	 * @param id    the id
-	 * @param entry the entry
-	 * @return the t
-	 */
 	@Override
 	public T update(String id, T entry) {
 		for (HashMap<String, T> scope : scopes)
@@ -165,79 +121,56 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		return null;
 	}
 
-	/**
-	 * Gets the all I ds.
-	 *
-	 * @return the all I ds
-	 */
 	@Override
 	public Map<String, T> getAllIDs() {
 		Map<String, T> toRet = new HashMap<String, T>();
 
+		/**
+		 * Using the descending iterator, it is possible to replace existing ids values
+		 * with a more specific one derived by the inner scope
+		 */
 		scopes.descendingIterator().forEachRemaining(scope -> toRet.putAll(scope));
 
 		return toRet;
 	}
 
-	/**
-	 * Gets the all functions.
-	 *
-	 * @return the all functions
-	 */
 	@Override
 	public LinkedList<HashMap<String, T>> getAllFunctions() {
 		LinkedList<HashMap<String, T>> toRet = new LinkedList<HashMap<String, T>>();
 		scopes.descendingIterator().forEachRemaining(s -> {
 			HashMap<String, T> toAdd = new HashMap<String, T>();
-			toAdd.putAll(s.entrySet().stream().filter(e -> isFun(e.getValue()))
+			
+			/**
+			 * <code>e.getValue() != null && (e.getValue().isFunction()</code> checks that
+			 * the current entry is a function
+			 */
+			toAdd.putAll(s.entrySet().stream().filter(e -> e.getValue() != null && (e.getValue().isFunction()))
 					.collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue())));
 			toRet.push(toAdd);
 		});
 		return toRet;
 	}
 
-	/**
-	 * Checks if is fun.
-	 *
-	 * @param entry the entry
-	 * @return true, if is fun
-	 */
-	private boolean isFun(T entry) {
-		return entry != null && (entry.isFunction());
+	@Override
+	public int getOffset() {
+		return this.offset;
 	}
 
-	/**
-	 * Sets the offset.
-	 *
-	 * @param offset the new offset
-	 */
 	@Override
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
 
-	/**
-	 * Increase nesting level.
-	 */
 	@Override
 	public void increaseNestingLevel() {
 		nestingLevel++;
 	}
 
-	/**
-	 * Decrease nesting level.
-	 */
 	@Override
 	public void decreaseNestingLevel() {
 		nestingLevel--;
 	}
 
-	/**
-	 * Equals.
-	 *
-	 * @param obj the obj
-	 * @return true, if successful
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {

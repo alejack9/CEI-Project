@@ -25,10 +25,9 @@ public abstract class ExpBinArithm extends ExpBin {
 	}
 
 	/**
-	 * Check that left and right sides of the expression are integers and returns an
-	 * integer type
-	 *
-	 * @return the type
+	 * Check that left and right sides of the expression are {@link EType#INT INT}.
+	 * 
+	 * @return {@link EType#INT INT} as type
 	 */
 	@Override
 	public final Type inferType() {

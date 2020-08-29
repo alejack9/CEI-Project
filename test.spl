@@ -1,10 +1,10 @@
 {
-	void f(int var x) {
-		x = 4;
-		// delete x;
-	}
-	
-	int y;
-	f(y);
-	print y;
+		 int g() {
+		    return 1;
+		 }
+	 int f() {
+	 	int x; 
+	    return g();
+	 }
+	 print f();
 }

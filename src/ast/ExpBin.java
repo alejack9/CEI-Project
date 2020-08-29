@@ -23,11 +23,9 @@ public abstract class ExpBin extends Exp {
 	protected Exp rightSide;
 
 	/**
-	 * Instantiates a new binary expression.
-	 *
-	 * @param left the left side of the expression
-	 * @param right the right side of the expression
-	 * @param line the line in the code
+	 * @param left   the left side of the expression
+	 * @param right  the right side of the expression
+	 * @param line   the line in the code
 	 * @param column the column in the code
 	 */
 	protected ExpBin(Exp left, Exp right, int line, int column) {

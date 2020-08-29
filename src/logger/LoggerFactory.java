@@ -9,26 +9,25 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
 /**
  * Factory that generates Loggers.
  */
 public class LoggerFactory {
-	
-	/** the unique instance of the logger that writes on console. */
+
+	/** The unique instance of the logger that writes on console. */
 	private static Logger consoleLogger;
 
-	/** a Map containing entries with <fileName,Logger> pattern: contains loggers that writes on a specified file. */
+	/**
+	 * A {@link Map Map} containing all associations <fileName,Logger>: a specific
+	 * file is associated with one and only one logger
+	 */
 	private static Map<String, Logger> filesLoggers = new HashMap<String, Logger>();
 
-	/**
-	 * Instantiates a new logger factory.
-	 */
 	private LoggerFactory() {
 	}
 
 	/**
-	 * Gets the logger.
+	 * Gets the console logger.
 	 *
 	 * @return A unique logger
 	 */
@@ -39,16 +38,15 @@ public class LoggerFactory {
 	}
 
 	/**
-	 * Gets the logger.
+	 * Gets the logger associated with the passed fileName, if there's no loggers
+	 * associated with, it creates a new instance.
 	 *
 	 * @param fileName the file name
 	 * @return A unique logger that writes on the file
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static Logger getLogger(String fileName) throws IOException {
-		// if the file is not registered
 		if (!filesLoggers.containsKey(fileName)) {
-			// create a new file
 			File file = new File(fileName);
 			file.createNewFile();
 
@@ -59,7 +57,6 @@ public class LoggerFactory {
 			catch (FileNotFoundException e) {
 			}
 		}
-		// there's always a logger
 		return filesLoggers.get(fileName);
 	}
 }

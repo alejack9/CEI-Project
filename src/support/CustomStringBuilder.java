@@ -16,6 +16,15 @@ public class CustomStringBuilder {
 	 */
 	public void newLine(String... toAppend) {
 		sb.append("\r\n");
+		sameRow(toAppend);
+	}
+	
+	// TODO
+	/**
+	 * 
+	 * @param toAppend
+	 */
+	public void sameRow(String... toAppend) {
 		for (String s : toAppend)
 			sb.append(s);
 	}

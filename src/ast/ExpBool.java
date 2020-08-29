@@ -46,7 +46,7 @@ public class ExpBool extends Exp {
 	}
 
 	/**
-	 * @return the boolean type
+	 * @return {@link EType#BOOL BOOL} as type
 	 */
 	@Override
 	public Type inferType() {

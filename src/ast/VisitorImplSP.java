@@ -194,7 +194,7 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 		case "+":
 			return new ExpSum(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 		case "-":
-			return new ExpDiff(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+			return new ExpSub(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 		case "*":
 			return new ExpMult(left, right, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 		case "/":

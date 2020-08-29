@@ -19,24 +19,20 @@ import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
 import ast.errors.VariableNotExistsError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpVar.
+ * The variable expression class ("x" or "y").
  */
 public class ExpVar extends Exp {
 
-	/** The id. */
 	private String id;
-	
-	/** The id entry. */
+
+	/** Filled in {@link ExpVar#checkSemantics(Environment) checkSemantics}. */
 	private STEntry idEntry;
 
 	/**
-	 * Instantiates a new exp var.
-	 *
-	 * @param id the id
-	 * @param line the line
-	 * @param column the column
+	 * @param id     the variable id
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public ExpVar(String id, int line, int column) {
 		super(line, column);
@@ -44,15 +40,13 @@ public class ExpVar extends Exp {
 	}
 
 	/**
-	 * Checks if the variable in use exists. if it doesn't then add an error.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Checks if the variable does exists.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
+		/** Fills idEntry */
 		idEntry = e.getIDEntry(id);
 
 		if (idEntry == null)
@@ -62,9 +56,7 @@ public class ExpVar extends Exp {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * @return the type extracted by idEntry
 	 */
 	@Override
 	public Type inferType() {
@@ -73,60 +65,51 @@ public class ExpVar extends Exp {
 
 	/**
 	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 
 		BTEntry current = e.getIDEntry(id);
-		
-		if(EEffect.T.compareTo(current.getLocalEffect()) == 0)
+
+		/**
+		 * If the current behaviour is {@link EEffect#T TOP}, returns without performing
+		 * any other operations
+		 */
+		if (EEffect.T.compareTo(current.getLocalEffect()) == 0)
 			return toRet;
 
+		/**
+		 * Sets the local effect to the current local effect seq by {@link EEffect#RW
+		 * RW}
+		 */
 		current.setLocalEffect(BTHelper.seq(current.getLocalEffect(), EEffect.RW));
 
+		/** If the previous operation caused an error, add the error */
 		if (e.getIDEntry(id).getLocalEffect().compareTo(EEffect.T) == 0)
 			toRet.add(new DeletedVariableError(id, line, column));
 
 		return toRet;
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * Gets the id entry.
-	 *
-	 * @return the id entry
-	 */
 	public STEntry getIdEntry() {
 		return idEntry;
 	}
 
 	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
+	 * Always writes in $a0 the actual value of the variable.
 	 */
-	// scrive sempre il valore in $a0
 	@Override
 	protected void codeGen(int nl, CustomStringBuilder sb) {
 		if (idEntry.getType().isParameter()) {
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
 
-			if (idEntry.getType().isRef()) {
+			if (idEntry.getType().isRef())
 				sb.newLine("lw $a0 0($a0) 4");
-			}
 		} else {
 			sb.newLine("li $t1 0");
 			sb.newLine("lw $a0 ", Integer.toString(idEntry.offset), "($t1) ",

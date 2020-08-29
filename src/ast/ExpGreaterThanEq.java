@@ -3,39 +3,26 @@
  */
 package ast;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpGreaterThanEq.
+ * The class of grater than or equals expressions ("x >= y").
  */
 public class ExpGreaterThanEq extends ExpBinBoolIntIn {
 
 	/**
-	 * Instantiates a new exp greater than eq.
-	 *
-	 * @param leftSide the left side
-	 * @param rightSide the right side
-	 * @param line the line
-	 * @param column the column
+	 * @param leftSide the left side of the expression
+	 * @param rightSide the right side of the expression
+	 * @param line the line in the code
+	 * @param column the column in the code
 	 */
 	public ExpGreaterThanEq(Exp leftSide, Exp rightSide, int line, int column) {
 		super(leftSide, rightSide, line, column);
 	}
 
-	/**
-	 * Gets the op.
-	 *
-	 * @return the op
-	 */
 	@Override
 	protected String getOp() {
 		return ">=";
 	}
 
-	/**
-	 * Gets the operator.
-	 *
-	 * @return the operator
-	 */
 	@Override
 	protected String getOperator() {
 		return "bge";
