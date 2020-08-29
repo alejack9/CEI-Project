@@ -30,9 +30,9 @@ public abstract class ExpBinBoolAllIn extends ExpBin {
 
 	/**
 	 * Check that left and right sides of the expression are the same type (but not
-	 * VOID) and returns a boolean type
-	 *
-	 * @return the type
+	 * {@link EType#VOID VOID}).
+	 * 
+	 * @return {@link EType#BOOL BOOL} as type
 	 */
 	@Override
 	public final Type inferType() {

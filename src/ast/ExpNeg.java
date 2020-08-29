@@ -17,46 +17,34 @@ import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpNeg.
+ * The class of negative expressions ("-x")
  */
 public class ExpNeg extends Exp {
 
-	/** The exp. */
 	private Exp exp;
 
 	/**
-	 * Instantiates a new exp neg.
-	 *
-	 * @param exp the exp
-	 * @param line the line
-	 * @param column the column
+	 * @param exp    the expression to negate
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public ExpNeg(Exp exp, int line, int column) {
 		super(line, column);
 		this.exp = exp;
 	}
 
-	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-
 		toRet.addAll(exp.checkSemantics(e));
-
 		return toRet;
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * Check that the type of the expression is {@link EType#INT INT}.
+	 * 
+	 * @return {@link EType#INT INT} as type
 	 */
 	@Override
 	public Type inferType() {
@@ -68,23 +56,11 @@ public class ExpNeg extends Exp {
 		return EType.INT.getType();
 	}
 
-	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return exp.inferBehaviour(e);
 	}
 
-	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
-	 */
 	@Override
 	protected void codeGen(int nl, CustomStringBuilder sb) {
 		exp.codeGen(nl, sb);

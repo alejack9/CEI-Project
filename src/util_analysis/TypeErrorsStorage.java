@@ -8,23 +8,19 @@ import java.util.List;
 
 import ast.errors.TypeError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class TypeErrorsStorage.
+ * The Storage of Type Errors.
  */
 public class TypeErrorsStorage {
 
 	/** The storage. */
 	private static List<TypeError> storage = new LinkedList<TypeError>();
 
-	/**
-	 * Instantiates a new type errors storage.
-	 */
 	private TypeErrorsStorage() {
 	}
 
 	/**
-	 * Adds the error.
+	 * Adds a type error.
 	 *
 	 * @param e the e
 	 */
@@ -33,7 +29,7 @@ public class TypeErrorsStorage {
 	}
 
 	/**
-	 * Gets the type errors.
+	 * Gets the stored errors.
 	 *
 	 * @return the type errors
 	 */
@@ -42,7 +38,7 @@ public class TypeErrorsStorage {
 	}
 
 	/**
-	 * Clear.
+	 * Clears the storage buffer.
 	 */
 	public static void clear() {
 		storage.clear();

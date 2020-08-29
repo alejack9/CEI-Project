@@ -24,10 +24,10 @@ public abstract class ExpBinBoolBoolIn extends ExpBin {
 	}
 
 	/**
-	 * Check that left and right sides of the expression are booleans and returns a
-	 * boolean type
-	 *
-	 * @return the type
+	 * Check that left and right sides of the expression are {@link EType#BOOL
+	 * BOOL}).
+	 * 
+	 * @return {@link EType#BOOL BOOL} as type
 	 */
 	@Override
 	public final Type inferType() {
