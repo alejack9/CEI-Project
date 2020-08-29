@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import ast.StmtBlock;
 import ast.VisitorImplSP;
@@ -56,7 +55,7 @@ public class Main {
 	private Step checkLexicalStep = () -> {
 		logger.write("Checking Lexical ... ");
 
-		/** Return false if there is lexical errors, so the execution is stopped. */
+		// Return false if there is lexical errors, so the execution is stopped.
 		if (lexer.errors.size() > 0) {
 			logger.writeLine("failed", true);
 			for (LexicalError error : lexer.errors)
@@ -64,7 +63,7 @@ public class Main {
 			return false;
 		}
 
-		/** Return false if there is listener errors, so the execution is stopped. */
+		// Return false if there is listener errors, so the execution is stopped.
 		if (sl != null && sl.errorsDetected())
 			return false;
 
@@ -83,7 +82,7 @@ public class Main {
 
 		List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
 
-		/** Return false if there is semantic errors, so the execution is stopped. */
+		// Return false if there is semantic errors, so the execution is stopped.
 		if (errors.size() > 0) {
 			logger.writeLine("failed", true);
 			for (SemanticError err : errors)
@@ -105,7 +104,7 @@ public class Main {
 
 		mainBlock.inferType();
 
-		/** Return false if there is type errors, so the execution is stopped. */
+		// Return false if there is type errors, so the execution is stopped.
 		if (TypeErrorsStorage.getTypeErrors().size() > 0) {
 			logger.writeLine("failed", true);
 			for (TypeError err : TypeErrorsStorage.getTypeErrors())
@@ -127,7 +126,7 @@ public class Main {
 
 		logger.write("Analysing Behaviour ... ");
 
-		/** Return false if there is behavioural errors, so the execution is stopped. */
+		// Return false if there is behavioural errors, so the execution is stopped.
 		if (bErrors.size() > 0) {
 			logger.writeLine("failed", true);
 			for (SemanticError bErr : bErrors)
@@ -147,6 +146,7 @@ public class Main {
 	private Step generateCodeStep = () -> {
 		logger.write("Generating Code ... ");
 
+		// Generates code
 		generateOutCode(mainBlock.codeGen());
 
 		logger.writeLine("done", true);
@@ -162,26 +162,26 @@ public class Main {
 		logger.writeLine("Lanching program (Following output)");
 		logger.writeLine();
 
-		/** Create parser for SVM */
+		// Create parser for SVM
 		SVMParser SVMparser = new SVMParser(
 				new CommonTokenStream(new SVMLexer(new ANTLRInputStream(new FileInputStream(outCodeFileName)))));
 
-		/** Tell the parser to build the AST for SVM */
+		// Tell the parser to build the AST for SVM
 		SVMparser.setBuildParseTree(true);
 
-		/** Build custom visitor */
+		// Build custom visitor
 		VisitorImplSVM SVMVisitor = new VisitorImplSVM();
 
 		SVMVisitor.visitAssembly(SVMparser.assembly());
 
-		/** Run the code */
+		// Run the code
 		new ExecuteVM(SVMVisitor.getCode()).cpu();
 		
 		return true;
 	};
 	
 	/**
-	 * List of delegated supplier.
+	 * List of delegated suppliers.
 	 * <br>Steps are functional interfaces that return boolean by "get" method, see: {@link main.Step#get get()}
 	 */
 	private List<Step> steps = new LinkedList<Step>();
@@ -215,13 +215,13 @@ public class Main {
 		logger.writeLine("Code File Name: " + outCodeFileName);
 		logger.writeLine();
 
-		/** Create Lexer */
+		// Create Lexer
 		lexer = new SimplePlusLexer(input);
 
-		/** Disable default ANTLR lexer listener (to override default behavior) */
+		// Disable default ANTLR lexer listener (to override default behavior)
 		lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
 
-		/** Check if was specified the parameter for the lexical errors file name */
+		// Check if was specified the parameter for the lexical errors file name
 		if (errorsFileName != null) {
 			logger.writeLine("Errors File Name: " + errorsFileName);
 			sl = new SimpleSintaxErrorListener(LoggerFactory.getLogger(errorsFileName));
@@ -229,29 +229,29 @@ public class Main {
 		}
 		lexer.addErrorListener(new SimpleLexerErrorListener(logger));
 
-		/** Create parser */
+		// Create parser
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 
 		SimplePlusParser parser = new SimplePlusParser(tokens);
 
-		/** Disable default ANTLR syntax listener (to override default behavior) */
+		// Disable default ANTLR syntax listener (to override default behavior)
 		parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
 
-		/** Check if was specified the parameter for the syntax errors file name */
+		// Check if was specified the parameter for the syntax errors file name
 		if (errorsFileName != null)
 			parser.addErrorListener(sl);
 		parser.addErrorListener(new SimpleSintaxErrorListener(logger));
 
-		/** Tell the parser to build the AST*/
+		// Tell the parser to build the AST
 		parser.setBuildParseTree(true);
 
-		/** Build custom visitor**/
+		// Build custom visitor
 		VisitorImplSP visitor = new VisitorImplSP();
 
-		/** Visit the root, this will recursively visit the whole tree*/
+		// Visit the root, this will recursively visit the whole tree
 		mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
 
-		/** Execute one step at time */
+		// Execute one step at time
 		for (Step step : steps)
 			if(!step.get())
 				quit(logger);
@@ -259,15 +259,12 @@ public class Main {
 
 	/**
 	 * Handle parameters of the terminal command for execution of .jar file.
+	 * <br> If input file is specified set "inFileName". If was specified also errors file, then set errorsFileName.
+	 * <br> Finally, set outCodeFileName with the same name of the input file but different extension.
 	 * 
 	 * @param args - the arguments of the terminal command.
 	 */
 	private void manipulateArgs(String[] args) {
-		/**
-		 * If input file is specified set "inFileName".
-		 * If was specified also errors file, then set errorsFileName.
-		 * Finally, set outCodeFileName with the same name of the input file but different extension.
-		 */
 		switch (args.length) {
 		case 0:
 			break;
@@ -296,7 +293,7 @@ public class Main {
 	}
 
 	/**
-	 * Stop the execution.
+	 * Stops the build of program.
 	 *
 	 * @param clogger - the logger.
 	 * @throws IOException Signals that an I/O exception has occurred.
