@@ -12,7 +12,9 @@ public class CodeGenUtils {
 	public static String k;
 	
 	/**
-	 * Access to a variable in the same or external activation record
+	 * Access to a variable in the same or external activation record.
+	 * <br>Load in the register "$a0" the variable required.
+	 * 
 	 * @param variable - the variable to access
 	 * @param nl - the current nesting level
 	 * @param sb - the string to add the assembly command
