@@ -23,7 +23,7 @@ import ast.errors.AliasingError;
 import ast.errors.BehaviourError;
 import ast.errors.FunctionNotExistsError;
 import ast.errors.ParametersMismatchError;
-import ast.errors.PassedReferenceNotVarError;
+import ast.errors.PassedExpNotVariableError;
 import ast.errors.SemanticError;
 
 /**
@@ -72,7 +72,7 @@ public class StmtCall extends Stmt {
 				// checks that for each "reference" parameter is passed a variable
 				for (int i = 0; i < Math.min(exps.size(), params.size()); i++)
 					if (params.get(i).isRef() && !(exps.get(i) instanceof ExpVar))
-						toRet.add(new PassedReferenceNotVarError(i + 1, ID, exps.get(i).line, exps.get(i).column));
+						toRet.add(new PassedExpNotVariableError(i + 1, ID, exps.get(i).line, exps.get(i).column));
 			} else
 				toRet.add(new FunctionNotExistsError(ID, line, column));
 		} else

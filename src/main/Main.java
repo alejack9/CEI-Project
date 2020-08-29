@@ -44,18 +44,14 @@ public class Main {
 
 	private StmtBlock mainBlock;
 	private SimplePlusLexer lexer;
-	SimpleErrorListener sl = null;
+	private SimpleErrorListener sl = null;
 
 	/**
-	 * The step that perform lexical check. <br>
-	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
-	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
-	 * get()}
+	 * The step that perform lexical check.
 	 */
 	private Step checkLexicalStep = () -> {
 		logger.write("Checking Lexical ... ");
 
-		// Return false if there is lexical errors, so the execution is stopped.
 		if (lexer.errors.size() > 0) {
 			logger.writeLine("failed", true);
 			for (LexicalError error : lexer.errors)
@@ -63,7 +59,6 @@ public class Main {
 			return false;
 		}
 
-		// Return false if there is listener errors, so the execution is stopped.
 		if (sl != null && sl.errorsDetected())
 			return false;
 
@@ -73,17 +68,13 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform semantic check. <br>
-	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
-	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
-	 * get()}
+	 * The step that perform semantic check.
 	 */
 	private Step checkSemanticStep = () -> {
 		logger.write("Checking Semantic ... ");
 
 		List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
 
-		// Return false if there is semantic errors, so the execution is stopped.
 		if (errors.size() > 0) {
 			logger.writeLine("failed", true);
 			for (SemanticError err : errors)
@@ -96,17 +87,13 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform type check. <br>
-	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
-	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
-	 * get()}
+	 * The step that perform type check.
 	 */
 	private Step checkTypesStep = () -> {
 		logger.write("Checking Types ... ");
 
 		mainBlock.inferType();
 
-		// Return false if there is type errors, so the execution is stopped.
 		if (TypeErrorsStorage.getTypeErrors().size() > 0) {
 			logger.writeLine("failed", true);
 			for (TypeError err : TypeErrorsStorage.getTypeErrors())
@@ -119,17 +106,13 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform bahviour analysis. <br>
-	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
-	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
-	 * get()}
+	 * The step that perform bahviour analysis.
 	 */
 	private Step analyseBehaviourStep = () -> {
 		List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
 
 		logger.write("Analysing Behaviour ... ");
 
-		// Return false if there is behavioural errors, so the execution is stopped.
 		if (bErrors.size() > 0) {
 			logger.writeLine("failed", true);
 			for (SemanticError bErr : bErrors)
@@ -142,14 +125,11 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform the code generation. <br>
-	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
-	 * Return a boolean value by "get" method, see: {@link main.Step#get get()}
+	 * The step that perform the code generation.
 	 */
 	private Step generateCodeStep = () -> {
 		logger.write("Generating Code ... ");
 
-		// Generates code
 		generateOutCode(mainBlock.codeGen());
 
 		logger.writeLine("done", true);
@@ -157,37 +137,28 @@ public class Main {
 	};
 
 	/**
-	 * The step that run the generated code. <br>
-	 * Step is a variant of Supplier, created in order to generate exceptions. <br>
-	 * Has a boolean value returned by "get" method, see: {@link main.Step#get
-	 * get()}
+	 * The step that run the generated code.
 	 */
 	private Step runCodeStep = () -> {
 		logger.writeLine("Lanching program (Following output)");
 		logger.writeLine();
 
-		// Create parser for SVM
 		SVMParser SVMparser = new SVMParser(
 				new CommonTokenStream(new SVMLexer(new ANTLRInputStream(new FileInputStream(outCodeFileName)))));
 
-		// Tell the parser to build the AST for SVM
 		SVMparser.setBuildParseTree(true);
 
-		// Build custom visitor
 		VisitorImplSVM SVMVisitor = new VisitorImplSVM();
 
 		SVMVisitor.visitAssembly(SVMparser.assembly());
 
-		// Run the code
 		new ExecuteVM(SVMVisitor.getCode()).cpu();
 
 		return true;
 	};
 
 	/**
-	 * List of delegated suppliers. <br>
-	 * Steps are functional interfaces that return boolean by "get" method, see:
-	 * {@link main.Step#get get()}
+	 * List of substitute suppliers.
 	 */
 	private List<Step> steps = new LinkedList<Step>();
 
@@ -208,7 +179,7 @@ public class Main {
 	/**
 	 * Compile a SimplePlus program, generate code and execute the generated code.
 	 *
-	 * @param args - the args.
+	 * @param args the args.
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void start(String[] args) throws IOException {
@@ -220,13 +191,12 @@ public class Main {
 		logger.writeLine("Code File Name: " + outCodeFileName);
 		logger.writeLine();
 
-		// Create Lexer
 		lexer = new SimplePlusLexer(input);
 
 		// Disable default ANTLR lexer listener (to override default behavior)
 		lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
 
-		// Check if was specified the parameter for the lexical errors file name
+		// If the parameter for the lexical errors file name is specified, add an error listener that writes on a file
 		if (errorsFileName != null) {
 			logger.writeLine("Errors File Name: " + errorsFileName);
 			sl = new SimpleSintaxErrorListener(LoggerFactory.getLogger(errorsFileName));
@@ -234,15 +204,12 @@ public class Main {
 		}
 		lexer.addErrorListener(new SimpleLexerErrorListener(logger));
 
-		// Create parser
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 
 		SimplePlusParser parser = new SimplePlusParser(tokens);
 
-		// Disable default ANTLR syntax listener (to override default behavior)
 		parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
 
-		// Check if was specified the parameter for the syntax errors file name
 		if (errorsFileName != null)
 			parser.addErrorListener(sl);
 		parser.addErrorListener(new SimpleSintaxErrorListener(logger));
@@ -250,26 +217,20 @@ public class Main {
 		// Tell the parser to build the AST
 		parser.setBuildParseTree(true);
 
-		// Build custom visitor
 		VisitorImplSP visitor = new VisitorImplSP();
 
-		// Visit the root, this will recursively visit the whole tree
 		mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
 
-		// Execute one step at time
+		// Execute each step; if any step return false, the processor is killed
 		for (Step step : steps)
 			if (!step.get())
-				quit(logger);
+				quit();
 	}
 
 	/**
-	 * Handle parameters of the terminal command for execution of .jar file. <br>
-	 * If input file is specified set "inFileName". If was specified also errors
-	 * file, then set errorsFileName. <br>
-	 * Finally, set outCodeFileName with the same name of the input file but
-	 * different extension.
+	 * Handle parameters of the terminal command for execution of .jar file.
 	 * 
-	 * @param args - the arguments of the terminal command.
+	 * @param args the arguments of the terminal command.
 	 */
 	private void manipulateArgs(String[] args) {
 		switch (args.length) {
@@ -286,13 +247,14 @@ public class Main {
 			System.out.println("Usage: \"java -jar .\\exportedJar.jar input_file [errors_file]\"");
 		}
 
+		// Set outCodeFileName with the same name of the input file but different extension
 		outCodeFileName = inFileName.replaceFirst("[.][^.]+$", "") + ".out";
 	}
 
 	/**
 	 * Write the generated code on file.
 	 *
-	 * @param code - the generated code.
+	 * @param code the generated code.
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void generateOutCode(String code) throws IOException {
@@ -300,13 +262,12 @@ public class Main {
 	}
 
 	/**
-	 * Stops the build of program.
+	 * Stop the program build.
 	 *
-	 * @param clogger - the logger.
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	private void quit(Logger clogger) throws IOException {
-		clogger.writeLine("Quitting compiling");
+	private void quit() throws IOException {
+		logger.writeLine("Quitting compiling");
 		System.exit(-1);
 	}
 }

@@ -12,6 +12,7 @@ public class IdAlreadytExistsError extends BehaviourError {
 
 	@Override
 	public String toString() {
-		return this.getPosition() + " - Function or variable already exists with the same ID: " + this.id;
+		return new StringBuilder(getPosition()).append(" - Function or variable already exists with the same ID: ")
+				.append(id).toString();
 	}
 }

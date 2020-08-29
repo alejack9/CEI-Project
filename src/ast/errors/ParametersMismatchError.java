@@ -2,7 +2,7 @@ package ast.errors;
 
 /**
  * Represents a semantic error, in particular the number of actual parameters is
- * non the same of formal parameters.
+ * not the same of formal parameters.
  */
 public class ParametersMismatchError extends SemanticError {
 	private static final long serialVersionUID = 1L;
@@ -18,7 +18,7 @@ public class ParametersMismatchError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return this.getPosition() + " - Parameters required (" + params + ") doesn't match with passed params (" + exps
-				+ ")";
+		return new StringBuilder(getPosition()).append(" - Parameters required (").append(params)
+				.append(") doesn't match with passed params (").append(exps).append(")").toString();
 	}
 }

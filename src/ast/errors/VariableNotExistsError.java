@@ -12,6 +12,7 @@ public class VariableNotExistsError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return this.getPosition() + " - Variable doesn't exists. Variable name: " + this.id;
+		return new StringBuilder(getPosition()).append(" - Variable doesn't exists. Variable name: ").append(id)
+				.toString();
 	}
 }

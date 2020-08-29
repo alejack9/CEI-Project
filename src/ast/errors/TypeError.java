@@ -17,6 +17,7 @@ public class TypeError extends Error {
 
 	@Override
 	public String toString() {
-		return "[ " + line + " : " + column + " ] - " + this.getMessage();
+		return new StringBuilder("[ ").append(line).append(" : ").append(column).append(" ] - ").append(getMessage())
+				.toString();
 	}
 }

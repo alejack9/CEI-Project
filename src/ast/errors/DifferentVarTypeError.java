@@ -1,8 +1,8 @@
 package ast.errors;
 
 /**
- * Represents a semantic error, in particular the declared id is not the same of
- * the variable deleted.
+ * Represents a semantic error, in particular the type of a declared variable is
+ * not the same of the original variable (after delete).
  */
 public class DifferentVarTypeError extends SemanticError {
 	private static final long serialVersionUID = 1L;
@@ -13,7 +13,8 @@ public class DifferentVarTypeError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return getPosition() + " - Type of variable \"" + this.id + "\" must be the same of the deleted one";
+		return new StringBuilder(getPosition()).append(" - Type of variable \"").append(id)
+				.append("\" must be the same of the deleted one").toString();
 	}
 
 }

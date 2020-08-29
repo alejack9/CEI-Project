@@ -13,7 +13,7 @@ public class CustomStringBuilder {
 	/**
 	 * Write new line composed of the strings passed
 	 * 
-	 * @param toAppend - list of string
+	 * @param toAppend list of string
 	 */
 	public void newLine(String... toAppend) {
 		sb.append("\r\n");
@@ -21,9 +21,9 @@ public class CustomStringBuilder {
 	}
 
 	/**
-	 * Append to the current string the strings passed as parameters
+	 * Append to the current line the strings passed
 	 * 
-	 * @param toAppend - list of string
+	 * @param toAppend list of string
 	 */
 	public void sameRow(String... toAppend) {
 		for (String s : toAppend)

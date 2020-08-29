@@ -13,7 +13,8 @@ public class FunctionNotExistsError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return getPosition() + " - No function found. Function doesn't exist. Function name: " + this.id;
+		return new StringBuilder(getPosition()).append(" - No function found. Function doesn't exist. Function name: ")
+				.append(id).toString();
 	}
 
 }

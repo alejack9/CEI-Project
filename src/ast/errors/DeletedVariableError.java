@@ -1,7 +1,7 @@
 package ast.errors;
 
 /**
- * Represents a behaviour error, in particular the variable was deleted and
+ * Represents a behaviour error, in particular the variable has been deleted and
  * trying to use it.
  */
 public class DeletedVariableError extends BehaviourError {
@@ -13,7 +13,7 @@ public class DeletedVariableError extends BehaviourError {
 
 	@Override
 	public String toString() {
-		return getPosition() + " - Variable " + id + " has been deleted.";
+		return new StringBuilder(getPosition()).append(" - Variable ").append(id).append(" has been deleted.")
+				.toString();
 	}
-
 }
