@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import support.CodeGenUtils;
@@ -21,12 +18,12 @@ public class ExpOr extends ExpBinBoolBoolIn {
 	}
 
 	@Override
-	protected String getOp() {
+	protected String getOperationSymbol() {
 		return "||";
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		String trueLabel = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 
@@ -41,8 +38,8 @@ public class ExpOr extends ExpBinBoolBoolIn {
 	}
 
 	/**
-	 * Returns the code that evaluate the expression and, if the returned value is
-	 * 1, make the program jump to a specified label.
+	 * Return the code that evaluate the expression and, if the returned value is 1,
+	 * make the program jump to a specified label.
 	 */
 	private void getCodeExpIsTrueThenJump(Exp side, int nl, String label, CustomStringBuilder sb) {
 		side.codeGen(nl, sb);

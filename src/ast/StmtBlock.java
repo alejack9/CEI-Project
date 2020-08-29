@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -25,7 +22,7 @@ public class StmtBlock extends Stmt {
 	private List<Stmt> children;
 
 	/**
-	 * Instantiates a new stmt block.
+	 * Instantiate a new stmt block.
 	 *
 	 * @param children the children nodes list
 	 * @param line     the line in the code
@@ -37,7 +34,7 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * Opens a new scope and checks the semantic of the block
+	 * Open a new scope and check the semantic of the block
 	 */
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -53,7 +50,7 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * Checks the semantic of the block without opening a new scope
+	 * Check the semantic of the block without opening a new scope
 	 */
 	public List<SemanticError> checkSemanticsSameScope(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -64,53 +61,51 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * Infers type by checking all the children.
+	 * Infer type by checking all the children.
 	 *
 	 * @return the type of the block or null
 	 */
 	@Override
 	public Type inferType() {
 		Type toRet = null;
-		// the last return type
+		// The last return type
 		EType lastRetT = null;
 
-		/*
-		 * int g() { return g(); } int f() { g(); print x; }
-		 */
-
+		// changed flag became true if the return value changes in iteration;
+		// safe flag became true if an if-statement returns in only one branch.
 		boolean changed = false, safe = false;
 
-		for (Stmt c : children) {
-			// useful to infer type even if it returns null
-			Type candidate = c.inferType();
-			// updates the returned type if the candidate is not null
-			toRet = candidate != null && !(c instanceof StmtCall) ? candidate : toRet;
+		for (Stmt child : children) {
+			// Useful to rise infer type in child even if it returns null
+			Type candidate = child.inferType();
+			// Update the returned type if the candidate is not null
+			toRet = candidate != null && !(child instanceof StmtCall) ? candidate : toRet;
 
-			// if some expressions has returned not-null
+			// If some expressions has returned not-null perform action
 			if (toRet != null) {
-				// if the previous return type is not the same as the candidate, puts the flage
+				// If the previous return type is not the same as the candidate, put the flag
 				// "changed" to "true"
 				if (lastRetT != null && !lastRetT.equalsTo(toRet))
 					changed = true;
-				// otherwise updates the last returned type
+				// Otherwise update the last returned type
 				else
 					lastRetT = toRet.getType();
 
-				// if the current statement is an if-then-else ..
-				if (c instanceof StmtIte) {
-					// .. checks that it has an "else" statement
-					if (((StmtIte) c).hasElseStmt())
+				// If the current statement is an if-then-else ..
+				if (child instanceof StmtIte) {
+					// .. check that it has an "else" statement
+					if (((StmtIte) child).hasElseStmt())
 						safe = true;
 				} else
 					safe = true;
 			}
 		}
 
-		// if the return value is changed during iteration, add an error
+		// If the return value is changed during iteration, add an error
 		if (changed)
 			TypeErrorsStorage.addError(new TypeError("Inconsistent return types in this block", line, column));
 
-		// if the return type is not void or null and it is not safe, add an error
+		// If the return type is not void or null and it is not safe, add an error
 		if (!safe && toRet != null && !EType.VOID.equalsTo(toRet))
 			TypeErrorsStorage
 					.addError(new TypeError("Unsafe return (the function does not always return)", line, column));
@@ -119,7 +114,7 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * Opens a new scope and checks the behaviour of the block.
+	 * Open a new scope and check the behaviour of the block.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -151,7 +146,7 @@ public class StmtBlock extends Stmt {
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		for (Stmt c : children)
 			c.codeGen(nl, sb);
 	}

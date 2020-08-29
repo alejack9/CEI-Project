@@ -1,6 +1,3 @@
-/*
- * 
- */
 package util_analysis;
 
 import java.util.LinkedList;
@@ -12,24 +9,22 @@ import ast.errors.TypeError;
  * The Storage of Type Errors.
  */
 public class TypeErrorsStorage {
-
-	/** The storage. */
 	private static List<TypeError> storage = new LinkedList<TypeError>();
 
 	private TypeErrorsStorage() {
 	}
 
 	/**
-	 * Adds a type error.
+	 * Add a type error.
 	 *
-	 * @param e the e
+	 * @param typeError the type error
 	 */
-	public static void addError(TypeError e) {
-		storage.add(e);
+	public static void addError(TypeError typeError) {
+		storage.add(typeError);
 	}
 
 	/**
-	 * Gets the stored errors.
+	 * Get the stored errors.
 	 *
 	 * @return the type errors
 	 */
@@ -38,7 +33,7 @@ public class TypeErrorsStorage {
 	}
 
 	/**
-	 * Clears the storage buffer.
+	 * Clear the storage buffer.
 	 */
 	public static void clear() {
 		storage.clear();

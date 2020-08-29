@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.List;
@@ -20,14 +17,12 @@ import ast.errors.SemanticError;
  */
 public class Arg extends ElementBase {
 
-	/** The type. */
 	private Type type;
 
-	/** The id. */
 	private String ID;
 
 	/**
-	 * Instantiates a new parameter.
+	 * Instantiate a new parameter.
 	 *
 	 * @param type   the type
 	 * @param ID     the id
@@ -77,17 +72,17 @@ public class Arg extends ElementBase {
 	}
 
 	/**
-	 * Does not do anything because it is not necessary
+	 * Do not do anything because it is not necessary
 	 *
 	 * @param nl the nesting level
 	 * @param sb the (custom) string builder
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 	}
 
 	/**
-	 * Gets the type.
+	 * Get the type.
 	 *
 	 * @return the type of the parameter
 	 */
@@ -96,7 +91,7 @@ public class Arg extends ElementBase {
 	}
 
 	/**
-	 * Gets the id.
+	 * Get the id.
 	 *
 	 * @return the id
 	 */

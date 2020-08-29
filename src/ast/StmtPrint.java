@@ -58,7 +58,7 @@ public class StmtPrint extends Stmt {
 	 * The instruction "print" prints the value stored in $a0.
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		exp.codeGen(nl, sb);
 		sb.newLine("print");
 	}

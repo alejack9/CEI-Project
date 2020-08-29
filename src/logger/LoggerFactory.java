@@ -1,6 +1,3 @@
-/*
- * 
- */
 package logger;
 
 import java.io.File;
@@ -18,8 +15,8 @@ public class LoggerFactory {
 	private static Logger consoleLogger;
 
 	/**
-	 * A {@link Map Map} containing all associations <fileName,Logger>: a specific
-	 * file is associated with one and only one logger
+	 * A {@link Map Map} containing all associations &lt;fileName,Logger&gt;: a
+	 * specific file is associated with one and only one logger
 	 */
 	private static Map<String, Logger> filesLoggers = new HashMap<String, Logger>();
 
@@ -27,7 +24,7 @@ public class LoggerFactory {
 	}
 
 	/**
-	 * Gets the console logger.
+	 * Get the console logger.
 	 *
 	 * @return A unique logger
 	 */
@@ -38,7 +35,7 @@ public class LoggerFactory {
 	}
 
 	/**
-	 * Gets the logger associated with the passed fileName, if there's no loggers
+	 * Get the logger associated with the passed fileName, if there's no loggers
 	 * associated with, it creates a new instance.
 	 *
 	 * @param fileName the file name

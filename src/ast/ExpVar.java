@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -40,7 +37,7 @@ public class ExpVar extends Exp {
 	}
 
 	/**
-	 * Checks if the variable does exists.
+	 * Check if the variable does exists.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -73,15 +70,15 @@ public class ExpVar extends Exp {
 		BTEntry current = e.getIDEntry(id);
 
 		/**
-		 * If the current behaviour is {@link EEffect#T TOP}, returns without performing
+		 * If the current behaviour is {@link EEffect#T TOP}, return without performing
 		 * any other operations
 		 */
 		if (EEffect.T.compareTo(current.getLocalEffect()) == 0)
 			return toRet;
 
 		/**
-		 * Sets the local effect to the current local effect seq by {@link EEffect#RW
-		 * RW}
+		 * Set the local effect to the current local effect seq by {@link EEffect#RW RW}
+		 * currentLocalEffect = currentLocalEffect |> RW
 		 */
 		current.setLocalEffect(BTHelper.seq(current.getLocalEffect(), EEffect.RW));
 
@@ -101,10 +98,10 @@ public class ExpVar extends Exp {
 	}
 
 	/**
-	 * Always writes in $a0 the actual value of the variable.
+	 * Always write in $a0 the actual value of the variable.
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		if (idEntry.getType().isParameter()) {
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
 

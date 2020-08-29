@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.CodeMaker;
 import ast.StmtBlock;
 import ast.VisitorImplSP;
 import ast.VisitorImplSVM;
@@ -130,7 +131,7 @@ public class Main {
 	private Step generateCodeStep = () -> {
 		logger.write("Generating Code ... ");
 
-		generateOutCode(mainBlock.codeGen());
+		generateOutCode(new CodeMaker(mainBlock).codeGen());
 
 		logger.writeLine("done", true);
 		return true;
@@ -196,7 +197,8 @@ public class Main {
 		// Disable default ANTLR lexer listener (to override default behavior)
 		lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
 
-		// If the parameter for the lexical errors file name is specified, add an error listener that writes on a file
+		// If the parameter for the lexical errors file name is specified, add an error
+		// listener that writes on a file
 		if (errorsFileName != null) {
 			logger.writeLine("Errors File Name: " + errorsFileName);
 			sl = new SimpleSintaxErrorListener(LoggerFactory.getLogger(errorsFileName));
@@ -247,7 +249,8 @@ public class Main {
 			System.out.println("Usage: \"java -jar .\\exportedJar.jar input_file [errors_file]\"");
 		}
 
-		// Set outCodeFileName with the same name of the input file but different extension
+		// Set outCodeFileName with the same name of the input file but different
+		// extension
 		outCodeFileName = inFileName.replaceFirst("[.][^.]+$", "") + ".out";
 	}
 

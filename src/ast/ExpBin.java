@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -35,17 +32,14 @@ public abstract class ExpBin extends Exp {
 	}
 
 	/**
-	 * Gets the operation as String.
+	 * Get the operation as String.
 	 *
 	 * @return the operation as String
 	 */
-	protected abstract String getOp();
+	protected abstract String getOperationSymbol();
 
 	/**
 	 * Check left and right side semantics.
-	 *
-	 * @param e the e
-	 * @return the list
 	 */
 	@Override
 	public final List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -58,9 +52,6 @@ public abstract class ExpBin extends Exp {
 
 	/**
 	 * Infer behavior of left and right side of expression.
-	 *
-	 * @param e the environment
-	 * @return the list of behavior error
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {

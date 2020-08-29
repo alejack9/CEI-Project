@@ -106,7 +106,7 @@ public class StmtDelete extends Stmt {
 	 * Sets the pointed variable as deleted
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		idEntry.setDeleted(true);
 	}
 }

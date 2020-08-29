@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 /**
@@ -19,7 +16,7 @@ public class ExpSub extends ExpBinArithm {
 	}
 
 	@Override
-	protected String getOp() {
+	protected String getOperationSymbol() {
 		return "-";
 	}
 

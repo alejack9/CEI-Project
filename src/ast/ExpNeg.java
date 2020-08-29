@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -62,7 +59,7 @@ public class ExpNeg extends Exp {
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		exp.codeGen(nl, sb);
 		sb.newLine("neg $a0");
 	}

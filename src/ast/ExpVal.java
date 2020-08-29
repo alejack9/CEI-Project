@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.Collections;
@@ -58,10 +55,10 @@ public class ExpVal extends Exp {
 	}
 
 	/**
-	 * Loads the value in $a0
+	 * Load the value in $a0
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		sb.newLine("li $a0 ", Integer.toString(value));
 	}
 }

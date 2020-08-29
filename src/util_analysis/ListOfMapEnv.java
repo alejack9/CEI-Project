@@ -1,6 +1,3 @@
-/*
- * 
- */
 package util_analysis;
 
 import java.util.HashMap;
@@ -19,13 +16,8 @@ import util_analysis.entries.STEntry;
  */
 public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 
-	/** The scopes. */
 	LinkedList<HashMap<String, T>> scopes = new LinkedList<HashMap<String, T>>();
-
-	/** The nesting level. */
 	private int nestingLevel;
-
-	/** The offset. */
 	private int offset = 0;
 
 	/**
@@ -72,7 +64,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	}
 
 	/**
-	 * Inserts a new scope into the environment
+	 * Insert a new scope into the environment
 	 */
 	@Override
 	public void openScope() {
@@ -80,7 +72,7 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 	}
 
 	/**
-	 * Drops the current scope
+	 * Drop the current scope
 	 */
 	@Override
 	public void closeScope() {
@@ -204,11 +196,6 @@ public class ListOfMapEnv<T extends Entry> implements Environment<T> {
 		return true;
 	}
 
-	/**
-	 * Clone.
-	 *
-	 * @return the object
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object clone() {

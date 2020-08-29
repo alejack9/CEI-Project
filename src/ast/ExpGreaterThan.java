@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 /**
@@ -19,7 +16,7 @@ public class ExpGreaterThan extends ExpBinBoolIntIn {
 	}
 
 	@Override
-	protected String getOp() {
+	protected String getOperationSymbol() {
 		return ">";
 	}
 

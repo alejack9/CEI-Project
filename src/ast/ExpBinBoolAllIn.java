@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import ast.errors.TypeError;
@@ -15,7 +12,6 @@ import util_analysis.TypeErrorsStorage;
  */
 public abstract class ExpBinBoolAllIn extends ExpBin {
 
-	/** The type of the left side */
 	private Type leftType;
 
 	/**
@@ -40,18 +36,20 @@ public abstract class ExpBinBoolAllIn extends ExpBin {
 		Type rightSideT = this.rightSide.inferType();
 
 		if (!leftType.getType().equalsTo(rightSideT))
-			TypeErrorsStorage.addError(new TypeError("In condition \"" + this.getOp() + "\", left expression's type ("
-					+ leftType + ") does not equal to the right's type (" + rightSideT + ")", line, column));
+			TypeErrorsStorage.addError(
+					new TypeError("In condition \"" + this.getOperationSymbol() + "\", left expression's type ("
+							+ leftType + ") does not equal to the right's type (" + rightSideT + ")", line, column));
 
 		if (EType.VOID.equalsTo(leftType))
 			TypeErrorsStorage.addError(new TypeError(
-					"Expressions must not be \"void\" type in operation \"" + this.getOp() + "\"", line, column));
+					"Expressions must not be \"void\" type in operation \"" + this.getOperationSymbol() + "\"", line,
+					column));
 
 		return EType.BOOL.getType();
 	}
 
 	/**
-	 * the true return to put in the generated code ("0" in "not equals", "1"
+	 * The true return to put in the generated code ("0" in "not equals", "1"
 	 * otherwise).
 	 *
 	 * @return the string
@@ -59,7 +57,7 @@ public abstract class ExpBinBoolAllIn extends ExpBin {
 	protected abstract String trueReturn();
 
 	/**
-	 * the false return to put in the generated code ("1" in "not equals", "0"
+	 * The false return to put in the generated code ("1" in "not equals", "0"
 	 * otherwise).
 	 *
 	 * @return the string
@@ -67,7 +65,7 @@ public abstract class ExpBinBoolAllIn extends ExpBin {
 	protected abstract String falseReturn();
 
 	@Override
-	protected final void codeGen(int nl, CustomStringBuilder sb) {
+	public final void codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		leftSide.codeGen(nl, sb);

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.List;
@@ -14,7 +11,7 @@ import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 /**
- * The class of boolean expressions ("fun()").
+ * The class of call expressions ("fun()").
  */
 public class ExpCall extends Exp {
 
@@ -58,7 +55,7 @@ public class ExpCall extends Exp {
 	 * Delegated to the call node
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		call.codeGen(nl, sb);
 	}
 }

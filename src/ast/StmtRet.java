@@ -70,7 +70,7 @@ public class StmtRet extends Stmt {
 	 * destroys the AR.
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		if (exp != null)
 			exp.codeGen(nl, sb);
 		// reset $ra

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package logger;
 
 import java.io.IOException;
@@ -14,7 +11,7 @@ public abstract class Logger {
 	protected PrintStream out;
 
 	/**
-	 * Instantiates a new logger.
+	 * Instantiate a new logger.
 	 *
 	 * @param out the {@link PrintStream PrintStream} class used to write
 	 */
@@ -23,7 +20,7 @@ public abstract class Logger {
 	}
 
 	/**
-	 * Writes a new line.
+	 * Write a new line.
 	 *
 	 * @param message The message to print
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -33,7 +30,7 @@ public abstract class Logger {
 	};
 
 	/**
-	 * Writes a new line without any message.
+	 * Write a new line without any message.
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
@@ -42,7 +39,7 @@ public abstract class Logger {
 	}
 
 	/**
-	 * Writes a message.
+	 * Write a message.
 	 *
 	 * @param message      The message to print
 	 * @param hideDateTime the hide date time
@@ -53,7 +50,7 @@ public abstract class Logger {
 	}
 
 	/**
-	 * Writes a message.
+	 * Write a message.
 	 *
 	 * @param message The message to print
 	 * @throws IOException Signals that an I/O exception has occurred.

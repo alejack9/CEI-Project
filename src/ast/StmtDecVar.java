@@ -125,7 +125,7 @@ public class StmtDecVar extends StmtDec {
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		if (exp != null)
 			exp.codeGen(nl, sb);
 		sb.newLine("li $t1 0");

@@ -139,7 +139,7 @@ public class StmtIte extends Stmt {
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 

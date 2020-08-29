@@ -169,7 +169,7 @@ public class StmtCall extends Stmt {
 	 * Creates the bottom part of AR and jumps to the function.
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		// old FP in AR
 		sb.newLine("push $fp 4");
 

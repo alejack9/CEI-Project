@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -44,7 +41,7 @@ public class StmtAssignment extends Stmt {
 	}
 
 	/**
-	 * Checks that the variable exists and checks the right expression semantic.
+	 * Check that the variable exists and check the right expression semantic.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -61,7 +58,7 @@ public class StmtAssignment extends Stmt {
 	}
 
 	/**
-	 * Infer expression behaviour and than checks that the entry is not in
+	 * Infer expression behaviour and than check that the entry is not in
 	 * {@link EEffect#T TOP} state.
 	 */
 	@Override
@@ -79,7 +76,7 @@ public class StmtAssignment extends Stmt {
 	}
 
 	/**
-	 * Checks that the variable type is the same as the expression type.
+	 * Check that the variable type is the same as the expression type.
 	 *
 	 * @return null
 	 */
@@ -95,18 +92,18 @@ public class StmtAssignment extends Stmt {
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
-		/** Generates the expression code */
+	public void codeGen(int nl, CustomStringBuilder sb) {
+		/** Generate the expression code */
 		exp.codeGen(nl, sb);
 
-		/** if the entry is not a parameter, save the $a0 value in the heap */
+		/** If the entry is not a parameter, save the $a0 value in the heap */
 		if (!idEntry.getType().isParameter()) {
 			/**
 			 * $t1=0 is only used to tell to the executor to get the variable from the heap
 			 */
 			sb.newLine("li $t1 0");
 			/**
-			 * saves the $a0 value into the heap at the position indicated by the offset of
+			 * Save the $a0 value into the heap at the position indicated by the offset of
 			 * idEntry
 			 */
 			sb.newLine("sw $a0 ", Integer.toString(idEntry.offset), "($t1) ",
@@ -118,27 +115,27 @@ public class StmtAssignment extends Stmt {
 
 		sb.newLine("move $t1 $a0");
 		/**
-		 * Generates code to get the variable value<br />
+		 * Generate code to get the variable value<br />
 		 * NOTE: it also changes the $al value pointing to the correct scope
 		 */
 		CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
 
-		/** prepare $t1 to be saved somewhere */
+		/** Prepare $t1 to be saved somewhere */
 		sb.newLine("sw $t1 ");
 
 		/**
-		 * if the variable is a reference, saves in the address retrieved by the
-		 * variable value
+		 * If the variable is a reference, save in the address retrieved by the variable
+		 * value
 		 */
 		// NOTE: if the variable is a reference, we need to point to the address
 		// written in the $a0 value
 		if (idEntry.getType().isRef())
 			sb.sameRow("0($a0) ");
-		/** Otherwise saves in the offset of variable starting from $al value */
+		/** Otherwise save in the offset of variable starting from $al value */
 		else
 			sb.sameRow(Integer.toString(idEntry.offset), "($al) ");
 
-		/** add the dimension of the variable to save */
+		/** Add the dimension of the variable to save */
 		sb.sameRow(Integer.toString(idEntry.getType().getDimension()));
 	}
 }

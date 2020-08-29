@@ -1,10 +1,7 @@
-/*
- * 
- */
 package ast;
 
 /**
- * The class of less than expressions ("x &lt;= y").
+ * The class of less than or equal expressions ("x &lt;= y").
  */
 public class ExpLessThanEq extends ExpBinBoolIntIn {
 
@@ -19,7 +16,7 @@ public class ExpLessThanEq extends ExpBinBoolIntIn {
 	}
 
 	@Override
-	protected String getOp() {
+	protected String getOperationSymbol() {
 		return "<=";
 	}
 

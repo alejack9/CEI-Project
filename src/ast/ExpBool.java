@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.Collections;
@@ -21,7 +18,6 @@ import ast.errors.SemanticError;
  */
 public class ExpBool extends Exp {
 
-	/** The value. */
 	private boolean value;
 
 	/**
@@ -35,10 +31,7 @@ public class ExpBool extends Exp {
 	}
 
 	/**
-	 * Does not have any semantic error.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Do not have any semantic error.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -54,7 +47,7 @@ public class ExpBool extends Exp {
 	}
 
 	/**
-	 * Does not have any behaviour error.
+	 * Do not have any behaviour error.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -62,7 +55,7 @@ public class ExpBool extends Exp {
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		sb.newLine("li ", "$a0 ", value ? "1" : "0");
 	}
 }

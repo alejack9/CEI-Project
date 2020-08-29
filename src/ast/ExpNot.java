@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -35,12 +32,6 @@ public class ExpNot extends Exp {
 		this.exp = exp;
 	}
 
-	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -71,7 +62,7 @@ public class ExpNot extends Exp {
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		String trueLabel = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 

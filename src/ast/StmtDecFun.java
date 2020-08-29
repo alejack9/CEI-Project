@@ -169,7 +169,7 @@ public class StmtDecFun extends StmtDec {
 	}
 
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		String end = CodeGenUtils.freshLabel();
 		sb.newLine("b ", end);
 		sb.newLine(idEntry.label, ":");

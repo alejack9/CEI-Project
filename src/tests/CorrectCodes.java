@@ -1,6 +1,3 @@
-/*
- * 
- */
 package tests;
 
 import java.io.IOException;
@@ -13,7 +10,7 @@ import util_analysis.TypeErrorsStorage;
 class CorrectCodes {
 
 	/**
-	 * Reset type errors storage.
+	 * Reset type errors storage after each test.
 	 */
 	@AfterEach
 	public void resetTypeErrorsStorage() {

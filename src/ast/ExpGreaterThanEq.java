@@ -1,10 +1,7 @@
-/*
- * 
- */
 package ast;
 
 /**
- * The class of grater than or equals expressions ("x >= y").
+ * The class of grater than or equal expressions ("x >= y").
  */
 public class ExpGreaterThanEq extends ExpBinBoolIntIn {
 
@@ -19,7 +16,7 @@ public class ExpGreaterThanEq extends ExpBinBoolIntIn {
 	}
 
 	@Override
-	protected String getOp() {
+	protected String getOperationSymbol() {
 		return ">=";
 	}
 

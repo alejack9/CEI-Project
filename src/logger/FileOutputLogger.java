@@ -1,6 +1,3 @@
-/*
- * 
- */
 package logger;
 
 import java.io.File;
@@ -9,12 +6,12 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 /**
- * Specified class that writes on a target file.
+ * Specific logger that writes on a target file.
  */
 class FileOutputLogger extends Logger {
 
 	/**
-	 * Instantiates a new file output logger.
+	 * Instantiate a new file output logger.
 	 *
 	 * @param file The file in which write
 	 * @throws FileNotFoundException the file not found exception
