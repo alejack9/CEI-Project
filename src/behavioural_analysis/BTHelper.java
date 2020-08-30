@@ -60,9 +60,9 @@ public class BTHelper {
 	/**
 	 * Handles ref parameter effect after function invocation.
 	 * It calculates seq effect between the variable effect before function invocation and after that.
-	 * 
-	 * @param a the variable and its effect in the environment
-	 * @param b the variable and its effect in the function body
+	 
+	 * @param a the effect of the variable before the function invocation
+	 * @param b the effect of the variable after the function invocation
 	 * @return final effect 
 	 */
 	public static EEffect invocationSeq(BTEntry a, BTEntry b) {
