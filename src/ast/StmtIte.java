@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -43,16 +40,14 @@ public class StmtIte extends Stmt {
 	}
 
 	/**
-	 * Checks for else stmt.
-	 *
-	 * @return true, if successful
+	 * @return true, if the element has an else branch
 	 */
 	public boolean hasElseStmt() {
 		return elseStmt != null;
 	}
 
 	/**
-	 * Checks if and then branches using clones of the passed environment.
+	 * Check then and else branches using passed environment clones.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -70,9 +65,7 @@ public class StmtIte extends Stmt {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * @return the type of the then branch
 	 */
 	@Override
 	public Type inferType() {
@@ -86,8 +79,8 @@ public class StmtIte extends Stmt {
 
 		Type elseT = this.elseStmt.inferType();
 
-		// if elseT is null and thenT is not or otherwise then adds an error.
-		// Adds an error also if the branch types are not corrisponded
+		// if elseT is null and thenT is not or otherwise then add an error.
+		// Add an error also if the branch types does not correspond
 		if (elseT != null && !elseT.getType().equalsTo(thenT) || thenT != null && !thenT.getType().equalsTo(elseT))
 			TypeErrorsStorage.addError(new TypeError(
 					"Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")",
@@ -97,9 +90,9 @@ public class StmtIte extends Stmt {
 	}
 
 	/**
-	 * Checks the behaviour of left and right branch with two different environments
-	 * and, if there was an "else" statement, performs a "max" operation between
-	 * these two.
+	 * Check the behaviour of then and else branch with two different environments
+	 * and, if there was an "else" statement, performs a "max" operation between the
+	 * computer environments.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -111,7 +104,7 @@ public class StmtIte extends Stmt {
 		Environment<BTEntry> tempE = null;
 
 		if (elseStmt != null) {
-			// performs "clone" only if it's necessary
+			// perform "clone" only if it's necessary
 			tempE = (Environment<BTEntry>) e.clone();
 			analyseStmtBehaviour(tempE, elseStmt, toRet);
 		}
@@ -125,8 +118,9 @@ public class StmtIte extends Stmt {
 	}
 
 	/**
-	 * If there's not a scope in the branch, it opens and closed a scope before and
-	 * after analyse the behaviour.
+	 * If there's not a scope in the branch, open and close a scope before and after
+	 * analyse the behaviour (in order to always have a new scope for the branches
+	 * operations).
 	 */
 	private void analyseStmtBehaviour(Environment<BTEntry> e, Stmt stmt, List<BehaviourError> errors) {
 		if (stmt instanceof StmtBlock)

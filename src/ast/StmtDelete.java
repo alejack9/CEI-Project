@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -18,6 +15,7 @@ import ast.errors.BehaviourError;
 import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
+import ast.errors.VariableAlreadyDeletedError;
 import ast.errors.VariableNotExistsError;
 import ast.errors.VariableNotVarError;
 
@@ -40,11 +38,12 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Searches for the variable in the local and the global scope.<br />
-	 * If the variable is local, then sets it as deleted if is not deleted and is
-	 * not a parameter<br />
-	 * Otherwise, checks in all scopes and, if deleted, adds an error. If the
-	 * variable is a reference or is not a parameter, then sets it as deleted
+	 * Search for the variable in the local and the global scope.<br />
+	 * If the variable is local, then check if it is not deleted and is not a
+	 * parameter: if so, set it as deleted and exit;<br />
+	 * Otherwise, check in all scopes and, if the found variable is deleted, add an
+	 * error and exit. If the variable is a reference or is not a parameter, then
+	 * set it as deleted
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -59,8 +58,12 @@ public class StmtDelete extends Stmt {
 
 		// candidate is not local
 		candidate = e.getIDEntry(id);
-		if (candidate == null || candidate.isDeleted()) {
+		if (candidate == null) {
 			toRet.add(new VariableNotExistsError(id, line, column));
+			return toRet;
+		}
+		if (candidate.isDeleted()) {
+			toRet.add(new VariableAlreadyDeletedError(id, line, column));
 			return toRet;
 		}
 
@@ -75,7 +78,7 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Checks that the user does not want to delete a function.
+	 * Check that the user does not require to delete a function.
 	 *
 	 * @return null
 	 */
@@ -87,8 +90,8 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Sets the local effect of the pointed variable to "D" and, if its effect is
-	 * "D", adds an error.
+	 * Set the local effect of the pointed variable to "D" and, if its effect is
+	 * "D", add an error.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -103,7 +106,7 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Sets the pointed variable as deleted
+	 * Set the pointed variable as deleted
 	 */
 	@Override
 	public void codeGen(int nl, CustomStringBuilder sb) {

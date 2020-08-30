@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -59,10 +56,9 @@ public class StmtDecVar extends StmtDec {
 		idEntry = new STEntry(type);
 		if (e.getLocalIDEntry(ID) == null)
 			e.add(ID, idEntry);
-		else
-		// checked by behavior analysis
-//			if(e.getLocalIDEntry(ID).isDeleted())
-		if (e.getLocalIDEntry(ID).getType().getType().equalsTo(type))
+		// do not check if the found variable has been deleted because it is checked by
+		// behavior analysis
+		else if (e.getLocalIDEntry(ID).getType().getType().equalsTo(type))
 			idEntry = e.getLocalIDEntry(ID);
 		else
 			toRet.add(new DifferentVarTypeError(ID, line, column));
@@ -76,7 +72,7 @@ public class StmtDecVar extends StmtDec {
 	}
 
 	/**
-	 * Checks that the variable type is not VOID and checks the expression type.
+	 * Check that the variable type is not VOID and check the expression type.
 	 *
 	 * @return null
 	 */
@@ -95,9 +91,6 @@ public class StmtDecVar extends StmtDec {
 		return null;
 	}
 
-	/**
-	 * Infer behaviour.
-	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -129,10 +122,10 @@ public class StmtDecVar extends StmtDec {
 		if (exp != null)
 			exp.codeGen(nl, sb);
 		sb.newLine("li $t1 0");
-		// always saves the value of $a0 in the variable value by default
+		// always save the value of $a0 in the variable location
 		sb.newLine("sw $a0 ", Integer.toString(idEntry.offset), "($t1) ", Integer.toString(type.getDimension()));
-		// if the variable was been deleted, the code sets it to non-deleted, otherwise
-		// increases the heap pointer ($hp)
+		// if the variable was been deleted, set it to "non-deleted", otherwise
+		// increase the heap pointer ($hp)
 		if (idEntry.isDeleted())
 			idEntry.setDeleted(false);
 		else

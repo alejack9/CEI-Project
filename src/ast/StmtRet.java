@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -33,7 +30,7 @@ public class StmtRet extends Stmt {
 	public StmtRet(Exp exp, List<Integer> argsDimension, int line, int column) {
 		super(line, column);
 		this.exp = exp;
-		// 8 is the value dimension of AL (4) summed to RA (4)
+		// "8" is the value dimension of AL (4) summed to RA (4)
 		k = Integer.toString(argsDimension.stream().reduce((a, b) -> a + b).orElse(0) + 8);
 	}
 
@@ -66,8 +63,8 @@ public class StmtRet extends Stmt {
 	}
 
 	/**
-	 * Does the same actions performed by functionDec after function execution:
-	 * destroys the AR.
+	 * Do the same actions performed by functionDec after function execution:
+	 * destroy the AR.
 	 */
 	@Override
 	public void codeGen(int nl, CustomStringBuilder sb) {
@@ -75,11 +72,11 @@ public class StmtRet extends Stmt {
 			exp.codeGen(nl, sb);
 		// reset $ra
 		sb.newLine("lw $ra -4($fp) 4");
-		// removes RA, AL and parameters from stack
+		// remove RA, AL and parameters from stack
 		sb.newLine("addi $sp $sp ", k);
 		// reset FP
 		sb.newLine("lw $fp 0($sp) 4");
-		// removes FP
+		// remove FP
 		sb.newLine("pop 4");
 
 		sb.newLine("jr");

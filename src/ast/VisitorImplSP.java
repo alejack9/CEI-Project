@@ -165,18 +165,18 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 	@Override
 	public StmtDecFun visitDecFun(DecFunContext ctx) {
 		List<Arg> args = new LinkedList<Arg>();
-		// resets the lastArgsDimension list
+		// reset the lastArgsDimension list
 		lastArgsDimension = new LinkedList<Integer>();
 		if (ctx.arg() != null)
 			for (ArgContext spArg : ctx.arg()) {
-				// adds arguments to args array
+				// add arguments to "args" array
 				args.add(visitArg(spArg));
-				// adds dimension to list
+				// add dimension to list
 				lastArgsDimension.add(args.get(args.size() - 1).getType().getDimension());
 			}
 		StmtDecFun toRet = new StmtDecFun(EType.getEnum(ctx.type().getText()).getType(), ctx.ID().getText(), args,
 				visitBlock(ctx.block()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
-		// resets the lastArgsDimension list again
+		// reset the lastArgsDimension list again
 		lastArgsDimension = new LinkedList<Integer>();
 		return toRet;
 	}

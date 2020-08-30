@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.List;
@@ -43,7 +40,7 @@ public class StmtPrint extends Stmt {
 	}
 
 	/**
-	 * Checks that the expression is not a {@link EType#VOID VOID} type.
+	 * Check that the expression is not a {@link EType#VOID VOID} type.
 	 *
 	 * @return null
 	 */
@@ -55,7 +52,7 @@ public class StmtPrint extends Stmt {
 	}
 
 	/**
-	 * The instruction "print" prints the value stored in $a0.
+	 * The assembly instruction "print" prints the value stored in $a0.
 	 */
 	@Override
 	public void codeGen(int nl, CustomStringBuilder sb) {

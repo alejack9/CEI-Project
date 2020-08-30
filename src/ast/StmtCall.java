@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.HashMap;
@@ -48,12 +45,6 @@ public class StmtCall extends Stmt {
 		this.exps = exps;
 	}
 
-	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -62,14 +53,14 @@ public class StmtCall extends Stmt {
 
 		if (idEntry != null) {
 			Type funT = idEntry.getType();
-			// checks that the called function is actually a function
+			// check that the called function is actually a function
 			if (EType.FUNCTION.equalsTo(funT)) {
 				// parameters check
 				List<Type> params = ((ArrowType) funT).getParamTypes();
 				if (exps.size() != params.size())
 					toRet.add(new ParametersMismatchError(params.size(), exps.size(), line, column));
 
-				// checks that for each "reference" parameter is passed a variable
+				// check that for each "reference" parameter is passed a variable
 				for (int i = 0; i < Math.min(exps.size(), params.size()); i++)
 					if (params.get(i).isRef() && !(exps.get(i) instanceof ExpVar))
 						toRet.add(new PassedExpNotVariableError(i + 1, ID, exps.get(i).line, exps.get(i).column));
@@ -78,7 +69,7 @@ public class StmtCall extends Stmt {
 		} else
 			toRet.add(new FunctionNotExistsError(ID, line, column));
 
-		// checks all expressions
+		// check all expressions
 		for (Exp exp : exps)
 			toRet.addAll(exp.checkSemantics(e));
 
@@ -86,8 +77,6 @@ public class StmtCall extends Stmt {
 	}
 
 	/**
-	 * Infers type.
-	 *
 	 * @return the function type
 	 */
 	@Override
@@ -102,26 +91,20 @@ public class StmtCall extends Stmt {
 		List<Type> parTypes = funT.getParamTypes();
 
 		for (int i = 0; i < parTypes.size(); i++) {
-			// gets parameter type
+			// get parameter type
 			Type parType = parTypes.get(i);
-			// gets expression type
+			// get expression type
 			Type expType = exps.get(i).inferType();
-			// checks the equality
+			// check the equality
 			if (!parType.getType().equalsTo(expType))
 				TypeErrorsStorage.addError(new TypeError("#" + (i + 1) + " parameter type (" + parType
 						+ ") is not equal to expression type (" + expType + ")", line, column));
 		}
 
-		// returns the function type
+		// return the function type
 		return funT.getReturnType();
 	}
 
-	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 
@@ -142,22 +125,22 @@ public class StmtCall extends Stmt {
 				// behaviour state after statement call
 				BTEntry next = e1.get(i);
 
-				// gets the behaviours list of the current variable or creates a new one
+				// get the behaviours list of the current variable or creates a new one
 				List<EEffect> btList = eStar.getOrDefault(((ExpVar) exps.get(i)).getId(), new LinkedList<>());
-				// adds to the list the seq operation result
+				// add to the list the seq operation result
 				btList.add(BTHelper.invocationSeq(prev, next));
-				// updates the behaviour list associated with that variable
+				// update the behaviour list associated with that variable
 				eStar.put(((ExpVar) exps.get(i)).getId(), btList);
 			}
 		}
 
-		// applies the par operator for each element of the behaviour list associated
+		// apply the par operator for each element of the behaviour list associated
 		// with each variable
 		eStar.entrySet().forEach(entry -> {
 			e.getIDEntry(entry.getKey())
 					.setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
 
-			// if any behaviour is TOP, adds an error
+			// if any behaviour is TOP, add an error
 			if (e.getIDEntry(entry.getKey()).getRefEffect().compareTo(EEffect.T) == 0)
 				toRet.add(new AliasingError(entry.getKey(), ID, line, column));
 		});
@@ -166,7 +149,7 @@ public class StmtCall extends Stmt {
 	}
 
 	/**
-	 * Creates the bottom part of AR and jumps to the function.
+	 * Create the bottom part of AR and jump to the function.
 	 */
 	@Override
 	public void codeGen(int nl, CustomStringBuilder sb) {
@@ -175,31 +158,31 @@ public class StmtCall extends Stmt {
 
 		// parameters in AR
 		List<Type> paramsType = ((ArrowType) idEntry.getType()).getParamTypes();
-		// decreasing order
+		// inverted order
 		for (int i = exps.size() - 1; i >= 0; i--) {
 			// if it's not required a reference, get the expression value in $a0
 			if (!paramsType.get(i).isRef())
 				exps.get(i).codeGen(nl, sb);
 			else {
-				// gets the current idEntry
+				// get the current idEntry
 				STEntry var = ((ExpVar) exps.get(i)).getIdEntry();
 				// if the variable is not a parameter (this means that it's a global variable),
-				// puts in $a0 the offset of the variable
+				// put in $a0 the offset of the variable
 				if (!var.getType().isParameter())
 					sb.newLine("li $a0 ", Integer.toString(var.offset));
-				// else, checks if it's a reference, if so, puts the variable value in $a0,
-				// otherwise finds the address of the variable and puts it in $a0
+				// else, check if it's a reference, if so, put the variable value in $a0,
+				// otherwise find the address of the variable and put it in $a0
 				else if (var.getType().isRef())
 					CodeGenUtils.getVariableCodeGen(var, nl, sb);
 				else
 					CodeGenUtils.getVariableRefCodeGen(var, nl, sb);
 			}
 
-			// pushes $a0 with appropriate dimension
+			// push $a0 with appropriate dimension
 			sb.newLine("push $a0 ", Integer.toString(paramsType.get(i).getDimension()));
 		}
 
-		// pushes the $al
+		// push the $al
 		sb.newLine("move $al $fp");
 		for (int i = 0; i < nl - idEntry.nestingLevel; i++)
 			sb.newLine("lw $al 0($al) 4");

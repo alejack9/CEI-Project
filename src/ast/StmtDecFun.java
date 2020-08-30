@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -52,8 +49,8 @@ public class StmtDecFun extends StmtDec {
 	}
 
 	/**
-	 * Adds the label to the idEntry, creates a new environment with function-only
-	 * and uses it to check the block.
+	 * Add the label to the idEntry, create a new environment with function-only
+	 * and use it to check the block.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -73,12 +70,12 @@ public class StmtDecFun extends StmtDec {
 		funEnv.setOffset(e.getOffset());
 
 		funEnv.openScope();
-		// increases the nesting level only when enters in a function
+		// increase the nesting level only when enters in a function
 		funEnv.increaseNestingLevel();
 		List<Type> parsTypes = new LinkedList<Type>();
 		// "add" modifies the offset so it stores it to reset later
 		int oldEnvOffset = funEnv.getOffset();
-		// starting offset is 4 ("jump" the AL block in AR)
+		// starting offset is 4 (to skip the AL block in AR)
 		int paroffset = 4;
 		for (int i = 0; i < args.size(); i++) {
 			STEntry toAdd = new STEntry(args.get(i).getType());
@@ -95,12 +92,12 @@ public class StmtDecFun extends StmtDec {
 		funtionType.setParamTypes(parsTypes);
 		funtionType.setRetType(type);
 
-		// resets offset
+		// reset offset
 		funEnv.setOffset(oldEnvOffset);
 
 		toRet.addAll(block.checkSemanticsSameScope(funEnv));
 
-		// closes scope and reset offset
+		// close scope and reset offset
 		funEnv.closeScope();
 		funEnv.decreaseNestingLevel();
 		funEnv.setOffset(oldEnvOffset);
@@ -108,13 +105,11 @@ public class StmtDecFun extends StmtDec {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * @return null
 	 */
 	@Override
 	public Type inferType() {
-		// infers type of all args
+		// infer type of all args
 		this.args.forEach(Arg::inferType);
 
 		Type blockT = this.block.inferType();
@@ -126,17 +121,11 @@ public class StmtDecFun extends StmtDec {
 		return null;
 	}
 
-	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 
-		// creates the function-only environment
+		// create the function-only environment
 		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions(), e.getOffset(),
 				e.getNestingLevel());
 
@@ -179,7 +168,7 @@ public class StmtDecFun extends StmtDec {
 		block.codeGen(nl + 1, sb);
 
 		sb.newLine("lw $ra 0($sp) 4");
-		// removes all parameters
+		// remove all parameters
 		sb.newLine("addi $sp $sp ", Integer.toString(
 				args.stream().map(Arg::getType).map(Type::getDimension).reduce((a, b) -> a + b).orElse(0) + 8));
 		sb.newLine("lw $fp 0($sp) 4");

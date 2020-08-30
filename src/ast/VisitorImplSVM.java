@@ -18,8 +18,6 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 	private HashMap<Integer, String> labelRef = new HashMap<Integer, String>();
 
 	/**
-	 * Gets the code.
-	 *
 	 * @return the code
 	 */
 	public int[] getCode() {
@@ -27,7 +25,7 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 	}
 
 	/**
-	 * Visits the code and resolves all references.
+	 * Visit the code and resolve all "jump" references.
 	 */
 	@Override
 	public Void visitAssembly(SVMParser.AssemblyContext ctx) {
@@ -108,7 +106,6 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 		case SVMLexer.POP:
 			code[i++] = SVMParser.POP;
 			code[i++] = Integer.parseInt(ctx.NUMBER(0).getText());
-
 			break;
 
 		case SVMLexer.BRANCHEQ:
