@@ -16,7 +16,7 @@ class WrongCodes {
 	public void resetTypeErrorsStorage() {
 		TypeErrorsStorage.clear();
 	}
-	
+
 	/**
 	 * Cannot change variable type after a delete.
 	 *
@@ -127,7 +127,7 @@ class WrongCodes {
 				, "}")
 		, 1);
 	}
-	
+
 	/**
 	 * Check if a variable is passed in case of a reference is required.
 	 *
@@ -181,7 +181,7 @@ class WrongCodes {
 				, "}")
 		, 2);
 	}
-	
+
 	/**
 	 * Lexical error.
 	 *
@@ -195,6 +195,37 @@ class WrongCodes {
 				, "}")
 		, 1);
 	}
+
+	/**
+	 * Aliasing error with a variable that has previously changed his status
+	 * (previously deleted)
+	 * 
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	@Test
+	void aliasingError() throws IOException {
+		Utils.behaviourErrors(String.join("\r\n"
+				, "{"
+				, "    int x;"
+				, "    delete x;"
+				, "    int x;"
+				, "    "
+				, "    void f(int var y, int var z) {"
+				, "        delete y;"
+				, "        print z;"
+				, "    }"
+				, "    "
+				, "    f(x, x);"
+				, "}")
+		, 1);
+	}
 	
-	
+	@Test
+	void parseError() throws IOException {
+		Utils.parseErrors(String.join("\r\n"
+				, "{"
+				, "    int x; [A]"
+				, "}")
+		, true);
+	}
 }

@@ -15,7 +15,7 @@ import logger.Logger;
 /**
  * A generic error listener.
  */
-public abstract class SimpleErrorListener implements ANTLRErrorListener {
+public abstract class CustomErrorListener implements ANTLRErrorListener {
 
 	protected final Logger logger;
 	private boolean errors = false;
@@ -25,7 +25,7 @@ public abstract class SimpleErrorListener implements ANTLRErrorListener {
 	 * 
 	 * @param logger The logger in which write
 	 */
-	protected SimpleErrorListener(Logger logger) {
+	protected CustomErrorListener(Logger logger) {
 		this.logger = logger;
 	}
 
@@ -33,7 +33,8 @@ public abstract class SimpleErrorListener implements ANTLRErrorListener {
 	public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
 			String msg, RecognitionException e) {
 		try {
-			this.logger.writeLine("line " + line + ":" + charPositionInLine + "\t" + msg);
+			if (logger != null)
+				this.logger.writeLine("line " + line + ":" + charPositionInLine + "\t" + msg);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

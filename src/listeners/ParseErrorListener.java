@@ -10,12 +10,12 @@ import logger.Logger;
 /**
  * Specific listener for parser
  */
-public class SimpleSintaxErrorListener extends SimpleErrorListener {
+public class ParseErrorListener extends CustomErrorListener {
 
 	/**
 	 * @param logger The logger in which write
 	 */
-	public SimpleSintaxErrorListener(Logger logger) {
+	public ParseErrorListener(Logger logger) {
 		super(logger);
 	}
 
@@ -23,7 +23,8 @@ public class SimpleSintaxErrorListener extends SimpleErrorListener {
 	public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
 			String msg, RecognitionException e) {
 		try {
-			logger.write("SYNTAX ERROR: ");
+			if (logger != null)
+				logger.write("SYNTAX ERROR: ");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

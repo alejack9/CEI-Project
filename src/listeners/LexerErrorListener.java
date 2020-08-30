@@ -10,12 +10,12 @@ import logger.Logger;
 /**
  * Specific listener for lexer
  */
-public class SimpleLexerErrorListener extends SimpleErrorListener {
+public class LexerErrorListener extends CustomErrorListener {
 
 	/**
 	 * @param logger The logger in which write
 	 */
-	public SimpleLexerErrorListener(Logger logger) {
+	public LexerErrorListener(Logger logger) {
 		super(logger);
 	}
 
@@ -23,7 +23,8 @@ public class SimpleLexerErrorListener extends SimpleErrorListener {
 	public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
 			String msg, RecognitionException e) {
 		try {
-			logger.write("LEXICAL ERROR: ");
+			if (logger != null)
+				logger.write("LEXICAL ERROR: ");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
