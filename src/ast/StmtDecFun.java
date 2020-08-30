@@ -161,7 +161,7 @@ public class StmtDecFun extends StmtDec {
 
 			// Update function's sigma1 with sigma1'
 			funEnv.update(id, new BTEntry(e1_1));
-			
+
 			// If the two sigmas are equal, then fixed point method ends
 		} while (!BTEntry.areEqual(e1, e1_1));
 		// Add function entry in the main environment

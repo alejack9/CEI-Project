@@ -41,7 +41,7 @@ public class BTEntry extends Entry {
 	}
 
 	/**
-	 * Return current entry effect.
+	 * Return current local entry effect (the last one of the list).
 	 * 
 	 * @return the local effect
 	 */
@@ -50,8 +50,8 @@ public class BTEntry extends Entry {
 	}
 
 	/**
-	 * Return first effect of variable passed by reference (the effect before function
-	 * call).
+	 * Return first effect of variable required by reference (the effect that the
+	 * function call perform).
 	 * 
 	 * @return the ref effect
 	 */
@@ -65,7 +65,7 @@ public class BTEntry extends Entry {
 	}
 
 	/**
-	 * Gets the e1.
+	 * Get the sigma1.
 	 *
 	 * @return the e1
 	 */
@@ -74,10 +74,10 @@ public class BTEntry extends Entry {
 	}
 
 	/**
-	 * Are equal.
+	 * Check if two environments are equal.
 	 *
-	 * @param e1   the e 1
-	 * @param e1_1 the e 1 1
+	 * @param e1   the sigma1
+	 * @param e1_1 the sigma1'
 	 * @return true, if successful
 	 */
 	public static boolean areEqual(List<BTEntry> e1, List<BTEntry> e1_1) {

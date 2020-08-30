@@ -7,15 +7,15 @@ import ast.types.Type;
  * Symbol table entry
  */
 public class STEntry extends Entry {
-	
+
 	private Type type;
 
 	public int nestingLevel;
-	
+
 	public int offset;
-	
+
 	/**
-	 * Function related label name to use as branch name in code generation.
+	 * Function label to use as branch name in code generation.
 	 */
 	public String label;
 

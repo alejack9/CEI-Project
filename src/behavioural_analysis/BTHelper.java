@@ -4,8 +4,8 @@ import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 
 /**
- * Support class for code behavioural analysis.
- * <br>It contains operations on effects.
+ * Support class for code behavioural analysis. <br>
+ * It contains operations on effects.
  */
 public class BTHelper {
 
@@ -62,13 +62,13 @@ public class BTHelper {
 	}
 
 	/**
-	 * Handle referenced parameter effect after function invocation.
-	 * <br>
-	 * It calculates <code>seq</code> effect between the variable effect before function invocation and after that.
-	 
+	 * Handle referenced parameter effect after function invocation. <br>
+	 * It calculates <code>seq</code> effect between the variable effect before
+	 * function invocation and after that.
+	 * 
 	 * @param a the effect of the variable before the function invocation
 	 * @param b the effect of the variable after the function invocation
-	 * @return final effect 
+	 * @return final effect
 	 */
 	public static EEffect invocationSeq(BTEntry a, BTEntry b) {
 		return b != null ? BTHelper.seq(a.getLocalEffect(), b.getRefEffect()) : a.getLocalEffect();

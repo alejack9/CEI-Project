@@ -3,7 +3,6 @@ package ast;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import ast.errors.TypeError;
 import ast.types.ArrowType;
@@ -136,12 +135,13 @@ public class StmtCall extends Stmt {
 				eStar.put(((ExpVar) exps.get(i)).getId(), btList);
 			}
 		}
-		
+
 		eStar.entrySet().forEach(entry -> {
 			e.getIDEntry(entry.getKey())
 					.setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
 
-			// If any behaviour is TOP, add an error
+			// If any local behaviour (upgraded by the previous command) is TOP, add an
+			// error
 			if (e.getIDEntry(entry.getKey()).getLocalEffect().compareTo(EEffect.T) == 0)
 				toRet.add(new AliasingError(entry.getKey(), ID, line, column));
 		});

@@ -1,7 +1,7 @@
 {
-	int x; [B]
-	delete x; [D]
-	int x;  [D, B]
+	int x;
+	delete x;
+	int x;
 	
 	void f(int var y, int var z) {
 		delete y;

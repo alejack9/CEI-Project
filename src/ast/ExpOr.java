@@ -38,8 +38,8 @@ public class ExpOr extends ExpBinBoolBoolIn {
 	}
 
 	/**
-	 * Return the code that evaluates the expression and, if the returned value is 1,
-	 * make the program jump to a specified label.
+	 * Return the code that evaluates the expression and, if the returned value is
+	 * 1, make the program jump to a specified label.
 	 */
 	private void getCodeExpIsTrueThenJump(Exp side, int nl, String label, CustomStringBuilder sb) {
 		side.codeGen(nl, sb);

@@ -3,10 +3,11 @@ package util_analysis.entries;
 import support.MyCloneable;
 
 /**
- * The base class for the entries containing properties of variables and functions.
+ * The base class for the entries containing properties of variables and
+ * functions.
  */
 public abstract class Entry implements MyCloneable {
-	
+
 	protected boolean deleted = false;
 
 	protected abstract boolean _equals(Object obj);

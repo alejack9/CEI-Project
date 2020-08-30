@@ -12,9 +12,8 @@ import ast.errors.BehaviourError;
 import ast.errors.LexicalError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
-import listeners.SimpleErrorListener;
-import listeners.SimpleLexerErrorListener;
-import listeners.SimpleSintaxErrorListener;
+import listeners.LexerErrorListener;
+import listeners.ParseErrorListener;
 import logger.Logger;
 import logger.LoggerFactory;
 
@@ -45,7 +44,7 @@ public class Main {
 
 	private StmtBlock mainBlock;
 	private SimplePlusLexer lexer;
-	private SimpleErrorListener sl = null;
+	private List<ParseErrorListener> syntaxErrorListeners = new LinkedList<ParseErrorListener>();
 
 	/**
 	 * The step that performs lexical check.
@@ -59,9 +58,6 @@ public class Main {
 				logger.writeLine("Lexical Error: " + error.toString());
 			return false;
 		}
-
-		if (sl != null && sl.errorsDetected())
-			return false;
 
 		logger.writeLine("succeeded", true);
 
@@ -201,10 +197,11 @@ public class Main {
 		// listener that writes on a file
 		if (errorsFileName != null) {
 			logger.writeLine("Errors File Name: " + errorsFileName);
-			sl = new SimpleSintaxErrorListener(LoggerFactory.getLogger(errorsFileName));
-			lexer.addErrorListener(sl);
+			syntaxErrorListeners.add(new ParseErrorListener(LoggerFactory.getLogger(errorsFileName)));
+			lexer.addErrorListener(new LexerErrorListener(LoggerFactory.getLogger(errorsFileName)));
 		}
-		lexer.addErrorListener(new SimpleLexerErrorListener(logger));
+		lexer.addErrorListener(new LexerErrorListener(logger));
+		syntaxErrorListeners.add(new ParseErrorListener(logger));
 
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -212,9 +209,8 @@ public class Main {
 
 		parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
 
-		if (errorsFileName != null)
-			parser.addErrorListener(sl);
-		parser.addErrorListener(new SimpleSintaxErrorListener(logger));
+		for (ParseErrorListener el : syntaxErrorListeners)
+			parser.addErrorListener(el);
 
 		// Tell the parser to build the AST
 		parser.setBuildParseTree(true);
@@ -223,9 +219,10 @@ public class Main {
 
 		try {
 			mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
-		}
-		catch(Exception e) {
-			quit();
+		} catch (Exception e) {
+			if (syntaxErrorListeners.get(0).errorsDetected())
+				quit();
+			throw e;
 		}
 
 		// Execute each step; if any step return false, the processor is killed
