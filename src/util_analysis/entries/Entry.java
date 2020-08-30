@@ -2,7 +2,11 @@ package util_analysis.entries;
 
 import support.MyCloneable;
 
+/**
+ * Entry containing properties of variables and functions.
+ */
 public abstract class Entry implements MyCloneable {
+	
 	protected boolean deleted = false;
 
 	protected abstract boolean _equals(Object obj);
