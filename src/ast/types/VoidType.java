@@ -1,7 +1,7 @@
 package ast.types;
 
 /**
- * Represents void type
+ * Represents the Void type.
  */
 public class VoidType extends Type {
 

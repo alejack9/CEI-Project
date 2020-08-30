@@ -1,7 +1,7 @@
 package ast.types;
 
 /**
- * Represents the boolean type
+ * Represents the Boolean type.
  */
 public class BoolType extends Type {
 

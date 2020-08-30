@@ -4,8 +4,8 @@ import util_analysis.Environment;
 import util_analysis.entries.BTEntry;
 
 /**
- * Support class for code behavioural analysis. It contains operations on
- * Effects Set.
+ * Support class for code behavioural analysis.
+ * <br>It contains operations on Effects Set.
  *
  */
 public class BTHelper {
@@ -65,7 +65,8 @@ public class BTHelper {
 
 	/**
 	 * Handles ref parameter effect after function invocation.
-	 * It calculates seq effect between the variable effect before function invocation and after that.
+	 * <br>
+	 * It calculates <i>seq</i> effect between the variable effect before function invocation and after that.
 	 
 	 * @param a the effect of the variable before the function invocation
 	 * @param b the effect of the variable after the function invocation

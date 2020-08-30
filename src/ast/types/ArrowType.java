@@ -3,7 +3,7 @@ package ast.types;
 import java.util.List;
 
 /**
- * Represents function type
+ * Represents the Function type.
  */
 public class ArrowType extends Type {
 
@@ -25,7 +25,7 @@ public class ArrowType extends Type {
 	}
 
 	/**
-	 * Sets the types of function parameters
+	 * Sets the types of function parameters.
 	 *
 	 * @param paramTypes the parameters types
 	 */
@@ -34,7 +34,7 @@ public class ArrowType extends Type {
 	}
 
 	/**
-	 * Sets the function return type
+	 * Sets the function return type.
 	 *
 	 * @param retType the return type
 	 */

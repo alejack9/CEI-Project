@@ -1,7 +1,7 @@
 package ast.types;
 
 /**
- * A factory for creating Type objects
+ * A factory for creating Type objects.
  */
 class TypeFactory {
 
@@ -9,7 +9,7 @@ class TypeFactory {
 	}
 
 	/**
-	 * Creates the type associated to a
+	 * Creates the type associated to an
 	 * <li>Etype</li> value.
 	 *
 	 * @param type        the Etype value

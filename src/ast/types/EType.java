@@ -1,7 +1,7 @@
 package ast.types;
 
 /**
- * ID and function return types
+ * ID and function return types.
  */
 public enum EType {
 
@@ -19,7 +19,7 @@ public enum EType {
 	}
 
 	/**
-	 * Compares enum value with enum type of the <i>Type</i> object passed
+	 * Compares enum value with the enum type of the <i>Type</i> object passed.
 	 *
 	 * @param type Type object to compare
 	 * @return true if equals, false otherwise
@@ -29,10 +29,10 @@ public enum EType {
 	}
 
 	/**
-	 * Get <i>Type</i> object from enum value
+	 * Get <i>Type</i> object from enum value.
 	 *
-	 * @param isParameter the ID associated to the type is a parameter
-	 * @param isRef       the ID associated to the type is passed by reference
+	 * @param isParameter the ID related to the type is a parameter
+	 * @param isRef       the ID related to the type is passed by reference
 	 * @return the related object Type
 	 */
 	public Type getType(boolean isParameter, boolean isRef) {
@@ -41,7 +41,7 @@ public enum EType {
 
 	/**
 	 * Gets <i>Type</i> object from enum value associated to a not parameter and not
-	 * referenced ID
+	 * referenced ID.
 	 *
 	 * @return the correspondent object Type
 	 */

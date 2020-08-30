@@ -1,7 +1,7 @@
 package ast.types;
 
 /**
- * Represent the type.
+ * Represents the type.
  */
 public abstract class Type implements Cloneable {
 
@@ -26,16 +26,17 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
-	 * Gets the byte dimension of the type
+	 * Gets the byte dimension of the type.
 	 *
 	 * @return the dimension
 	 */
 	protected abstract int _getDimension();
 
 	/**
-	 * Gets the byte dimension of the type <br>
-	 * If type is related to a variable passed by reference, then returns 4 as
-	 * address dimension
+	 * Gets the byte dimension of the type.
+	 * <br>
+	 * If the type is related to a variable passed by reference, then returns 4 as
+	 * address dimension.
 	 * 
 	 * @return the dimension
 	 */
@@ -44,7 +45,7 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
-	 * Checks if type is related to a parameter.
+	 * Checks if the type is related to a parameter.
 	 *
 	 * @return true if it's a parameter, false otherwise
 	 */
@@ -53,7 +54,7 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
-	 * Checks if type is related to a parameter passed by reference
+	 * Checks if the type is related to a parameter passed by reference.
 	 *
 	 * @return true if it's passed by reference, false otherwise
 	 */
@@ -67,7 +68,7 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
-	 * Compares Type object with another object
+	 * Compares Type object with another object.
 	 *
 	 * @param e the object to compare
 	 * @return true if they are equals, false otherwise
