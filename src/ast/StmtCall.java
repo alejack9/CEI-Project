@@ -53,14 +53,14 @@ public class StmtCall extends Stmt {
 
 		if (idEntry != null) {
 			Type funT = idEntry.getType();
-			// check that the called function is actually a function
+			// Check that the called function is actually a function
 			if (EType.FUNCTION.equalsTo(funT)) {
-				// parameters check
+				// Parameters check
 				List<Type> params = ((ArrowType) funT).getParamTypes();
 				if (exps.size() != params.size())
 					toRet.add(new ParametersMismatchError(params.size(), exps.size(), line, column));
 
-				// check that for each "reference" parameter is passed a variable
+				// Check that for each "reference" parameter is passed a variable
 				for (int i = 0; i < Math.min(exps.size(), params.size()); i++)
 					if (params.get(i).isRef() && !(exps.get(i) instanceof ExpVar))
 						toRet.add(new PassedExpNotVariableError(i + 1, ID, exps.get(i).line, exps.get(i).column));
@@ -69,7 +69,7 @@ public class StmtCall extends Stmt {
 		} else
 			toRet.add(new FunctionNotExistsError(ID, line, column));
 
-		// check all expressions
+		// Check all expressions
 		for (Exp exp : exps)
 			toRet.addAll(exp.checkSemantics(e));
 
@@ -81,7 +81,7 @@ public class StmtCall extends Stmt {
 	 */
 	@Override
 	public Type inferType() {
-		// it's already checked by checkSemantic
+		// It's already checked by checkSemantic
 //		if (!EType.FUNCTION.equalsTo(idEntry.getType()))
 //			TypeErrorsStorage.addError(new TypeError(
 //					"Called ID must be a function (actual type: " + idEntry.getType() + ")", line, column));
@@ -91,17 +91,17 @@ public class StmtCall extends Stmt {
 		List<Type> parTypes = funT.getParamTypes();
 
 		for (int i = 0; i < parTypes.size(); i++) {
-			// get parameter type
+			// Get parameter type
 			Type parType = parTypes.get(i);
-			// get expression type
+			// Get expression type
 			Type expType = exps.get(i).inferType();
-			// check the equality
+			// Check the equality
 			if (!parType.getType().equalsTo(expType))
 				TypeErrorsStorage.addError(new TypeError("#" + (i + 1) + " parameter type (" + parType
 						+ ") is not equal to expression type (" + expType + ")", line, column));
 		}
 
-		// return the function type
+		// Return the function type
 		return funT.getReturnType();
 	}
 
@@ -120,27 +120,27 @@ public class StmtCall extends Stmt {
 
 		for (int i = 0; i < parsTypes.size(); i++) {
 			if (parsTypes.get(i).isRef()) {
-				// previous behaviour state before statement call
+				// Get previous behaviour state before statement call
 				BTEntry prev = e.getIDEntry(((ExpVar) exps.get(i)).getId());
-				// behaviour state after statement call
+				// Get behaviour state after statement call
 				BTEntry next = e1.get(i);
 
-				// get the behaviours list of the current variable or creates a new one
+				// Get the behaviours list of the current variable or creates a new one
 				List<EEffect> btList = eStar.getOrDefault(((ExpVar) exps.get(i)).getId(), new LinkedList<>());
-				// add to the list the seq operation result
+				// Add to the list the seq operation result
 				btList.add(BTHelper.invocationSeq(prev, next));
-				// update the behaviour list associated with that variable
+				// Update the behaviour list associated with that variable
 				eStar.put(((ExpVar) exps.get(i)).getId(), btList);
 			}
 		}
 
-		// apply the par operator for each element of the behaviour list associated
+		// Apply the par operator for each element of the behaviour list associated
 		// with each variable
 		eStar.entrySet().forEach(entry -> {
 			e.getIDEntry(entry.getKey())
 					.setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
 
-			// if any behaviour is TOP, add an error
+			// If any behaviour is TOP, add an error
 			if (e.getIDEntry(entry.getKey()).getRefEffect().compareTo(EEffect.T) == 0)
 				toRet.add(new AliasingError(entry.getKey(), ID, line, column));
 		});
@@ -153,24 +153,24 @@ public class StmtCall extends Stmt {
 	 */
 	@Override
 	public void codeGen(int nl, CustomStringBuilder sb) {
-		// old FP in AR
+		// Old FP in AR
 		sb.newLine("push $fp 4");
 
-		// parameters in AR
+		// Parameters in AR
 		List<Type> paramsType = ((ArrowType) idEntry.getType()).getParamTypes();
-		// inverted order
+		// Decreasing order
 		for (int i = exps.size() - 1; i >= 0; i--) {
-			// if it's not required a reference, get the expression value in $a0
+			// If it's not required a reference, get the expression value in $a0
 			if (!paramsType.get(i).isRef())
 				exps.get(i).codeGen(nl, sb);
 			else {
-				// get the current idEntry
+				// Get the current idEntry
 				STEntry var = ((ExpVar) exps.get(i)).getIdEntry();
-				// if the variable is not a parameter (this means that it's a global variable),
+				// If the variable is not a parameter (this means that it's a global variable),
 				// put in $a0 the offset of the variable
 				if (!var.getType().isParameter())
 					sb.newLine("li $a0 ", Integer.toString(var.offset));
-				// else, check if it's a reference, if so, put the variable value in $a0,
+				// Else, check if it's a reference, if so, put the variable value in $a0,
 				// otherwise find the address of the variable and put it in $a0
 				else if (var.getType().isRef())
 					CodeGenUtils.getVariableCodeGen(var, nl, sb);
@@ -178,17 +178,16 @@ public class StmtCall extends Stmt {
 					CodeGenUtils.getVariableRefCodeGen(var, nl, sb);
 			}
 
-			// push $a0 with appropriate dimension
+			// Push $a0 with appropriate dimension
 			sb.newLine("push $a0 ", Integer.toString(paramsType.get(i).getDimension()));
 		}
 
-		// push the $al
+		// Push the $al
 		sb.newLine("move $al $fp");
 		for (int i = 0; i < nl - idEntry.nestingLevel; i++)
 			sb.newLine("lw $al 0($al) 4");
 		sb.newLine("push $al 4");
-		// actual jumps to the function
+		// Actually jump to the function
 		sb.newLine("jal ", idEntry.label);
 	}
-
 }

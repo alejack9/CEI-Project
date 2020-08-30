@@ -1,7 +1,6 @@
 package ast;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import ast.types.EType;
@@ -35,7 +34,7 @@ public class ExpVal extends Exp {
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
-		return new LinkedList<SemanticError>();
+		return Collections.emptyList();
 	}
 
 	/**

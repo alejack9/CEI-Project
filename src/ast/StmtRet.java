@@ -23,15 +23,15 @@ public class StmtRet extends Stmt {
 	/**
 	 * @param exp           the expression to return
 	 * @param argsDimension the dimension of the arguments required by the function
-	 *                      that wrap the node
+	 *                      that wraps the node
 	 * @param line          the line in the code
 	 * @param column        the column in the code
 	 */
-	public StmtRet(Exp exp, List<Integer> argsDimension, int line, int column) {
+	public StmtRet(Exp exp, int argsDimension, int line, int column) {
 		super(line, column);
 		this.exp = exp;
 		// "8" is the value dimension of AL (4) summed to RA (4)
-		k = Integer.toString(argsDimension.stream().reduce((a, b) -> a + b).orElse(0) + 8);
+		k = Integer.toString(argsDimension + 8);
 	}
 
 	@Override
@@ -70,13 +70,13 @@ public class StmtRet extends Stmt {
 	public void codeGen(int nl, CustomStringBuilder sb) {
 		if (exp != null)
 			exp.codeGen(nl, sb);
-		// reset $ra
+		// Reset $ra
 		sb.newLine("lw $ra -4($fp) 4");
-		// remove RA, AL and parameters from stack
+		// Remove RA, AL and parameters from stack
 		sb.newLine("addi $sp $sp ", k);
-		// reset FP
+		// Reset $fp
 		sb.newLine("lw $fp 0($sp) 4");
-		// remove FP
+		// Remove FP
 		sb.newLine("pop 4");
 
 		sb.newLine("jr");

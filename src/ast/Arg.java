@@ -37,9 +37,6 @@ public class Arg extends ElementBase {
 	}
 
 	/**
-	 * Check semantics.
-	 *
-	 * @param e the Environment
 	 * @return null (because it is checked by "SPStmtDecFun")
 	 */
 	@Override
@@ -48,9 +45,6 @@ public class Arg extends ElementBase {
 	}
 
 	/**
-	 * Infer behavior.
-	 *
-	 * @param e the Environment
 	 * @return null (because it is checked by "SPStmtDecFun")
 	 */
 	@Override
@@ -59,8 +53,6 @@ public class Arg extends ElementBase {
 	}
 
 	/**
-	 * Infer type.
-	 *
 	 * @return null because it does not have any type (void is reserved for return
 	 *         statements)
 	 */

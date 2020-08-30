@@ -31,10 +31,11 @@ import parser.SimplePlusParser.VarExpContext;
 public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 
 	/**
-	 * A list of last dimensions of arguments.<br />
-	 * Used to pass to the return element the parameters dimension
+	 * Current function arguments dimension.<br>
+	 * Used to pass to the {@link StmtRet Return node} the parameters dimension of
+	 * the current function (if any).
 	 */
-	private List<Integer> lastArgsDimension = new LinkedList<Integer>();
+	private int currentFunctionArgsDimension = 0;
 
 	@Override
 	public Stmt visitStatement(StatementContext ctx) {
@@ -65,8 +66,8 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 
 	@Override
 	public StmtRet visitRet(RetContext ctx) {
-		return new StmtRet(ctx.exp() == null ? null : (Exp) visit(ctx.exp()), lastArgsDimension, ctx.start.getLine(),
-				ctx.start.getCharPositionInLine());
+		return new StmtRet(ctx.exp() == null ? null : (Exp) visit(ctx.exp()), currentFunctionArgsDimension,
+				ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
 	@Override
@@ -162,19 +163,19 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 	@Override
 	public StmtDecFun visitDecFun(DecFunContext ctx) {
 		List<Arg> args = new LinkedList<Arg>();
-		// reset the lastArgsDimension list
-		lastArgsDimension = new LinkedList<Integer>();
+		// Reset lastArgsDimension
+		currentFunctionArgsDimension = 0;
 		if (ctx.arg() != null)
 			for (ArgContext spArg : ctx.arg()) {
-				// add arguments to "args" array
+				// Add arguments to "args" array
 				args.add(visitArg(spArg));
-				// add dimension to list
-				lastArgsDimension.add(args.get(args.size() - 1).getType().getDimension());
+				// Add current argument dimension
+				currentFunctionArgsDimension += args.get(args.size() - 1).getType().getDimension();
 			}
 		StmtDecFun toRet = new StmtDecFun(EType.getEnum(ctx.type().getText()).getType(), ctx.ID().getText(), args,
 				visitBlock(ctx.block()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
-		// reset the lastArgsDimension list again
-		lastArgsDimension = new LinkedList<Integer>();
+		// Reset the lastArgsDimension again
+		currentFunctionArgsDimension = 0;
 		return toRet;
 	}
 

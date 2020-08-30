@@ -16,7 +16,7 @@ import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
 /**
- * The class of if-then-else statements<br />
+ * The class of if-then-else statements<br>
  * ("if(e) { ... }" or "if(e) { ... } else { ... }").
  */
 public class StmtIte extends Stmt {
@@ -47,7 +47,7 @@ public class StmtIte extends Stmt {
 	}
 
 	/**
-	 * Check then and else branches using passed environment clones.
+	 * Check then and else branches using passed environment's clones.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -79,7 +79,7 @@ public class StmtIte extends Stmt {
 
 		Type elseT = this.elseStmt.inferType();
 
-		// if elseT is null and thenT is not or otherwise then add an error.
+		// If elseT is null and thenT is not null or otherwise, then add an error.
 		// Add an error also if the branch types does not correspond
 		if (elseT != null && !elseT.getType().equalsTo(thenT) || thenT != null && !thenT.getType().equalsTo(elseT))
 			TypeErrorsStorage.addError(new TypeError(
@@ -92,7 +92,7 @@ public class StmtIte extends Stmt {
 	/**
 	 * Check the behaviour of then and else branch with two different environments
 	 * and, if there was an "else" statement, performs a "max" operation between the
-	 * computer environments.
+	 * computed environments.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -104,7 +104,7 @@ public class StmtIte extends Stmt {
 		Environment<BTEntry> tempE = null;
 
 		if (elseStmt != null) {
-			// perform "clone" only if it's necessary
+			// Perform "clone" only if it's necessary
 			tempE = (Environment<BTEntry>) e.clone();
 			analyseStmtBehaviour(tempE, elseStmt, toRet);
 		}

@@ -46,10 +46,10 @@ public abstract class ElementBase {
 	public abstract Type inferType();
 
 	/**
-	 * Perform behavioral analysis.
+	 * Perform behavioural analysis.
 	 *
 	 * @param e the environment
-	 * @return the behavior of the expression
+	 * @return the behaviour of the expression
 	 */
 	public abstract List<BehaviourError> inferBehaviour(Environment<BTEntry> e);
 

@@ -1,12 +1,12 @@
-package ast;
+package support;
 
-import support.CustomStringBuilder;
+import ast.ElementBase;
 
 public class CodeMaker {
-	private StmtBlock block;
+	private ElementBase root;
 
-	public CodeMaker(StmtBlock block) {
-		this.block = block;
+	public CodeMaker(ElementBase root) {
+		this.root = root;
 	}
 
 	public String codeGen() {
@@ -21,7 +21,7 @@ public class CodeMaker {
 		csb.newLine("push $ra 4");
 		csb.newLine();
 
-		block.codeGen(0, csb);
+		root.codeGen(0, csb);
 
 		csb.newLine();
 		csb.newLine("lw $ra 0($sp) 4");

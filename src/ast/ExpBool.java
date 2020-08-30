@@ -21,9 +21,9 @@ public class ExpBool extends Exp {
 	private boolean value;
 
 	/**
-	 * @param value  the value
-	 * @param line   the line
-	 * @param column the column
+	 * @param value  the boolean value
+	 * @param line   the line of the code
+	 * @param column the column of the code
 	 */
 	public ExpBool(boolean value, int line, int column) {
 		super(line, column);
@@ -35,7 +35,7 @@ public class ExpBool extends Exp {
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
-		return new LinkedList<SemanticError>();
+		return Collections.emptyList();
 	}
 
 	/**

@@ -45,12 +45,12 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 
 		case SVMLexer.BRANCH:
 			code[i++] = SVMParser.BRANCH;
-			// the value after "i" must be filled later with the starting label value
+			// The value after "i" must be filled later with the starting label value
 			labelRef.put(i++, ctx.LABEL().getText());
 			break;
 
 		case SVMLexer.LABEL:
-			// when it is required this label, returns "i"
+			// When it is required this label, returns "i"
 			labelsIndexes.put(ctx.LABEL().getText(), i);
 			break;
 

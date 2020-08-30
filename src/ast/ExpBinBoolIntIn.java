@@ -13,10 +13,10 @@ import util_analysis.TypeErrorsStorage;
 public abstract class ExpBinBoolIntIn extends ExpBin {
 
 	/**
-	 * @param left   the left
-	 * @param right  the right
-	 * @param line   the line
-	 * @param column the column
+	 * @param left   the left side of the expression
+	 * @param right  the right side of the expression
+	 * @param line   the line of the code
+	 * @param column the column of the code
 	 */
 	protected ExpBinBoolIntIn(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);

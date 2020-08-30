@@ -37,7 +37,7 @@ public class ExpVar extends Exp {
 	}
 
 	/**
-	 * Check if the variable does exists.
+	 * Check if the variable does exist.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -60,9 +60,6 @@ public class ExpVar extends Exp {
 		return this.idEntry.getType();
 	}
 
-	/**
-	 * Infer behaviour.
-	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -78,7 +75,7 @@ public class ExpVar extends Exp {
 
 		/**
 		 * Set the local effect to the current local effect seq by {@link EEffect#RW RW}
-		 * currentLocalEffect = currentLocalEffect |> RW
+		 * currentLocalEffect = currentLocalEffect ▷ RW
 		 */
 		current.setLocalEffect(BTHelper.seq(current.getLocalEffect(), EEffect.RW));
 

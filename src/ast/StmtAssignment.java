@@ -115,7 +115,7 @@ public class StmtAssignment extends Stmt {
 
 		sb.newLine("move $t1 $a0");
 		/**
-		 * Generate code to get the variable value<br />
+		 * Generate code to get the variable value<br>
 		 * NOTE: it also changes the $al value pointing to the correct scope
 		 */
 		CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);

@@ -49,8 +49,8 @@ public class StmtDecFun extends StmtDec {
 	}
 
 	/**
-	 * Add the label to the idEntry, create a new environment with function-only
-	 * and use it to check the block.
+	 * Add the label to the idEntry, create a new environment with function-only and
+	 * use it to check the block.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -66,16 +66,16 @@ public class StmtDecFun extends StmtDec {
 
 		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions(), e.getOffset(),
 				e.getNestingLevel());
-		// set the correct offset
+		// Set the correct offset
 		funEnv.setOffset(e.getOffset());
 
 		funEnv.openScope();
-		// increase the nesting level only when enters in a function
+		// Increase the nesting level only when enters in a function
 		funEnv.increaseNestingLevel();
 		List<Type> parsTypes = new LinkedList<Type>();
 		// "add" modifies the offset so it stores it to reset later
 		int oldEnvOffset = funEnv.getOffset();
-		// starting offset is 4 (to skip the AL block in AR)
+		// Starting offset is 4 (to skip the AL block in AR)
 		int paroffset = 4;
 		for (int i = 0; i < args.size(); i++) {
 			STEntry toAdd = new STEntry(args.get(i).getType());
@@ -84,7 +84,7 @@ public class StmtDecFun extends StmtDec {
 				toRet.add(new IdAlreadytExistsError(args.get(i).getId(), args.get(i).line, args.get(i).column));
 			else
 				toAdd.offset = paroffset;
-			// the next offset is the current value summed by the dimension of the current
+			// The next offset is the current value summed by the dimension of the current
 			// variable
 			paroffset += args.get(i).getType().getDimension();
 		}
@@ -92,12 +92,12 @@ public class StmtDecFun extends StmtDec {
 		funtionType.setParamTypes(parsTypes);
 		funtionType.setRetType(type);
 
-		// reset offset
+		// Reset offset
 		funEnv.setOffset(oldEnvOffset);
 
 		toRet.addAll(block.checkSemanticsSameScope(funEnv));
 
-		// close scope and reset offset
+		// Close scope and reset offset
 		funEnv.closeScope();
 		funEnv.decreaseNestingLevel();
 		funEnv.setOffset(oldEnvOffset);
@@ -109,7 +109,7 @@ public class StmtDecFun extends StmtDec {
 	 */
 	@Override
 	public Type inferType() {
-		// infer type of all args
+		// Infer type of all args
 		this.args.forEach(Arg::inferType);
 
 		Type blockT = this.block.inferType();
@@ -125,35 +125,47 @@ public class StmtDecFun extends StmtDec {
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 
-		// create the function-only environment
+		// Create the function-only environment
 		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions(), e.getOffset(),
 				e.getNestingLevel());
 
-		// setup for fixed point method
-		List<BTEntry> e0 = new LinkedList<BTEntry>();
-		args.stream().forEach(arg -> e0.add(new BTEntry()));
+		// Setup for fixed point method
+		// Starting with all parameters in BOTTOM state
+		// e1 represents the theoretical sigma1
 		List<BTEntry> e1 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e1.add(new BTEntry()));
+		// e1_1 represents the theoretical sigma1'
 		List<BTEntry> e1_1 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e1_1.add(new BTEntry()));
 
-		funEnv.add(id, new BTEntry(e0));
-		// TODO don't remember
+		// Add function for direct recursion with default behaviour states (BOTTOM)
+		funEnv.add(id, new BTEntry(e1_1));
 		do {
 			funEnv.openScope();
+			// Refresh errors list
 			toRet = new LinkedList<BehaviourError>();
-			for (int i = 0; i < e0.size(); i++)
-				funEnv.add(args.get(i).getId(), (BTEntry) e0.get(i).clone());
+			// Reset all parameters' behaviour state to BOTTOM
+			for (int i = 0; i < e1.size(); i++)
+				funEnv.add(args.get(i).getId(), new BTEntry());
+
+			// Infer block behaviour without open a new scope (opened in line 144)
 			toRet.addAll(block.inferBehaviourSameScope(funEnv));
-			for (int i = 0; i < e0.size(); i++) {
+
+			// Backup sigma1' into sigma1 and update all parameters value in sigma1'
+			for (int i = 0; i < e1.size(); i++) {
 				e1.set(i, (BTEntry) e1_1.get(i).clone());
 				e1_1.set(i, funEnv.getIDEntry(args.get(i).getId()));
 			}
-			funEnv.closeScope();
-			funEnv.update(id, new BTEntry(e1_1));
-		} while (!BTEntry.areEqual(e1, e1_1));
-		e.add(id, funEnv.getIDEntry(id));
 
+			funEnv.closeScope();
+
+			// Update function's sigma1 with sigma1'
+			funEnv.update(id, new BTEntry(e1_1));
+			
+			// If the two sigmas are equal, then fixed point method ends
+		} while (!BTEntry.areEqual(e1, e1_1));
+		// Add function entry in the main environment
+		e.add(id, funEnv.getIDEntry(id));
 		return toRet;
 	}
 
@@ -168,7 +180,7 @@ public class StmtDecFun extends StmtDec {
 		block.codeGen(nl + 1, sb);
 
 		sb.newLine("lw $ra 0($sp) 4");
-		// remove all parameters
+		// Remove all parameters
 		sb.newLine("addi $sp $sp ", Integer.toString(
 				args.stream().map(Arg::getType).map(Type::getDimension).reduce((a, b) -> a + b).orElse(0) + 8));
 		sb.newLine("lw $fp 0($sp) 4");

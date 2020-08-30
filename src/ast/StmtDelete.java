@@ -38,12 +38,12 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Search for the variable in the local and the global scope.<br />
+	 * Search for the variable in the local and the global scope.<br>
 	 * If the variable is local, then check if it is not deleted and is not a
-	 * parameter: if so, set it as deleted and exit;<br />
+	 * parameter: if so, set it as deleted and exit;<br>
 	 * Otherwise, check in all scopes and, if the found variable is deleted, add an
 	 * error and exit. If the variable is a reference or is not a parameter, then
-	 * set it as deleted
+	 * set it as deleted.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -56,7 +56,7 @@ public class StmtDelete extends Stmt {
 			return toRet;
 		}
 
-		// candidate is not local
+		// Candidate is not local
 		candidate = e.getIDEntry(id);
 		if (candidate == null) {
 			toRet.add(new VariableNotExistsError(id, line, column));
@@ -90,8 +90,9 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Set the local effect of the pointed variable to "D" and, if its effect is
-	 * "D", add an error.
+	 * Set the local effect of the pointed variable to the result of "seq" operation
+	 * with the current behaviour state and "D".<br>
+	 * If its effect is "T", add an error.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -106,7 +107,7 @@ public class StmtDelete extends Stmt {
 	}
 
 	/**
-	 * Set the pointed variable as deleted
+	 * Set the pointed variable as deleted.
 	 */
 	@Override
 	public void codeGen(int nl, CustomStringBuilder sb) {

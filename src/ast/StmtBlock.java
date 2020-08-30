@@ -22,7 +22,7 @@ public class StmtBlock extends Stmt {
 	private List<Stmt> children;
 
 	/**
-	 * Instantiate a new stmt block.
+	 * Instantiate a new block statement.
 	 *
 	 * @param children the children nodes list
 	 * @param line     the line in the code
@@ -72,7 +72,7 @@ public class StmtBlock extends Stmt {
 		EType lastRetT = null;
 
 		// changed flag became true if the return value changes in iteration;
-		// safe flag became true if an if-statement returns in only one branch.
+		// safe flag became true if an if-statement returns in one branch only.
 		boolean changed = false, safe = false;
 
 		for (Stmt child : children) {
@@ -81,7 +81,7 @@ public class StmtBlock extends Stmt {
 			// Update the returned type if the candidate is not null
 			toRet = candidate != null && !(child instanceof StmtCall) ? candidate : toRet;
 
-			// If some expressions has returned not-null perform action
+			// If some expressions has returned not-null, perform action
 			if (toRet != null) {
 				// If the previous return type is not the same as the candidate, put the flag
 				// "changed" to "true"

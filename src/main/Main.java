@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import ast.CodeMaker;
 import ast.StmtBlock;
 import ast.VisitorImplSP;
 import ast.VisitorImplSVM;
@@ -28,6 +27,7 @@ import parser.SVMLexer;
 import parser.SVMParser;
 import parser.SimplePlusLexer;
 import parser.SimplePlusParser;
+import support.CodeMaker;
 import util_analysis.ListOfMapEnv;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -48,7 +48,7 @@ public class Main {
 	private SimpleErrorListener sl = null;
 
 	/**
-	 * The step that perform lexical check.
+	 * The step that performs lexical check.
 	 */
 	private Step checkLexicalStep = () -> {
 		logger.write("Checking Lexical ... ");
@@ -69,7 +69,7 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform semantic check.
+	 * The step that performs semantic check.
 	 */
 	private Step checkSemanticStep = () -> {
 		logger.write("Checking Semantic ... ");
@@ -88,7 +88,7 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform type check.
+	 * The step that performs type check.
 	 */
 	private Step checkTypesStep = () -> {
 		logger.write("Checking Types ... ");
@@ -107,7 +107,7 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform bahviour analysis.
+	 * The step that performs behaviour analysis.
 	 */
 	private Step analyseBehaviourStep = () -> {
 		List<BehaviourError> bErrors = mainBlock.inferBehaviour(new ListOfMapEnv<BTEntry>());
@@ -126,7 +126,7 @@ public class Main {
 	};
 
 	/**
-	 * The step that perform the code generation.
+	 * The step that performs the code generation.
 	 */
 	private Step generateCodeStep = () -> {
 		logger.write("Generating Code ... ");
@@ -138,7 +138,7 @@ public class Main {
 	};
 
 	/**
-	 * The step that run the generated code.
+	 * The step that runs the generated code.
 	 */
 	private Step runCodeStep = () -> {
 		logger.writeLine("Lanching program (Following output)");
@@ -194,7 +194,7 @@ public class Main {
 
 		lexer = new SimplePlusLexer(input);
 
-		// Disable default ANTLR lexer listener (to override default behavior)
+		// Disable default ANTLR lexer listener (to override default behaviour)
 		lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
 
 		// If the parameter for the lexical errors file name is specified, add an error

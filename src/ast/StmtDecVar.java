@@ -56,8 +56,8 @@ public class StmtDecVar extends StmtDec {
 		idEntry = new STEntry(type);
 		if (e.getLocalIDEntry(ID) == null)
 			e.add(ID, idEntry);
-		// do not check if the found variable has been deleted because it is checked by
-		// behavior analysis
+		// Do not check if the found variable has been deleted because it is checked by
+		// behaviour analysis
 		else if (e.getLocalIDEntry(ID).getType().getType().equalsTo(type))
 			idEntry = e.getLocalIDEntry(ID);
 		else
@@ -98,12 +98,12 @@ public class StmtDecVar extends StmtDec {
 		BTEntry prev = e.getLocalIDEntry(ID);
 
 		if (prev != null) {
-			// if was not deleted, there's an error
+			// If was not deleted, there's an error
 			if (prev.getLocalEffect().compareTo(EEffect.D) < 0) {
 				prev.setLocalEffect(EEffect.T);
 				toRet.add(new IdAlreadytExistsError(ID, line, column));
 			}
-			// if it is not top, add the "BOTTOM" effect
+			// If it is not top, add the "BOTTOM" effect
 			else if (prev.getLocalEffect().compareTo(EEffect.D) == 0)
 				e.getIDEntry(ID).addEffect(EEffect.BOTTOM);
 		} else

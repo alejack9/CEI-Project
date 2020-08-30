@@ -51,7 +51,7 @@ public abstract class ExpBin extends Exp {
 	}
 
 	/**
-	 * Infer behavior of left and right side of expression.
+	 * Infer behaviour of left and right side of expression.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {

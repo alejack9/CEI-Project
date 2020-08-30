@@ -10,8 +10,8 @@ public class CodeGenUtils {
 	}
 
 	/**
-	 * Load in the register "$al" the access link that point to the activation
-	 * record in which is store the variable.
+	 * Load in the register "$al" the access link that points to the activation
+	 * record in which is stored the variable.
 	 * 
 	 * @param variable the variable to access
 	 * @param nl       the current nesting level
@@ -51,7 +51,7 @@ public class CodeGenUtils {
 	}
 
 	/**
-	 * Create label
+	 * Create label.
 	 * 
 	 * @return label the label
 	 */
