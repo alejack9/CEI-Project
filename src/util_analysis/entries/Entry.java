@@ -3,7 +3,7 @@ package util_analysis.entries;
 import support.MyCloneable;
 
 /**
- * Entry containing properties of variables and functions.
+ * The base class for the entries containing properties of variables and functions.
  */
 public abstract class Entry implements MyCloneable {
 	

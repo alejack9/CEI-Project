@@ -9,12 +9,11 @@ class TypeFactory {
 	}
 
 	/**
-	 * Creates the type associated to an
-	 * <li>Etype</li> value.
+	 * Create the type associated to the passed {@link Etype EType} value.
 	 *
 	 * @param type        the Etype value
 	 * @param isParameter the related variable is a parameter
-	 * @param isRef       the related variable is a parameter passed by reference
+	 * @param isRef       the related variable is a parameter required by reference
 	 * @return the Type object
 	 */
 	public static Type getType(EType type, boolean isParameter, boolean isRef) {

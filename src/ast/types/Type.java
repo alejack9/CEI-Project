@@ -1,12 +1,12 @@
 package ast.types;
 
 /**
- * Represents the type.
+ * The base class for all types.
  */
 public abstract class Type implements Cloneable {
 
 	/**
-	 * Gets the <i>EType</i> value associated to the Type object.
+	 * Get the {@link EType EType} value associated to the Type object.
 	 *
 	 * @return the related EType value
 	 */
@@ -26,16 +26,15 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
-	 * Gets the byte dimension of the type.
+	 * Get the byte dimension of the type.
 	 *
 	 * @return the dimension
 	 */
 	protected abstract int _getDimension();
 
 	/**
-	 * Gets the byte dimension of the type.
-	 * <br>
-	 * If the type is related to a variable passed by reference, then returns 4 as
+	 * Get the byte dimension of the type. <br>
+	 * If the type is related to a variable required by reference, then return 4 as
 	 * address dimension.
 	 * 
 	 * @return the dimension
@@ -45,7 +44,7 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
-	 * Checks if the type is related to a parameter.
+	 * Check if the type is related to a parameter.
 	 *
 	 * @return true if it's a parameter, false otherwise
 	 */
@@ -54,9 +53,9 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
-	 * Checks if the type is related to a parameter passed by reference.
+	 * Check if the type is related to a parameter required by reference.
 	 *
-	 * @return true if it's passed by reference, false otherwise
+	 * @return true if it's required by reference, false otherwise
 	 */
 	public boolean isRef() {
 		return this.isRef;
@@ -68,7 +67,7 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
-	 * Compares Type object with another object.
+	 * Compare Type object with another object.
 	 *
 	 * @param e the object to compare
 	 * @return true if they are equals, false otherwise

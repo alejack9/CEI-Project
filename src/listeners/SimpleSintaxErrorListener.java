@@ -25,7 +25,6 @@ public class SimpleSintaxErrorListener extends SimpleErrorListener {
 		try {
 			logger.write("SYNTAX ERROR: ");
 		} catch (IOException e1) {
-
 			e1.printStackTrace();
 		}
 		super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);

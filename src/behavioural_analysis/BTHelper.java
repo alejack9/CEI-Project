@@ -5,8 +5,7 @@ import util_analysis.entries.BTEntry;
 
 /**
  * Support class for code behavioural analysis.
- * <br>It contains operations on Effects Set.
- *
+ * <br>It contains operations on effects.
  */
 public class BTHelper {
 
@@ -14,7 +13,7 @@ public class BTHelper {
 	}
 
 	/**
-	 * Compares two effects.
+	 * Compare two effects.
 	 * 
 	 * @param a first effect
 	 * @param b second effect
@@ -25,8 +24,8 @@ public class BTHelper {
 	}
 
 	/**
-	 * Applies <i>seq</i> rule to calculate final effect after two consecutive
-	 * effects on the same ID.
+	 * Apply <code>seq</code> rule to calculate final effect after two consecutive
+	 * effects.
 	 * 
 	 * @param a first effect
 	 * @param b second effect
@@ -46,8 +45,7 @@ public class BTHelper {
 	}
 
 	/**
-	 * Applies <i>par</i> rule to handle effects order and check parameters
-	 * aliasing.
+	 * Apply <code>par</code> rule between two effects.
 	 * 
 	 * @param a first effects
 	 * @param b second effect
@@ -64,9 +62,9 @@ public class BTHelper {
 	}
 
 	/**
-	 * Handles ref parameter effect after function invocation.
+	 * Handle referenced parameter effect after function invocation.
 	 * <br>
-	 * It calculates <i>seq</i> effect between the variable effect before function invocation and after that.
+	 * It calculates <code>seq</code> effect between the variable effect before function invocation and after that.
 	 
 	 * @param a the effect of the variable before the function invocation
 	 * @param b the effect of the variable after the function invocation
@@ -78,7 +76,7 @@ public class BTHelper {
 
 	/**
 	 * For all variable in Environment <b>e</b>, it updates its effect with the max
-	 * between actual value and the correspondent in <b>tempE</b>
+	 * between current value and the correspondent in <b>tempE</b>
 	 * 
 	 * @param e     environment to update
 	 * @param tempE environment with new effects

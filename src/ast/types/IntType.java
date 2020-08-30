@@ -15,7 +15,7 @@ public class IntType extends Type {
 	}
 
 	@Override
-	public int _getDimension() {
+	protected int _getDimension() {
 		return 4;
 	}
 }

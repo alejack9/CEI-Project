@@ -1,7 +1,7 @@
 package ast.types;
 
 /**
- * ID and function return types.
+ * ID types and function return types.
  */
 public enum EType {
 
@@ -19,9 +19,10 @@ public enum EType {
 	}
 
 	/**
-	 * Compares enum value with the enum type of the <i>Type</i> object passed.
+	 * Compare current enum value with the enum type of the {@link Type Type} object
+	 * passed.
 	 *
-	 * @param type Type object to compare
+	 * @param type object to compare
 	 * @return true if equals, false otherwise
 	 */
 	public boolean equalsTo(Type type) {
@@ -29,10 +30,11 @@ public enum EType {
 	}
 
 	/**
-	 * Get <i>Type</i> object from enum value.
+	 * Get {@link Type Type} object from current enum value.
 	 *
-	 * @param isParameter the ID related to the type is a parameter
-	 * @param isRef       the ID related to the type is passed by reference
+	 * @param isParameter if the ID related to the type is a parameter
+	 * @param isRef       if the ID related to the type is required by reference<br>
+	 *                    (if isParameter is false, isRef should be false)
 	 * @return the related object Type
 	 */
 	public Type getType(boolean isParameter, boolean isRef) {
@@ -40,8 +42,8 @@ public enum EType {
 	}
 
 	/**
-	 * Gets <i>Type</i> object from enum value associated to a not parameter and not
-	 * referenced ID.
+	 * Get {@link Type Type} object from current enum value associated to a local
+	 * variable.
 	 *
 	 * @return the correspondent object Type
 	 */
@@ -50,12 +52,13 @@ public enum EType {
 	}
 
 	/**
-	 * Gets the enum value associated to a string value.
+	 * Get the current enum value associated to a string value.
 	 *
 	 * @param value the type name
 	 * @return the related enum value
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public static EType getEnum(String value) {
+	public static EType getEnum(String value) throws IllegalArgumentException {
 		for (EType v : values())
 			if (v.toString().equalsIgnoreCase(value))
 				return v;

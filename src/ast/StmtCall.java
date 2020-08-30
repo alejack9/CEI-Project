@@ -3,6 +3,7 @@ package ast;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import ast.errors.TypeError;
 import ast.types.ArrowType;
@@ -128,20 +129,20 @@ public class StmtCall extends Stmt {
 				// Get the behaviours list of the current variable or creates a new one
 				List<EEffect> btList = eStar.getOrDefault(((ExpVar) exps.get(i)).getId(), new LinkedList<>());
 				// Add to the list the seq operation result
+				// NOTE: the method performs a seq operation between the "local" effect of
+				// "prev" and the "ref" effect of "next"
 				btList.add(BTHelper.invocationSeq(prev, next));
 				// Update the behaviour list associated with that variable
 				eStar.put(((ExpVar) exps.get(i)).getId(), btList);
 			}
 		}
-
-		// Apply the par operator for each element of the behaviour list associated
-		// with each variable
+		
 		eStar.entrySet().forEach(entry -> {
 			e.getIDEntry(entry.getKey())
 					.setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
 
 			// If any behaviour is TOP, add an error
-			if (e.getIDEntry(entry.getKey()).getRefEffect().compareTo(EEffect.T) == 0)
+			if (e.getIDEntry(entry.getKey()).getLocalEffect().compareTo(EEffect.T) == 0)
 				toRet.add(new AliasingError(entry.getKey(), ID, line, column));
 		});
 

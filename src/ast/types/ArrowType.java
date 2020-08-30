@@ -25,7 +25,7 @@ public class ArrowType extends Type {
 	}
 
 	/**
-	 * Sets the types of function parameters.
+	 * Set the types of function parameters.
 	 *
 	 * @param paramTypes the parameters types
 	 */
@@ -34,7 +34,7 @@ public class ArrowType extends Type {
 	}
 
 	/**
-	 * Sets the function return type.
+	 * Set the function return type.
 	 *
 	 * @param retType the return type
 	 */
@@ -43,15 +43,15 @@ public class ArrowType extends Type {
 	}
 
 	@Override
+	protected int _getDimension() {
+		return 0;
+	}
+
+	@Override
 	public Object clone() {
 		ArrowType toRet = (ArrowType) EType.FUNCTION.getType(isParameter, isRef);
 		toRet.setParamTypes(paramTypes);
 		toRet.setRetType(retType);
 		return toRet;
-	}
-
-	@Override
-	public int _getDimension() {
-		return 0;
 	}
 }

@@ -221,7 +221,12 @@ public class Main {
 
 		VisitorImplSP visitor = new VisitorImplSP();
 
-		mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
+		try {
+			mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
+		}
+		catch(Exception e) {
+			quit();
+		}
 
 		// Execute each step; if any step return false, the processor is killed
 		for (Step step : steps)

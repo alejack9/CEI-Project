@@ -1,9 +1,8 @@
-// Generated from SVM.g4 by ANTLR 4.4
+// Generated from SVM.g4 by ANTLR 4.6
 package parser;
 
 import java.util.HashMap;
 
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -11,22 +10,19 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * by {@link SVMParser}.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
- *            operations with no return type.
+ * operations with no return type.
  */
 public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link SVMParser#instruction}.
-	 * 
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitInstruction(@NotNull SVMParser.InstructionContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link SVMParser#assembly}.
-	 * 
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssembly(@NotNull SVMParser.AssemblyContext ctx);
+	T visitAssembly(SVMParser.AssemblyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInstruction(SVMParser.InstructionContext ctx);
 }

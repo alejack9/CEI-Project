@@ -230,4 +230,27 @@ class CorrectCodes {
 				)
 			);
 	}
+	
+	/**
+	 * Variable deleted more times before being passed to a function
+	 */
+	@Test
+	void correctCode13() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    int x;"
+				, "    delete x;"
+				, "    int x;"
+				, "    "
+				, "    void f(int var y) {"
+				, "        delete y;"
+				, "    }"
+				, "    "
+				, "    f(x);"
+				, "    int x;"
+				, "    print x;"
+				, "}"
+				)
+			);
+	}
 }

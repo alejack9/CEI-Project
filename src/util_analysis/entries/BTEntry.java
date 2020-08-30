@@ -9,25 +9,23 @@ import behavioural_analysis.EEffect;
  * Behaviour table entry.
  */
 public class BTEntry extends Entry {
-	
+
 	/**
-	 * Effects list on an ID, it contains max two values (if it's a declared variable and not a function or a simple parameter).
-	 * <br> <br>
-	 * If the variable is a parameter passed by reference, the first
-	 * value represents variable effect before the invocation
-	 * and the second is the effect created by function body.
+	 * Effects list of an ID. It is used to store multiple effects of the same
+	 * variable in order to keep the variable even if it has been deleted.<br>
+	 * Every time the variable is declared, a new bottom effect is added. The last
+	 * effect indicates the "local" effect.
 	 */
 	private List<EEffect> effects = new LinkedList<EEffect>();
-	
-	/** 
-	 * List of effects created by function body on function parameters.
-	 * <br> <br>
-	 * This is set only if the entry is related to a function.
-	 * */
+
+	/**
+	 * Sigma1<br>
+	 * This field is filled only if the entry is related to a function.
+	 */
 	private List<BTEntry> e1;
 
 	/**
-	 * It's created by default a BOTTOM value, then at the time of a declaration it's added another local effect.
+	 * It's created by default a BOTTOM value
 	 */
 	public BTEntry() {
 		addEffect(EEffect.BOTTOM);
@@ -35,14 +33,16 @@ public class BTEntry extends Entry {
 
 	/**
 	 * Constructor for a entry related to a function.
-	 * @param e1 effects on parameters
+	 * 
+	 * @param e1 Sigma1
 	 */
 	public BTEntry(List<BTEntry> e1) {
 		this.e1 = e1;
 	}
 
 	/**
-	 * Gets actual entry effect.
+	 * Return current entry effect.
+	 * 
 	 * @return the local effect
 	 */
 	public EEffect getLocalEffect() {
@@ -50,7 +50,9 @@ public class BTEntry extends Entry {
 	}
 
 	/**
-	 * Gets effect of variable passed by reference (the effect before function call).
+	 * Return first effect of variable passed by reference (the effect before function
+	 * call).
+	 * 
 	 * @return the ref effect
 	 */
 	public EEffect getRefEffect() {
@@ -74,7 +76,7 @@ public class BTEntry extends Entry {
 	/**
 	 * Are equal.
 	 *
-	 * @param e1 the e 1
+	 * @param e1   the e 1
 	 * @param e1_1 the e 1 1
 	 * @return true, if successful
 	 */
