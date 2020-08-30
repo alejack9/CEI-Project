@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -18,26 +15,22 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StmtIte.
+ * The class of if-then-else statements<br />
+ * ("if(e) { ... }" or "if(e) { ... } else { ... }").
  */
 public class StmtIte extends Stmt {
 
-	/** The exp. */
 	private Exp exp;
-	
-	/** The else stmt. */
+
 	private Stmt thenStmt, elseStmt;
 
 	/**
-	 * Instantiates a new stmt ite.
-	 *
-	 * @param exp the exp
-	 * @param thenStmt the then stmt
-	 * @param elseStmt the else stmt
-	 * @param line the line
-	 * @param column the column
+	 * @param exp      the boolean expression in "if"
+	 * @param thenStmt the then statement
+	 * @param elseStmt the else statement
+	 * @param line     the line in the code
+	 * @param column   the column in the code
 	 */
 	public StmtIte(Exp exp, Stmt thenStmt, Stmt elseStmt, int line, int column) {
 		super(line, column);
@@ -47,10 +40,14 @@ public class StmtIte extends Stmt {
 	}
 
 	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * @return true, if the element has an else branch
+	 */
+	public boolean hasElseStmt() {
+		return elseStmt != null;
+	}
+
+	/**
+	 * Check then and else branches using passed environment clones.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -65,58 +62,10 @@ public class StmtIte extends Stmt {
 		toRet.addAll(thenStmt.checkSemantics((Environment<STEntry>) e.clone()));
 
 		return toRet;
-
 	}
 
 	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
-		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-
-		toRet.addAll(exp.inferBehaviour(e));
-
-		Environment<BTEntry> tempE = null;
-
-		if (elseStmt != null) {
-			tempE = (Environment<BTEntry>) e.clone();
-			analyseStmtBehaviour(tempE, elseStmt, toRet);
-		}
-
-		analyseStmtBehaviour(e, thenStmt, toRet);
-
-		if (tempE != null)
-			BTHelper.maxModifyEnv(e, tempE);
-
-		return toRet;
-	}
-
-	/**
-	 * Analyse stmt behaviour.
-	 *
-	 * @param e the e
-	 * @param stmt the stmt
-	 * @param errors the errors
-	 */
-	private void analyseStmtBehaviour(Environment<BTEntry> e, Stmt stmt, List<BehaviourError> errors) {
-		if (stmt instanceof StmtBlock)
-			errors.addAll(stmt.inferBehaviour(e));
-		else {
-			e.openScope();
-			errors.addAll(stmt.inferBehaviour(e));
-			e.closeScope();
-		}
-	}
-
-	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * @return the type of the then branch
 	 */
 	@Override
 	public Type inferType() {
@@ -130,8 +79,9 @@ public class StmtIte extends Stmt {
 
 		Type elseT = this.elseStmt.inferType();
 
-		if (elseT != null && !elseT.getType().equalsTo(thenT)
-				|| thenT != null && !thenT.getType().equalsTo(elseT))
+		// if elseT is null and thenT is not or otherwise then add an error.
+		// Add an error also if the branch types does not correspond
+		if (elseT != null && !elseT.getType().equalsTo(thenT) || thenT != null && !thenT.getType().equalsTo(elseT))
 			TypeErrorsStorage.addError(new TypeError(
 					"Then branch (" + thenT + ") does not return the same type of else branch (" + elseT + ")",
 					this.thenStmt.line, this.thenStmt.column));
@@ -140,13 +90,50 @@ public class StmtIte extends Stmt {
 	}
 
 	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
+	 * Check the behaviour of then and else branch with two different environments
+	 * and, if there was an "else" statement, performs a "max" operation between the
+	 * computer environments.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+
+		toRet.addAll(exp.inferBehaviour(e));
+
+		Environment<BTEntry> tempE = null;
+
+		if (elseStmt != null) {
+			// perform "clone" only if it's necessary
+			tempE = (Environment<BTEntry>) e.clone();
+			analyseStmtBehaviour(tempE, elseStmt, toRet);
+		}
+
+		analyseStmtBehaviour(e, thenStmt, toRet);
+
+		if (tempE != null)
+			BTHelper.maxModifyEnv(e, tempE);
+
+		return toRet;
+	}
+
+	/**
+	 * If there's not a scope in the branch, open and close a scope before and after
+	 * analyse the behaviour (in order to always have a new scope for the branches
+	 * operations).
+	 */
+	private void analyseStmtBehaviour(Environment<BTEntry> e, Stmt stmt, List<BehaviourError> errors) {
+		if (stmt instanceof StmtBlock)
+			errors.addAll(stmt.inferBehaviour(e));
+		else {
+			e.openScope();
+			errors.addAll(stmt.inferBehaviour(e));
+			e.closeScope();
+		}
+	}
+
+	@Override
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		String T = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 
@@ -159,14 +146,5 @@ public class StmtIte extends Stmt {
 		sb.newLine(T, ":");
 		thenStmt.codeGen(nl, sb);
 		sb.newLine(end, ":");
-	}
-
-	/**
-	 * Checks for else stmt.
-	 *
-	 * @return true, if successful
-	 */
-	public boolean hasElseStmt() {
-		return elseStmt != null;
 	}
 }

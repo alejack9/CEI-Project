@@ -1,6 +1,3 @@
-/*
- * 
- */
 package logger;
 
 import java.io.IOException;
@@ -12,7 +9,7 @@ import java.time.LocalDateTime;
 class ConsoleOutputLogger extends Logger {
 
 	/**
-	 * Instantiates a new console output logger.
+	 * Instantiate a new console output logger.
 	 */
 	protected ConsoleOutputLogger() {
 		// passing to superclass the System.out PrintStream
@@ -20,7 +17,7 @@ class ConsoleOutputLogger extends Logger {
 	}
 
 	/**
-	 * Writes a new line including DateTime
+	 * Write a new line including DateTime
 	 * 
 	 * @param message the message to print
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -31,9 +28,9 @@ class ConsoleOutputLogger extends Logger {
 	};
 
 	/**
-	 * Writes a new line including DateTime if specified
+	 * Write a new line including DateTime if specified
 	 * 
-	 * @param message the message
+	 * @param message      the message
 	 * @param hideDateTime true if the date time has not to be shown
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
@@ -43,7 +40,7 @@ class ConsoleOutputLogger extends Logger {
 	};
 
 	/**
-	 * Writes without start a new line, including DateTime
+	 * Write without start a new line, including DateTime
 	 * 
 	 * @param message The message to print
 	 * @throws IOException Signals that an I/O exception has occurred.

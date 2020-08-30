@@ -1,9 +1,9 @@
 package ast;
 
 /**
- * The class of less than expressions ("x &lt; y").
+ * The class of subtraction expressions.
  */
-public class ExpLessThan extends ExpBinBoolIntIn {
+public class ExpSub extends ExpBinArithm {
 
 	/**
 	 * @param leftSide  the left side of the expression
@@ -11,17 +11,17 @@ public class ExpLessThan extends ExpBinBoolIntIn {
 	 * @param line      the line in the code
 	 * @param column    the column in the code
 	 */
-	public ExpLessThan(Exp leftSide, Exp rightSide, int line, int column) {
+	public ExpSub(Exp leftSide, Exp rightSide, int line, int column) {
 		super(leftSide, rightSide, line, column);
 	}
 
 	@Override
 	protected String getOperationSymbol() {
-		return "<";
+		return "-";
 	}
 
 	@Override
-	protected String getOperator() {
-		return "blt";
+	protected String cGenOperator() {
+		return "sub";
 	}
 }

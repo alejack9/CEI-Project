@@ -1,18 +1,15 @@
 package main;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
-// TODO: Auto-generated Javadoc
 /**
- * Functional interface for step.
+ * Functional interface for step. Variant of {@link Supplier Supplier} that
+ * allows to throw exceptions. <br>
  */
 @FunctionalInterface
 public interface Step {
-	
 	/**
-	 * Gets the.
-	 *
-	 * @return true, if successful
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public boolean get() throws IOException;

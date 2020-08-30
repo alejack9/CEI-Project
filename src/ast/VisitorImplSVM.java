@@ -1,33 +1,20 @@
-/*
- * 
- */
 package ast;
 
 import java.util.HashMap;
 import parser.*;
 import support.Regs;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class VisitorImplSVM.
- */
 public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 
-	/** The code. */
 	private int[] code = new int[ExecuteVM.CODESIZE];
-	
-	/** The i. */
+
 	private int i = 0;
-	
-	/** The labels indexes. */
+
 	private HashMap<String, Integer> labelsIndexes = new HashMap<String, Integer>();
-	
-	/** The label ref. */
+
 	private HashMap<Integer, String> labelRef = new HashMap<Integer, String>();
 
 	/**
-	 * Gets the code.
-	 *
 	 * @return the code
 	 */
 	public int[] getCode() {
@@ -35,10 +22,7 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 	}
 
 	/**
-	 * Visit assembly.
-	 *
-	 * @param ctx the ctx
-	 * @return the void
+	 * Visit the code and resolve all "jump" references.
 	 */
 	@Override
 	public Void visitAssembly(SVMParser.AssemblyContext ctx) {
@@ -49,12 +33,6 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 		return null;
 	}
 
-	/**
-	 * Visit instruction.
-	 *
-	 * @param ctx the ctx
-	 * @return the void
-	 */
 	@Override
 	public Void visitInstruction(SVMParser.InstructionContext ctx) {
 		switch (ctx.getStart().getType()) {
@@ -67,10 +45,12 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 
 		case SVMLexer.BRANCH:
 			code[i++] = SVMParser.BRANCH;
+			// the value after "i" must be filled later with the starting label value
 			labelRef.put(i++, ctx.LABEL().getText());
 			break;
 
 		case SVMLexer.LABEL:
+			// when it is required this label, returns "i"
 			labelsIndexes.put(ctx.LABEL().getText(), i);
 			break;
 
@@ -123,7 +103,6 @@ public class VisitorImplSVM extends SVMBaseVisitor<Void> {
 		case SVMLexer.POP:
 			code[i++] = SVMParser.POP;
 			code[i++] = Integer.parseInt(ctx.NUMBER(0).getText());
-
 			break;
 
 		case SVMLexer.BRANCHEQ:

@@ -1,10 +1,10 @@
 package ast.errors;
 
 /**
- * Represents a semantic error.
+ * Represents a generic semantic error.
  */
 public abstract class SemanticError extends Error {
-	
+
 	private static final long serialVersionUID = 1L;
 	protected String id;
 	protected int errorLine;
@@ -19,13 +19,13 @@ public abstract class SemanticError extends Error {
 	}
 
 	/**
-	 * Gets the position.
+	 * Get position of an error.
 	 *
-	 * @return a string with the line and the column where there is an error
+	 * @return the line and the column where there is an error
 	 */
 	protected String getPosition() {
 		// asserting that, if "errorLine" is set, then "errorColumn" is set
-		return "[ " + errorLine + " : " + errorColumn + " ]";
+		return new StringBuilder("[ ").append(errorLine).append(" : ").append(errorColumn).append(" ]").toString();
 	}
 
 	public SemanticErrorType getType() {

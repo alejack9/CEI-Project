@@ -5,7 +5,7 @@ package ast.errors;
  */
 public class TypeError extends Error {
 	private static final long serialVersionUID = 1L;
-	
+
 	private int line;
 	private int column;
 
@@ -17,6 +17,7 @@ public class TypeError extends Error {
 
 	@Override
 	public String toString() {
-		return "[ " + line + " : " + column + " ] - " + this.getMessage();
+		return new StringBuilder("[ ").append(line).append(" : ").append(column).append(" ] - ").append(getMessage())
+				.toString();
 	}
 }

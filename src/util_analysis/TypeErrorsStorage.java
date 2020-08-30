@@ -1,6 +1,3 @@
-/*
- * 
- */
 package util_analysis;
 
 import java.util.LinkedList;
@@ -8,32 +5,26 @@ import java.util.List;
 
 import ast.errors.TypeError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class TypeErrorsStorage.
+ * The Storage of Type Errors.
  */
 public class TypeErrorsStorage {
-
-	/** The storage. */
 	private static List<TypeError> storage = new LinkedList<TypeError>();
 
-	/**
-	 * Instantiates a new type errors storage.
-	 */
 	private TypeErrorsStorage() {
 	}
 
 	/**
-	 * Adds the error.
+	 * Add a type error.
 	 *
-	 * @param e the e
+	 * @param typeError the type error
 	 */
-	public static void addError(TypeError e) {
-		storage.add(e);
+	public static void addError(TypeError typeError) {
+		storage.add(typeError);
 	}
 
 	/**
-	 * Gets the type errors.
+	 * Get the stored errors.
 	 *
 	 * @return the type errors
 	 */
@@ -42,7 +33,7 @@ public class TypeErrorsStorage {
 	}
 
 	/**
-	 * Clear.
+	 * Clear the storage buffer.
 	 */
 	public static void clear() {
 		storage.clear();

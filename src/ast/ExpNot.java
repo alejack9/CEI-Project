@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -18,33 +15,23 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpNot.
+ * The class of not expressions ("!x")
  */
 public class ExpNot extends Exp {
 
-	/** The exp. */
 	private Exp exp;
 
 	/**
-	 * Instantiates a new exp not.
-	 *
-	 * @param exp the exp
-	 * @param line the line
-	 * @param column the column
+	 * @param exp    the expression
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public ExpNot(Exp exp, int line, int column) {
 		super(line, column);
 		this.exp = exp;
 	}
 
-	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -55,9 +42,9 @@ public class ExpNot extends Exp {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * Check that the type of the expression is {@link EType#BOOL BOOL}.
+	 * 
+	 * @return {@link EType#BOOL BOOL} as type
 	 */
 	@Override
 	public Type inferType() {
@@ -69,34 +56,22 @@ public class ExpNot extends Exp {
 		return EType.BOOL.getType();
 	}
 
-	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return exp.inferBehaviour(e);
 	}
 
-	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
-	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
-		String one = CodeGenUtils.freshLabel();
+	public void codeGen(int nl, CustomStringBuilder sb) {
+		String trueLabel = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 
 		exp.codeGen(nl, sb);
 		sb.newLine("li $t1 0");
-		sb.newLine("beq $a0 $t1 ", one);
+		sb.newLine("beq $a0 $t1 ", trueLabel);
 		sb.newLine("li $a0 0");
 		sb.newLine("b ", end);
-		sb.newLine(one, ":");
+		sb.newLine(trueLabel, ":");
 		sb.newLine("li $a0 1");
 		sb.newLine(end, ":");
 	}

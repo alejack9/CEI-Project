@@ -1,6 +1,3 @@
-/*
- * 
- */
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -13,6 +10,7 @@ import java.util.List;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
+import ast.CodeMaker;
 import ast.StmtBlock;
 import ast.VisitorImplSP;
 import ast.VisitorImplSVM;
@@ -32,14 +30,14 @@ import util_analysis.entries.STEntry;
  * The Class useful for testing routines.
  */
 class Utils {
-	
+
 	private Utils() {
 	}
 
 	/**
-	 * Asserts that the lexical errors counted are the same as the passed number.
+	 * Assert that the lexical errors counted are the same as the passed number.
 	 *
-	 * @param code the code
+	 * @param code   the code
 	 * @param number the expected number of errors
 	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -61,9 +59,9 @@ class Utils {
 	}
 
 	/**
-	 * Asserts that the semantic errors counted are the same as the passed number.
+	 * Assert that the semantic errors counted are the same as the passed number.
 	 * 
-	 * @param code the code
+	 * @param code   the code
 	 * @param number the expected number of errors
 	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -78,9 +76,9 @@ class Utils {
 	}
 
 	/**
-	 * Asserts that the type errors counted are the same as the passed number.
+	 * Assert that the type errors counted are the same as the passed number.
 	 * 
-	 * @param code the code
+	 * @param code   the code
 	 * @param number the expected number of errors
 	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -96,9 +94,9 @@ class Utils {
 	}
 
 	/**
-	 * Asserts that the behaviour errors counted are the same as the passed number.
+	 * Assert that the behaviour errors counted are the same as the passed number.
 	 * 
-	 * @param code the code
+	 * @param code   the code
 	 * @param number the expected number of errors
 	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -113,7 +111,7 @@ class Utils {
 	}
 
 	/**
-	 * Runs the passed code.
+	 * Run the passed code.
 	 *
 	 * @param code the code
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -132,14 +130,14 @@ class Utils {
 	}
 
 	/**
-	 * Asserts that there are no errors in the passed code and run it
+	 * Assert that there are no errors in the passed code and run it
 	 *
 	 * @param code the code
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void correctCode(String code) throws IOException {
 		StmtBlock mainBlock = behaviourErrors(code, 0);
-		runCode(mainBlock.codeGen());
+		runCode(new CodeMaker(mainBlock).codeGen());
 	}
 
 }

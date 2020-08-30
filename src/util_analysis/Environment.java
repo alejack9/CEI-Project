@@ -1,6 +1,3 @@
-/*
- * 
- */
 package util_analysis;
 
 import java.util.HashMap;
@@ -10,29 +7,29 @@ import java.util.Map;
 import support.MyCloneable;
 import util_analysis.entries.Entry;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface Environment.
  *
- * @param <T> the generic type
+ * @param <T> the entry type
  */
 public interface Environment<T extends Entry> extends MyCloneable {
-	
+
 	/**
-	 * Adds the.
+	 * Add an entry in the current scope.
 	 *
-	 * @param id the id
+	 * @param id    the id
 	 * @param entry the entry
 	 * @return true, if successful
 	 */
 	public boolean add(String id, T entry);
 
 	/**
-	 * Update.
+	 * Update an entry, if it exists.
 	 *
-	 * @param id the id
+	 * @param id    the id
 	 * @param entry the entry
-	 * @return the t
+	 * @return the previous value associated with key, or null if there was no ids
+	 *         in any scope
 	 */
 	public T update(String id, T entry);
 
@@ -47,26 +44,28 @@ public interface Environment<T extends Entry> extends MyCloneable {
 	public void closeScope();
 
 	/**
-	 * Delete variable.
+	 * Delete a variable if it exists, starting from the closer scope and scanning
+	 * everyone outer.
 	 *
-	 * @param id the id
-	 * @return the t
+	 * @param id the id of the variable to delete
+	 * @return the previous value associated with key, or null if there was no ids
+	 *         in any scope
 	 */
 	public T deleteVariable(String id);
 
 	/**
-	 * Gets the ID entry.
+	 * Get the ID entry.
 	 *
 	 * @param id the id
-	 * @return the ID entry
+	 * @return the ID entry or null
 	 */
 	public T getIDEntry(String id);
 
 	/**
-	 * Gets the local ID entry.
+	 * Get the local ID entry.
 	 *
 	 * @param id the id
-	 * @return the local ID entry
+	 * @return the local ID entry or null
 	 */
 	public T getLocalIDEntry(String id);
 
@@ -81,44 +80,44 @@ public interface Environment<T extends Entry> extends MyCloneable {
 	public void decreaseNestingLevel();
 
 	/**
-	 * Gets the nesting level.
+	 * Get the nesting level.
 	 *
 	 * @return the nesting level
 	 */
 	public int getNestingLevel();
 
 	/**
-	 * Sets the offset.
+	 * Set the offset.
 	 *
 	 * @param offset the new offset
 	 */
 	public void setOffset(int offset);
 
 	/**
-	 * Gets the offset.
+	 * Get the offset.
 	 *
 	 * @return the offset
 	 */
 	public int getOffset();
 
 	/**
-	 * Gets the all I ds.
+	 * Get all IDS in a single Map.
 	 *
-	 * @return the all I ds
+	 * @return a map containing all ids
 	 */
 	public Map<String, T> getAllIDs();
 
 	/**
-	 * Gets the all functions.
+	 * Get all functions.
 	 *
-	 * @return the all functions
+	 * @return the LinkedList containing all the scopes filled with functions only
 	 */
 	public LinkedList<HashMap<String, T>> getAllFunctions();
 
 	/**
 	 * Clone.
 	 *
-	 * @return the object
+	 * @return the cloned object
 	 */
 	@Override
 	public Object clone();
@@ -126,7 +125,7 @@ public interface Environment<T extends Entry> extends MyCloneable {
 	/**
 	 * Equals.
 	 *
-	 * @param obj the obj
+	 * @param obj the object to compare with
 	 * @return true, if successful
 	 */
 	@Override

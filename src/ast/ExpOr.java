@@ -1,69 +1,47 @@
-/*
- * 
- */
 package ast;
 
 import support.CodeGenUtils;
 import support.CustomStringBuilder;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpOr.
+ * The OR expression class.
  */
 public class ExpOr extends ExpBinBoolBoolIn {
 
 	/**
-	 * Instantiates a new exp or.
-	 *
-	 * @param left the left
-	 * @param right the right
-	 * @param line the line
-	 * @param column the column
+	 * @param exp    the expression
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public ExpOr(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);
 	}
 
-	/**
-	 * Gets the op.
-	 *
-	 * @return the op
-	 */
 	@Override
-	protected String getOp() {
+	protected String getOperationSymbol() {
 		return "||";
 	}
 
-	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
-	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
-		String T = CodeGenUtils.freshLabel();
+	public void codeGen(int nl, CustomStringBuilder sb) {
+		String trueLabel = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 
-		valutate(leftSide, nl, T, sb);
-		valutate(rightSide, nl, T, sb);
+		getCodeExpIsTrueThenJump(leftSide, nl, trueLabel, sb);
+		getCodeExpIsTrueThenJump(rightSide, nl, trueLabel, sb);
 
 		sb.newLine("li $a0 0");
 		sb.newLine("b ", end);
-		sb.newLine(T, ":");
+		sb.newLine(trueLabel, ":");
 		sb.newLine("li $a0 0");
 		sb.newLine(end, ":");
 	}
 
 	/**
-	 * Valutate.
-	 *
-	 * @param side the side
-	 * @param nl the nl
-	 * @param label the label
-	 * @param sb the sb
+	 * Return the code that evaluate the expression and, if the returned value is 1,
+	 * make the program jump to a specified label.
 	 */
-	private void valutate(Exp side, int nl, String label, CustomStringBuilder sb) {
+	private void getCodeExpIsTrueThenJump(Exp side, int nl, String label, CustomStringBuilder sb) {
 		side.codeGen(nl, sb);
 		sb.newLine("li $t1 1");
 		sb.newLine("beq $a0 $t1 ", label);

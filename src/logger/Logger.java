@@ -1,31 +1,26 @@
-/*
- * 
- */
 package logger;
 
 import java.io.IOException;
 import java.io.PrintStream;
 
-// TODO: Auto-generated Javadoc
 /**
- * Default logger: handles print outputs;.
+ * Default logger: handles print outputs.
  */
 public abstract class Logger {
 
-	/** The out. */
 	protected PrintStream out;
 
 	/**
-	 * Instantiates a new logger.
+	 * Instantiate a new logger.
 	 *
-	 * @param out the out
+	 * @param out the {@link PrintStream PrintStream} class used to write
 	 */
 	protected Logger(PrintStream out) {
 		this.out = out;
 	}
 
 	/**
-	 * Writes a new line through the PrintStream.
+	 * Write a new line.
 	 *
 	 * @param message The message to print
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -35,33 +30,33 @@ public abstract class Logger {
 	};
 
 	/**
-	 * Writes a string through the PrintStream.
+	 * Write a new line without any message.
 	 *
-	 * @param message The message to print
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public void writeLine() throws IOException {
+		this.out.println();
+	}
+
+	/**
+	 * Write a message.
+	 *
+	 * @param message      The message to print
 	 * @param hideDateTime the hide date time
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public void writeLine(String message, boolean hideDateTime) throws IOException {
 		this.out.println(message);
 	}
-	
+
 	/**
-	 * Writes a string through the PrintStream.
+	 * Write a message.
 	 *
 	 * @param message The message to print
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public void write(String message) throws IOException {
 		this.out.print(message);
-	}
-
-	/**
-	 * Writes a new line through the PrintStream.
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	public void writeLine() throws IOException {
-		this.out.println();
 	}
 
 }

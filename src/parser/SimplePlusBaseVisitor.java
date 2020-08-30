@@ -1,6 +1,11 @@
-// Generated from SimplePlus.g4 by ANTLR 4.6
+// Generated from SimplePlus.g4 by ANTLR 4.4
 package parser;
 
+import java.util.List;
+import java.util.LinkedList;
+import ast.errors.LexicalError;
+
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -21,7 +26,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitBlock(SimplePlusParser.BlockContext ctx) {
+	public T visitRet(@NotNull SimplePlusParser.RetContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -34,7 +39,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitStatement(SimplePlusParser.StatementContext ctx) {
+	public T visitBaseExp(@NotNull SimplePlusParser.BaseExpContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -47,7 +52,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitDeclaration(SimplePlusParser.DeclarationContext ctx) {
+	public T visitBinExp(@NotNull SimplePlusParser.BinExpContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -60,7 +65,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitDecFun(SimplePlusParser.DecFunContext ctx) {
+	public T visitAssignment(@NotNull SimplePlusParser.AssignmentContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -73,7 +78,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitDecVar(SimplePlusParser.DecVarContext ctx) {
+	public T visitDecVar(@NotNull SimplePlusParser.DecVarContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -86,7 +91,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitType(SimplePlusParser.TypeContext ctx) {
+	public T visitBoolExp(@NotNull SimplePlusParser.BoolExpContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -99,7 +104,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitArg(SimplePlusParser.ArgContext ctx) {
+	public T visitType(@NotNull SimplePlusParser.TypeContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -112,7 +117,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitRef(SimplePlusParser.RefContext ctx) {
+	public T visitCallExp(@NotNull SimplePlusParser.CallExpContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -125,7 +130,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitAssignment(SimplePlusParser.AssignmentContext ctx) {
+	public T visitDeclaration(@NotNull SimplePlusParser.DeclarationContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -138,7 +143,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitDeletion(SimplePlusParser.DeletionContext ctx) {
+	public T visitNotExp(@NotNull SimplePlusParser.NotExpContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -151,7 +156,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitPrint(SimplePlusParser.PrintContext ctx) {
+	public T visitCall(@NotNull SimplePlusParser.CallContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -164,7 +169,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitRet(SimplePlusParser.RetContext ctx) {
+	public T visitVarExp(@NotNull SimplePlusParser.VarExpContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -177,7 +182,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitIte(SimplePlusParser.IteContext ctx) {
+	public T visitRef(@NotNull SimplePlusParser.RefContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -190,7 +195,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitCall(SimplePlusParser.CallContext ctx) {
+	public T visitPrint(@NotNull SimplePlusParser.PrintContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -203,7 +208,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitBaseExp(SimplePlusParser.BaseExpContext ctx) {
+	public T visitDeletion(@NotNull SimplePlusParser.DeletionContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -216,7 +221,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitVarExp(SimplePlusParser.VarExpContext ctx) {
+	public T visitArg(@NotNull SimplePlusParser.ArgContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -229,7 +234,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitBinExp(SimplePlusParser.BinExpContext ctx) {
+	public T visitStatement(@NotNull SimplePlusParser.StatementContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -242,7 +247,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitValExp(SimplePlusParser.ValExpContext ctx) {
+	public T visitValExp(@NotNull SimplePlusParser.ValExpContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -255,7 +260,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitNegExp(SimplePlusParser.NegExpContext ctx) {
+	public T visitNegExp(@NotNull SimplePlusParser.NegExpContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -268,7 +273,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitBoolExp(SimplePlusParser.BoolExpContext ctx) {
+	public T visitBlock(@NotNull SimplePlusParser.BlockContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -281,7 +286,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitCallExp(SimplePlusParser.CallExpContext ctx) {
+	public T visitIte(@NotNull SimplePlusParser.IteContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -294,7 +299,7 @@ public class SimplePlusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * </p>
 	 */
 	@Override
-	public T visitNotExp(SimplePlusParser.NotExpContext ctx) {
+	public T visitDecFun(@NotNull SimplePlusParser.DecFunContext ctx) {
 		return visitChildren(ctx);
 	}
 }

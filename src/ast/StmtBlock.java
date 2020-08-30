@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -17,21 +14,19 @@ import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StmtBlock.
+ * The class of block statements ("{ ... }").
  */
 public class StmtBlock extends Stmt {
 
-	/** The children. */
 	private List<Stmt> children;
 
 	/**
-	 * Instantiates a new stmt block.
+	 * Instantiate a new stmt block.
 	 *
-	 * @param children the children
-	 * @param line the line
-	 * @param column the column
+	 * @param children the children nodes list
+	 * @param line     the line in the code
+	 * @param column   the column in the code
 	 */
 	public StmtBlock(List<Stmt> children, int line, int column) {
 		super(line, column);
@@ -39,23 +34,15 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * It checks the semantic for every child in order item by item It creates a new
-	 * scope for the elements that will be found inside Each element may add new
-	 * elements to the environment inside the current scope After finishing drop the
-	 * newly created scope.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Open a new scope and check the semantic of the block
 	 */
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
-		// initialize result variable
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
-		// create scope for inner elements
 		e.openScope();
 		int oldOffset = e.getOffset();
 		toRet.addAll(checkSemanticsSameScope(e));
-		// close scope for this block
+
 		e.closeScope();
 		e.setOffset(oldOffset);
 
@@ -63,15 +50,10 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * Check semantics same scope.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Check the semantic of the block without opening a new scope
 	 */
 	public List<SemanticError> checkSemanticsSameScope(Environment<STEntry> e) {
-		// initialize result variable
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		// check children semantics
 		if (children != null)
 			for (Stmt el : children)
 				toRet.addAll(el.checkSemantics(e));
@@ -79,76 +61,51 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * Infer behaviour.
+	 * Infer type by checking all the children.
 	 *
-	 * @param e the e
-	 * @return the list
-	 */
-	@Override
-	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
-		// initialize result variable
-		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-
-		// create scope for inner elements
-		e.openScope();
-
-		toRet.addAll(inferBehaviourSameScope(e));
-
-		// close scope for this block
-		e.closeScope();
-
-		return toRet;
-	}
-
-	/**
-	 * Infer behaviour same scope.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
-	public List<BehaviourError> inferBehaviourSameScope(Environment<BTEntry> e) {
-		// initialize result variable
-		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-
-		// check children semantics
-		if (children != null)
-			for (Stmt el : children)
-				toRet.addAll(el.inferBehaviour(e));
-
-		return toRet;
-	}
-
-	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * @return the type of the block or null
 	 */
 	@Override
 	public Type inferType() {
 		Type toRet = null;
+		// The last return type
 		EType lastRetT = null;
+
+		// changed flag became true if the return value changes in iteration;
+		// safe flag became true if an if-statement returns in only one branch.
 		boolean changed = false, safe = false;
 
-		for (Stmt c : children) {
-			Type candidate = c.inferType();
-			toRet = candidate != null ? candidate : toRet;
+		for (Stmt child : children) {
+			// Useful to rise infer type in child even if it returns null
+			Type candidate = child.inferType();
+			// Update the returned type if the candidate is not null
+			toRet = candidate != null && !(child instanceof StmtCall) ? candidate : toRet;
 
+			// If some expressions has returned not-null perform action
 			if (toRet != null) {
+				// If the previous return type is not the same as the candidate, put the flag
+				// "changed" to "true"
 				if (lastRetT != null && !lastRetT.equalsTo(toRet))
 					changed = true;
+				// Otherwise update the last returned type
 				else
 					lastRetT = toRet.getType();
-				if (c instanceof StmtIte) {
-					if (((StmtIte) c).hasElseStmt())
+
+				// If the current statement is an if-then-else ..
+				if (child instanceof StmtIte) {
+					// .. check that it has an "else" statement
+					if (((StmtIte) child).hasElseStmt())
 						safe = true;
 				} else
 					safe = true;
 			}
 		}
 
+		// If the return value is changed during iteration, add an error
 		if (changed)
 			TypeErrorsStorage.addError(new TypeError("Inconsistent return types in this block", line, column));
 
+		// If the return type is not void or null and it is not safe, add an error
 		if (!safe && toRet != null && !EType.VOID.equalsTo(toRet))
 			TypeErrorsStorage
 					.addError(new TypeError("Unsafe return (the function does not always return)", line, column));
@@ -157,13 +114,39 @@ public class StmtBlock extends Stmt {
 	}
 
 	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
+	 * Open a new scope and check the behaviour of the block.
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+
+		e.openScope();
+
+		toRet.addAll(inferBehaviourSameScope(e));
+
+		e.closeScope();
+
+		return toRet;
+	}
+
+	/**
+	 * Infer the behaviour of the block without opening a new scope
+	 *
+	 * @param e the e
+	 * @return the list
+	 */
+	public List<BehaviourError> inferBehaviourSameScope(Environment<BTEntry> e) {
+		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
+
+		if (children != null)
+			for (Stmt el : children)
+				toRet.addAll(el.inferBehaviour(e));
+
+		return toRet;
+	}
+
+	@Override
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		for (Stmt c : children)
 			c.codeGen(nl, sb);
 	}

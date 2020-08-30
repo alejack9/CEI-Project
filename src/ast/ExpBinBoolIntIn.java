@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import ast.errors.TypeError;
@@ -26,38 +23,36 @@ public abstract class ExpBinBoolIntIn extends ExpBin {
 	}
 
 	/**
-	 * Check that left and right sides of the expression are integers and returns a
-	 * boolean type
-	 *
-	 * @return the type
+	 * Check that left and right sides of the expression are {@link EType#INT INT}).
+	 * 
+	 * @return {@link EType#BOOL BOOL} as type
 	 */
 	@Override
 	public final Type inferType() {
 		Type leftSideT = this.leftSide.inferType();
 		if (!EType.INT.equalsTo(leftSideT))
-			TypeErrorsStorage.addError(new TypeError("Left expression in condition \"" + this.getOp()
+			TypeErrorsStorage.addError(new TypeError("Left expression in condition \"" + this.getOperationSymbol()
 					+ "\" must return int. It returns \"" + leftSideT + "\" instead", leftSide.line, leftSide.column));
 		Type rightSideT = this.rightSide.inferType();
 		if (!EType.INT.equalsTo(rightSideT))
 			TypeErrorsStorage
-					.addError(
-							new TypeError(
-									"Right expression in condition \"" + this.getOp()
-											+ "\" must return int. It returns \"" + rightSideT + "\" instead",
-									rightSide.line, rightSide.column));
+					.addError(new TypeError(
+							"Right expression in condition \"" + this.getOperationSymbol()
+									+ "\" must return int. It returns \"" + rightSideT + "\" instead",
+							rightSide.line, rightSide.column));
 
 		return EType.BOOL.getType();
 	}
 
 	/**
-	 * Gets the related code of the specific arithmetic operation
+	 * Get the related code of the specific arithmetic operation
 	 *
 	 * @return the related string
 	 */
 	protected abstract String getOperator();
 
 	@Override
-	protected final void codeGen(int nl, CustomStringBuilder sb) {
+	public final void codeGen(int nl, CustomStringBuilder sb) {
 		String trueLabel = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
 		leftSide.codeGen(nl, sb);

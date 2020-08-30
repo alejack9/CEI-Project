@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import ast.errors.TypeError;
@@ -24,24 +21,25 @@ public abstract class ExpBinBoolBoolIn extends ExpBin {
 	}
 
 	/**
-	 * Check that left and right sides of the expression are booleans and returns a
-	 * boolean type
-	 *
-	 * @return the type
+	 * Check that left and right sides of the expression are {@link EType#BOOL
+	 * BOOL}).
+	 * 
+	 * @return {@link EType#BOOL BOOL} as type
 	 */
 	@Override
 	public final Type inferType() {
 		Type leftSideT = this.leftSide.inferType();
 		if (!EType.BOOL.equalsTo(leftSideT))
-			TypeErrorsStorage.addError(new TypeError("Left expression in condition \"" + this.getOp()
-					+ "\" must return \"bool\" but it returns \"" + leftSideT + "\"", leftSide.line, leftSide.column));
+			TypeErrorsStorage.addError(new TypeError(
+					"Left expression in condition \"" + this.getOperationSymbol()
+							+ "\" must return \"bool\" but it returns \"" + leftSideT + "\"",
+					leftSide.line, leftSide.column));
 		Type rightSideT = this.rightSide.inferType();
 		if (!EType.BOOL.equalsTo(rightSideT))
-			TypeErrorsStorage
-					.addError(new TypeError(
-							"Right expression in condition \"" + this.getOp()
-									+ "\" must return \"bool\" but it returns \"" + rightSideT + "\"",
-							rightSide.line, rightSide.column));
+			TypeErrorsStorage.addError(new TypeError(
+					"Right expression in condition \"" + this.getOperationSymbol()
+							+ "\" must return \"bool\" but it returns \"" + rightSideT + "\"",
+					rightSide.line, rightSide.column));
 
 		return EType.BOOL.getType();
 	}

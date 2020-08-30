@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.List;
@@ -15,53 +12,37 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StmtPrint.
+ * The class of print statements ("print x" or "print 1+1").
  */
 public class StmtPrint extends Stmt {
 
-	/** The exp. */
 	private Exp exp;
 
 	/**
-	 * Instantiates a new stmt print.
-	 *
-	 * @param exp the exp
-	 * @param line the line
-	 * @param column the column
+	 * @param exp    the expression to print
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public StmtPrint(Exp exp, int line, int column) {
 		super(line, column);
 		this.exp = exp;
 	}
 
-	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		return exp.checkSemantics(e);
 	}
 
-	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return exp.inferBehaviour(e);
 	}
 
 	/**
-	 * Infer type.
+	 * Check that the expression is not a {@link EType#VOID VOID} type.
 	 *
-	 * @return the type
+	 * @return null
 	 */
 	@Override
 	public Type inferType() {
@@ -71,13 +52,10 @@ public class StmtPrint extends Stmt {
 	}
 
 	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
+	 * The assembly instruction "print" prints the value stored in $a0.
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		exp.codeGen(nl, sb);
 		sb.newLine("print");
 	}

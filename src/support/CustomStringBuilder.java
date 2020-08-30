@@ -1,5 +1,8 @@
 package support;
 
+/**
+ * Create string of assembly commands.
+ */
 public class CustomStringBuilder {
 	private StringBuilder sb;
 
@@ -9,10 +12,20 @@ public class CustomStringBuilder {
 
 	/**
 	 * Write new line composed of the strings passed
-	 * @param toAppend
+	 * 
+	 * @param toAppend list of string
 	 */
 	public void newLine(String... toAppend) {
 		sb.append("\r\n");
+		sameRow(toAppend);
+	}
+
+	/**
+	 * Append to the current line the strings passed
+	 * 
+	 * @param toAppend list of string
+	 */
+	public void sameRow(String... toAppend) {
 		for (String s : toAppend)
 			sb.append(s);
 	}

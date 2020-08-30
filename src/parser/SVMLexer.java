@@ -1,4 +1,4 @@
-// Generated from SVM.g4 by ANTLR 4.6
+// Generated from SVM.g4 by ANTLR 4.4
 package parser;
 
 import java.util.HashMap;
@@ -15,60 +15,24 @@ import org.antlr.v4.runtime.misc.*;
 @SuppressWarnings({ "all", "warnings", "unchecked", "unused", "cast" })
 public class SVMLexer extends Lexer {
 	static {
-		RuntimeMetaData.checkVersion("4.6", RuntimeMetaData.VERSION);
+		RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION);
 	}
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache = new PredictionContextCache();
-	public static final int T__0 = 1, T__1 = 2, PRINT = 3, JUMPREG = 4, JUMPLABEL = 5, ADDINTEGER = 6, MOVE = 7,
+	public static final int T__1 = 1, T__0 = 2, PRINT = 3, JUMPREG = 4, JUMPLABEL = 5, ADDINTEGER = 6, MOVE = 7,
 			BRANCHEQ = 8, BRANCHGT = 9, BRANCHGE = 10, BRANCHLT = 11, BRANCHLE = 12, POP = 13, LOADWORD = 14,
 			STOREWORD = 15, PUSH = 16, ADD = 17, SUB = 18, MUL = 19, DIV = 20, NEG = 21, LOADINTEGER = 22, BRANCH = 23,
 			REG = 24, COL = 25, LABEL = 26, NUMBER = 27, WHITESP = 28, ERR = 29;
 	public static String[] modeNames = { "DEFAULT_MODE" };
 
-	public static final String[] ruleNames = { "T__0", "T__1", "PRINT", "JUMPREG", "JUMPLABEL", "ADDINTEGER", "MOVE",
+	public static final String[] tokenNames = { "'\\u0000'", "'\\u0001'", "'\\u0002'", "'\\u0003'", "'\\u0004'",
+			"'\\u0005'", "'\\u0006'", "'\\u0007'", "'\b'", "'\t'", "'\n'", "'\\u000B'", "'\f'", "'\r'", "'\\u000E'",
+			"'\\u000F'", "'\\u0010'", "'\\u0011'", "'\\u0012'", "'\\u0013'", "'\\u0014'", "'\\u0015'", "'\\u0016'",
+			"'\\u0017'", "'\\u0018'", "'\\u0019'", "'\\u001A'", "'\\u001B'", "'\\u001C'", "'\\u001D'" };
+	public static final String[] ruleNames = { "T__1", "T__0", "PRINT", "JUMPREG", "JUMPLABEL", "ADDINTEGER", "MOVE",
 			"BRANCHEQ", "BRANCHGT", "BRANCHGE", "BRANCHLT", "BRANCHLE", "POP", "LOADWORD", "STOREWORD", "PUSH", "ADD",
 			"SUB", "MUL", "DIV", "NEG", "LOADINTEGER", "BRANCH", "REG", "COL", "LABEL", "NUMBER", "WHITESP", "ERR" };
-
-	private static final String[] _LITERAL_NAMES = { null, "'('", "')'", "'print'", "'jr'", "'jal'", "'addi'", "'move'",
-			"'beq'", "'bgt'", "'bge'", "'blt'", "'ble'", "'pop'", "'lw'", "'sw'", "'push'", "'add'", "'sub'", "'mul'",
-			"'div'", "'neg'", "'li'", "'b'", null, "':'" };
-	private static final String[] _SYMBOLIC_NAMES = { null, null, null, "PRINT", "JUMPREG", "JUMPLABEL", "ADDINTEGER",
-			"MOVE", "BRANCHEQ", "BRANCHGT", "BRANCHGE", "BRANCHLT", "BRANCHLE", "POP", "LOADWORD", "STOREWORD", "PUSH",
-			"ADD", "SUB", "MUL", "DIV", "NEG", "LOADINTEGER", "BRANCH", "REG", "COL", "LABEL", "NUMBER", "WHITESP",
-			"ERR" };
-	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
-
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
-	@Deprecated
-	public static final String[] tokenNames;
-	static {
-		tokenNames = new String[_SYMBOLIC_NAMES.length];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = VOCABULARY.getLiteralName(i);
-			if (tokenNames[i] == null) {
-				tokenNames[i] = VOCABULARY.getSymbolicName(i);
-			}
-
-			if (tokenNames[i] == null) {
-				tokenNames[i] = "<INVALID>";
-			}
-		}
-	}
-
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
-	}
-
-	@Override
-
-	public Vocabulary getVocabulary() {
-		return VOCABULARY;
-	}
 
 	public int lexicalErrors = 0;
 
@@ -80,6 +44,11 @@ public class SVMLexer extends Lexer {
 	@Override
 	public String getGrammarFileName() {
 		return "SVM.g4";
+	}
+
+	@Override
+	public String[] getTokenNames() {
+		return tokenNames;
 	}
 
 	@Override

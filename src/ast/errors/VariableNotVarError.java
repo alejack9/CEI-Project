@@ -12,7 +12,8 @@ public class VariableNotVarError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return this.getPosition() + " - Variable is not referenced. Variable name: " + id;
+		return new StringBuilder(getPosition()).append(" - Variable is not referenced. Variable name: ").append(id)
+				.toString();
 	}
 
 }

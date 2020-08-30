@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.Collections;
@@ -16,21 +13,17 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpVal.
+ * The integer value expression class ("4" or "1").
  */
 public class ExpVal extends Exp {
 
-	/** The value. */
 	private int value;
 
 	/**
-	 * Instantiates a new exp val.
-	 *
-	 * @param value the value
-	 * @param line the line
-	 * @param column the column
+	 * @param value  the value
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public ExpVal(int value, int line, int column) {
 		super(line, column);
@@ -38,10 +31,7 @@ public class ExpVal extends Exp {
 	}
 
 	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * No semantic errors returned.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -49,9 +39,7 @@ public class ExpVal extends Exp {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * @return {@link EType#INT INT} as type.
 	 */
 	@Override
 	public Type inferType() {
@@ -59,10 +47,7 @@ public class ExpVal extends Exp {
 	}
 
 	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * No behaviour errors returned.
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -70,13 +55,10 @@ public class ExpVal extends Exp {
 	}
 
 	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
+	 * Load the value in $a0
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		sb.newLine("li $a0 ", Integer.toString(value));
 	}
 }

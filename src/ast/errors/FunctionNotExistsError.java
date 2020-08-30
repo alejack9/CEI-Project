@@ -1,7 +1,8 @@
 package ast.errors;
 
 /**
- * Represents a semantic error, in particular the called function does not exists.
+ * Represents a semantic error, in particular the called function does not
+ * exists.
  */
 public class FunctionNotExistsError extends SemanticError {
 	private static final long serialVersionUID = 1L;
@@ -12,7 +13,8 @@ public class FunctionNotExistsError extends SemanticError {
 
 	@Override
 	public String toString() {
-		return getPosition() + " - No function found. Function doesn't exist. Function name: " + this.id;
+		return new StringBuilder(getPosition()).append(" - No function found. Function doesn't exist. Function name: ")
+				.append(id).toString();
 	}
 
 }

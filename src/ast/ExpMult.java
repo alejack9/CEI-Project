@@ -1,41 +1,25 @@
-/*
- * 
- */
 package ast;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpMult.
+ * The class of multiplication expressions.
  */
 public class ExpMult extends ExpBinArithm {
 
 	/**
-	 * Instantiates a new exp mult.
-	 *
-	 * @param leftSide the left side
-	 * @param rightSide the right side
-	 * @param line the line
-	 * @param column the column
+	 * @param leftSide  the left side of the expression
+	 * @param rightSide the right side of the expression
+	 * @param line      the line in the code
+	 * @param column    the column in the code
 	 */
 	public ExpMult(Exp leftSide, Exp rightSide, int line, int column) {
 		super(leftSide, rightSide, line, column);
 	}
 
-	/**
-	 * Gets the op.
-	 *
-	 * @return the op
-	 */
 	@Override
-	protected String getOp() {
+	protected String getOperationSymbol() {
 		return "*";
 	}
 
-	/**
-	 * C gen operator.
-	 *
-	 * @return the string
-	 */
 	@Override
 	protected String cGenOperator() {
 		return "mul";

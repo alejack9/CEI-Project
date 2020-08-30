@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -14,38 +11,29 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StmtRet.
+ * The class of return statements ("return x" or "return 1+1").
  */
 public class StmtRet extends Stmt {
 
-	/** The exp. */
 	private Exp exp;
-	
-	/** The k. */
+
 	private String k;
 
 	/**
-	 * Instantiates a new stmt ret.
-	 *
-	 * @param exp the exp
-	 * @param argsDimension the args dimension
-	 * @param line the line
-	 * @param column the column
+	 * @param exp           the expression to return
+	 * @param argsDimension the dimension of the arguments required by the function
+	 *                      that wrap the node
+	 * @param line          the line in the code
+	 * @param column        the column in the code
 	 */
 	public StmtRet(Exp exp, List<Integer> argsDimension, int line, int column) {
 		super(line, column);
 		this.exp = exp;
+		// "8" is the value dimension of AL (4) summed to RA (4)
 		k = Integer.toString(argsDimension.stream().reduce((a, b) -> a + b).orElse(0) + 8);
 	}
 
-	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
@@ -57,11 +45,13 @@ public class StmtRet extends Stmt {
 	}
 
 	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * @return the type of the expression to return
 	 */
+	@Override
+	public Type inferType() {
+		return this.exp == null ? EType.VOID.getType() : exp.inferType();
+	}
+
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
@@ -73,32 +63,22 @@ public class StmtRet extends Stmt {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * Do the same actions performed by functionDec after function execution:
+	 * destroy the AR.
 	 */
 	@Override
-	public Type inferType() {
-		Type toRet = this.exp == null ? EType.VOID.getType() : exp.inferType();
-
-		return toRet;
-	}
-
-	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
-	 */
-	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		if (exp != null)
 			exp.codeGen(nl, sb);
+		// reset $ra
 		sb.newLine("lw $ra -4($fp) 4");
+		// remove RA, AL and parameters from stack
 		sb.newLine("addi $sp $sp ", k);
+		// reset FP
 		sb.newLine("lw $fp 0($sp) 4");
-		// as the pop of functionDec
+		// remove FP
 		sb.newLine("pop 4");
+
 		sb.newLine("jr");
 	}
 }

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package tests;
 
 import java.io.IOException;
@@ -13,7 +10,7 @@ import util_analysis.TypeErrorsStorage;
 class CorrectCodes {
 
 	/**
-	 * Reset type errors storage.
+	 * Reset type errors storage after each test.
 	 */
 	@AfterEach
 	public void resetTypeErrorsStorage() {
@@ -179,6 +176,58 @@ class CorrectCodes {
 				, "    }"
 				, "    return g(a);"
 				, "}")
+			);
+	}
+
+	/**
+	 * Testing AND
+	 */
+	@Test
+	void correctCode10() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    int a = 4;"
+				, "    void g(int var y) {"
+				, "        if(y == 4 && y + 1 == 5)"
+				, "            print y;"
+				, "    }"
+				, "    return g(a);"
+				, "}")
+			);
+	}
+
+	/**
+	 * Testing OR
+	 */
+	@Test
+	void correctCode11() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    int a = 4;"
+				, "    void g(int var y) {"
+				, "        if(y == 5 || y + 1 == 5)"
+				, "            print y;"
+				, "        if(y == 4 || y + 1 == 6)"
+				, "            print y;"
+				, "    }"
+				, "    return g(a);"
+				, "}")
+			);
+	}
+	
+	/**
+	 * Testing function call inside a function call
+	 */
+	@Test
+	void correctCode12() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    int f(int x) {"
+				, "        return x;"
+				, "    }"
+				, "    print f(f(1));"
+				, "}"
+				)
 			);
 	}
 }

@@ -1,7 +1,7 @@
 package ast.types;
 
 /**
- * Represents Integer type 
+ * Represents Integer type
  */
 public class IntType extends Type {
 

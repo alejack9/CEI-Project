@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.List;
@@ -13,21 +10,17 @@ import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpCall.
+ * The class of call expressions ("fun()").
  */
 public class ExpCall extends Exp {
 
-	/** The call. */
 	private StmtCall call;
 
 	/**
-	 * Instantiates a new exp call.
-	 *
-	 * @param call the call
-	 * @param line the line
-	 * @param column the column
+	 * @param call   the call node
+	 * @param line   the line of the code
+	 * @param column the column of the code
 	 */
 	public ExpCall(StmtCall call, int line, int column) {
 		super(line, column);
@@ -35,10 +28,7 @@ public class ExpCall extends Exp {
 	}
 
 	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Delegated to the call node
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
@@ -46,9 +36,7 @@ public class ExpCall extends Exp {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * Delegated to the call node
 	 */
 	@Override
 	public Type inferType() {
@@ -56,10 +44,7 @@ public class ExpCall extends Exp {
 	}
 
 	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Delegated to the call node
 	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
@@ -67,13 +52,10 @@ public class ExpCall extends Exp {
 	}
 
 	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
+	 * Delegated to the call node
 	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		call.codeGen(nl, sb);
 	}
 }

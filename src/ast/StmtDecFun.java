@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ast;
 
 import java.util.LinkedList;
@@ -21,88 +18,86 @@ import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 import ast.errors.SemanticError;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class StmtDecFun.
+ * The class of function declaration statements ("void f( ... ) { ... }").
  */
 public class StmtDecFun extends StmtDec {
 
-	/** The type. */
 	private Type type;
-	
-	/** The id. */
-	private String ID;
-	
-	/** The args. */
-	private List<Arg> args;
-	
-	/** The block. */
-	private StmtBlock block;
-	
-	/** The id entry. */
+
+	private String id;
 	private STEntry idEntry;
 
+	private List<Arg> args;
+
+	private StmtBlock block;
+
 	/**
-	 * Instantiates a new stmt dec fun.
-	 *
-	 * @param type the type
-	 * @param ID the id
-	 * @param args the args
-	 * @param block the block
-	 * @param line the line
-	 * @param column the column
+	 * @param type   the return type of the function
+	 * @param ID     the id of the function
+	 * @param args   the parameters required by the function
+	 * @param block  the block of the function
+	 * @param line   the line in the code
+	 * @param column the column in the code
 	 */
 	public StmtDecFun(Type type, String ID, List<Arg> args, StmtBlock block, int line, int column) {
 		super(line, column);
 		this.type = type;
-		this.ID = ID;
+		this.id = ID;
 		this.args = args;
 		this.block = block;
 	}
 
 	/**
-	 * Check semantics.
-	 *
-	 * @param e the e
-	 * @return the list
+	 * Add the label to the idEntry, create a new environment with function-only
+	 * and use it to check the block.
 	 */
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
 
-		ArrowType t = (ArrowType) EType.FUNCTION.getType();
+		ArrowType funtionType = (ArrowType) EType.FUNCTION.getType();
 
-		idEntry = new STEntry(t);
+		idEntry = new STEntry(funtionType);
 		idEntry.label = CodeGenUtils.freshLabel();
 
-		if (!e.add(ID, idEntry))
-			toRet.add(new IdAlreadytExistsError(ID, line, column));
+		if (!e.add(id, idEntry))
+			toRet.add(new IdAlreadytExistsError(id, line, column));
 
 		Environment<STEntry> funEnv = new ListOfMapEnv<STEntry>(e.getAllFunctions(), e.getOffset(),
 				e.getNestingLevel());
+		// set the correct offset
 		funEnv.setOffset(e.getOffset());
 
 		funEnv.openScope();
+		// increase the nesting level only when enters in a function
 		funEnv.increaseNestingLevel();
-		List<Type> argsT = new LinkedList<Type>();
-		int paroffset = 4; // access link dimension
+		List<Type> parsTypes = new LinkedList<Type>();
+		// "add" modifies the offset so it stores it to reset later
 		int oldEnvOffset = funEnv.getOffset();
+		// starting offset is 4 (to skip the AL block in AR)
+		int paroffset = 4;
 		for (int i = 0; i < args.size(); i++) {
 			STEntry toAdd = new STEntry(args.get(i).getType());
-			argsT.add(toAdd.getType());
+			parsTypes.add(toAdd.getType());
 			if (!funEnv.add(args.get(i).getId(), toAdd))
 				toRet.add(new IdAlreadytExistsError(args.get(i).getId(), args.get(i).line, args.get(i).column));
 			else
 				toAdd.offset = paroffset;
+			// the next offset is the current value summed by the dimension of the current
+			// variable
 			paroffset += args.get(i).getType().getDimension();
 		}
 
-		t.setParamTypes(argsT);
-		t.setRetType(type);
+		funtionType.setParamTypes(parsTypes);
+		funtionType.setRetType(type);
+
+		// reset offset
 		funEnv.setOffset(oldEnvOffset);
 
 		toRet.addAll(block.checkSemanticsSameScope(funEnv));
 
+		// close scope and reset offset
 		funEnv.closeScope();
 		funEnv.decreaseNestingLevel();
 		funEnv.setOffset(oldEnvOffset);
@@ -110,36 +105,31 @@ public class StmtDecFun extends StmtDec {
 	}
 
 	/**
-	 * Infer type.
-	 *
-	 * @return the type
+	 * @return null
 	 */
 	@Override
 	public Type inferType() {
+		// infer type of all args
 		this.args.forEach(Arg::inferType);
 
 		Type blockT = this.block.inferType();
-		blockT = blockT == null ? EType.VOID.getType() : blockT;
-		if (!blockT.getType().equalsTo(type))
+
+		if (!type.getType().equalsTo(blockT))
 			TypeErrorsStorage.addError(new TypeError(
 					"Block return type (" + blockT + ") not equals to function return type (" + type + ")",
 					this.block.line, this.block.column));
 		return null;
 	}
 
-	/**
-	 * Infer behaviour.
-	 *
-	 * @param e the e
-	 * @return the list
-	 */
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 
+		// create the function-only environment
 		Environment<BTEntry> funEnv = new ListOfMapEnv<BTEntry>(e.getAllFunctions(), e.getOffset(),
 				e.getNestingLevel());
 
+		// setup for fixed point method
 		List<BTEntry> e0 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e0.add(new BTEntry()));
 		List<BTEntry> e1 = new LinkedList<BTEntry>();
@@ -147,10 +137,11 @@ public class StmtDecFun extends StmtDec {
 		List<BTEntry> e1_1 = new LinkedList<BTEntry>();
 		args.stream().forEach(arg -> e1_1.add(new BTEntry()));
 
-		funEnv.add(ID, new BTEntry(e0));
+		funEnv.add(id, new BTEntry(e0));
+		// TODO don't remember
 		do {
 			funEnv.openScope();
-			toRet = new LinkedList<BehaviourError>(); // stampa pi� volte lo stesso messaggio d'errore
+			toRet = new LinkedList<BehaviourError>();
 			for (int i = 0; i < e0.size(); i++)
 				funEnv.add(args.get(i).getId(), (BTEntry) e0.get(i).clone());
 			toRet.addAll(block.inferBehaviourSameScope(funEnv));
@@ -159,28 +150,25 @@ public class StmtDecFun extends StmtDec {
 				e1_1.set(i, funEnv.getIDEntry(args.get(i).getId()));
 			}
 			funEnv.closeScope();
-			funEnv.update(ID, new BTEntry(e1_1));
+			funEnv.update(id, new BTEntry(e1_1));
 		} while (!BTEntry.areEqual(e1, e1_1));
-		e.add(ID, funEnv.getIDEntry(ID));
+		e.add(id, funEnv.getIDEntry(id));
 
 		return toRet;
 	}
 
-	/**
-	 * Code gen.
-	 *
-	 * @param nl the nl
-	 * @param sb the sb
-	 */
 	@Override
-	protected void codeGen(int nl, CustomStringBuilder sb) {
+	public void codeGen(int nl, CustomStringBuilder sb) {
 		String end = CodeGenUtils.freshLabel();
 		sb.newLine("b ", end);
 		sb.newLine(idEntry.label, ":");
 		sb.newLine("move $fp $sp");
 		sb.newLine("push $ra 4");
+
 		block.codeGen(nl + 1, sb);
+
 		sb.newLine("lw $ra 0($sp) 4");
+		// remove all parameters
 		sb.newLine("addi $sp $sp ", Integer.toString(
 				args.stream().map(Arg::getType).map(Type::getDimension).reduce((a, b) -> a + b).orElse(0) + 8));
 		sb.newLine("lw $fp 0($sp) 4");

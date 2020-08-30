@@ -1,51 +1,30 @@
-/*
- * 
- */
 package ast;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExpNotEqual.
+ * The class of not-equal expressions ("x != y").
  */
 public class ExpNotEqual extends ExpBinBoolAllIn {
 
 	/**
-	 * Instantiates a new exp not equal.
-	 *
-	 * @param left the left
-	 * @param right the right
-	 * @param line the line
-	 * @param column the column
+	 * @param leftSide  the left side of the expression
+	 * @param rightSide the right side of the expression
+	 * @param line      the line in the code
+	 * @param column    the column in the code
 	 */
 	public ExpNotEqual(Exp left, Exp right, int line, int column) {
 		super(left, right, line, column);
 	}
 
-	/**
-	 * Gets the op.
-	 *
-	 * @return the op
-	 */
 	@Override
-	protected String getOp() {
+	protected String getOperationSymbol() {
 		return "!=";
 	}
 
-	/**
-	 * True return.
-	 *
-	 * @return the string
-	 */
 	@Override
 	protected String trueReturn() {
 		return "0";
 	}
 
-	/**
-	 * False return.
-	 *
-	 * @return the string
-	 */
 	@Override
 	protected String falseReturn() {
 		return "1";

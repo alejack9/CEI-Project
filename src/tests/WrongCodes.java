@@ -1,6 +1,3 @@
-/*
- * 
- */
 package tests;
 
 import java.io.IOException;
@@ -132,7 +129,7 @@ class WrongCodes {
 	}
 	
 	/**
-	 * Check of passed variables if is required a referenced one.
+	 * Check if a variable is passed in case of a reference is required.
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
@@ -149,10 +146,8 @@ class WrongCodes {
 		, 1);
 	}
 
-
-
 	/**
-	 * Cannot access to global variables.
+	 * Cannot access global variables inside a function.
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
