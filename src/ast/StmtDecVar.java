@@ -52,7 +52,10 @@ public class StmtDecVar extends StmtDec {
 	@Override
 	public List<SemanticError> checkSemantics(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-
+		
+		if (exp != null)
+			toRet.addAll(exp.checkSemantics(e));
+		
 		idEntry = new STEntry(type);
 		if (e.getLocalIDEntry(ID) == null)
 			e.add(ID, idEntry);
@@ -64,9 +67,6 @@ public class StmtDecVar extends StmtDec {
 			toRet.add(new DifferentVarTypeError(ID, line, column));
 
 		idEntry.setDeleted(false);
-
-		if (exp != null)
-			toRet.addAll(exp.checkSemantics(e));
 
 		return toRet;
 	}
