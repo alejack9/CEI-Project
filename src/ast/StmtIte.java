@@ -40,13 +40,6 @@ public class StmtIte extends Stmt {
 	}
 
 	/**
-	 * @return true, if the element has an else branch
-	 */
-	public boolean hasElseStmt() {
-		return elseStmt != null;
-	}
-
-	/**
 	 * Check then and else branches using passed environment's clones.
 	 */
 	@SuppressWarnings("unchecked")
@@ -117,6 +110,22 @@ public class StmtIte extends Stmt {
 		return toRet;
 	}
 
+	@Override
+	public void codeGen(int nl, CustomStringBuilder sb) {
+		String T = CodeGenUtils.freshLabel();
+		String end = CodeGenUtils.freshLabel();
+
+		exp.codeGen(nl, sb);
+		sb.newLine("li $t1 1");
+		sb.newLine("beq $a0 $t1 ", T);
+		if (elseStmt != null)
+			elseStmt.codeGen(nl, sb);
+		sb.newLine("b ", end);
+		sb.newLine(T, ":");
+		thenStmt.codeGen(nl, sb);
+		sb.newLine(end, ":");
+	}
+
 	/**
 	 * If there's not a scope in the branch, open and close a scope before and after
 	 * analyse the behaviour (in order to always have a new scope for the branches
@@ -132,19 +141,10 @@ public class StmtIte extends Stmt {
 		}
 	}
 
-	@Override
-	public void codeGen(int nl, CustomStringBuilder sb) {
-		String T = CodeGenUtils.freshLabel();
-		String end = CodeGenUtils.freshLabel();
-
-		exp.codeGen(nl, sb);
-		sb.newLine("li $t1 1");
-		sb.newLine("beq $a0 $t1 ", T);
-		if (elseStmt != null)
-			elseStmt.codeGen(nl, sb);
-		sb.newLine("b ", end);
-		sb.newLine(T, ":");
-		thenStmt.codeGen(nl, sb);
-		sb.newLine(end, ":");
+	/**
+	 * @return true, if the element has an else branch
+	 */
+	public boolean hasElseStmt() {
+		return elseStmt != null;
 	}
 }

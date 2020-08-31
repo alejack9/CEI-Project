@@ -18,11 +18,6 @@ public class ExpOr extends ExpBinBoolBoolIn {
 	}
 
 	@Override
-	protected String getOperationSymbol() {
-		return "||";
-	}
-
-	@Override
 	public void codeGen(int nl, CustomStringBuilder sb) {
 		String trueLabel = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
@@ -35,6 +30,11 @@ public class ExpOr extends ExpBinBoolBoolIn {
 		sb.newLine(trueLabel, ":");
 		sb.newLine("li $a0 0");
 		sb.newLine(end, ":");
+	}
+
+	@Override
+	protected String getOperationSymbol() {
+		return "||";
 	}
 
 	/**

@@ -45,14 +45,6 @@ public class Arg extends ElementBase {
 	}
 
 	/**
-	 * @return null (because it is checked by "SPStmtDecFun")
-	 */
-	@Override
-	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
-		return null;
-	}
-
-	/**
 	 * @return null because it does not have any type (void is reserved for return
 	 *         statements)
 	 */
@@ -60,6 +52,14 @@ public class Arg extends ElementBase {
 	public Type inferType() {
 		if (EType.VOID.equalsTo(type))
 			TypeErrorsStorage.addError(new TypeError("Parameter type cannot be void", line, column));
+		return null;
+	}
+
+	/**
+	 * @return null (because it is checked by "SPStmtDecFun")
+	 */
+	@Override
+	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 		return null;
 	}
 

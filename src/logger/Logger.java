@@ -26,7 +26,7 @@ public abstract class Logger {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public void writeLine(String message) throws IOException {
-		this.writeLine(message, false);
+		this.writeLineWithoutDateTime(message);
 	};
 
 	/**
@@ -42,10 +42,9 @@ public abstract class Logger {
 	 * Write a message.
 	 *
 	 * @param message      The message to print
-	 * @param hideDateTime the hide date time
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public void writeLine(String message, boolean hideDateTime) throws IOException {
+	public void writeLineWithoutDateTime(String message) throws IOException {
 		this.out.println(message);
 	}
 

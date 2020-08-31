@@ -28,15 +28,14 @@ class ConsoleOutputLogger extends Logger {
 	};
 
 	/**
-	 * Write a new line including DateTime if specified
+	 * Write a new line without specifying DateTime
 	 * 
-	 * @param message      the message
-	 * @param hideDateTime true if the date time has not to be shown
+	 * @param message the message
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
-	public void writeLine(String message, boolean hideDateTime) throws IOException {
-		this.out.println((hideDateTime ? "" : (LocalDateTime.now().toString() + " - ")) + message);
+	public void writeLineWithoutDateTime(String message) throws IOException {
+		this.out.println(message);
 	};
 
 	/**

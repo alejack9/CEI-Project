@@ -59,11 +59,6 @@ public class BTEntry extends Entry {
 		return effects.get(0);
 	}
 
-	@Override
-	public boolean isFunction() {
-		return e1 != null;
-	}
-
 	/**
 	 * Get the sigma1.
 	 *
@@ -71,6 +66,19 @@ public class BTEntry extends Entry {
 	 */
 	public List<BTEntry> getE1() {
 		return e1;
+	}
+
+	@Override
+	public boolean isFunction() {
+		return e1 != null;
+	}
+
+	public void setLocalEffect(EEffect seq) {
+		effects.set(effects.size() - 1, seq);
+	}
+
+	public void addEffect(EEffect effect) {
+		this.effects.add(effect);
 	}
 
 	/**
@@ -86,7 +94,7 @@ public class BTEntry extends Entry {
 		for (int i = 0; i < e1.size(); i++)
 			if (e1.get(i).getRefEffect().compareTo(e1_1.get(i).getRefEffect()) != 0)
 				return false;
-
+	
 		return true;
 	}
 
@@ -106,7 +114,7 @@ public class BTEntry extends Entry {
 			for (int i = 0; i < effects.size(); i++)
 				if (effects.get(i).compareTo(casted.effects.get(i)) != 0)
 					return false;
-
+	
 		return true;
 	}
 
@@ -114,7 +122,7 @@ public class BTEntry extends Entry {
 	public Object clone() {
 		BTEntry toRet = new BTEntry();
 		toRet.deleted = this.deleted;
-
+	
 		if (e1 == null) {
 			toRet.effects = new LinkedList<EEffect>();
 			for (EEffect e : effects)
@@ -125,13 +133,5 @@ public class BTEntry extends Entry {
 				toRet.e1.add((BTEntry) e.clone());
 		}
 		return toRet;
-	}
-
-	public void setLocalEffect(EEffect seq) {
-		effects.set(effects.size() - 1, seq);
-	}
-
-	public void addEffect(EEffect effect) {
-		this.effects.add(effect);
 	}
 }

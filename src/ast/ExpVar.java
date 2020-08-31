@@ -86,14 +86,6 @@ public class ExpVar extends Exp {
 		return toRet;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public STEntry getIdEntry() {
-		return idEntry;
-	}
-
 	/**
 	 * Always write in $a0 the actual value of the variable.
 	 */
@@ -101,7 +93,7 @@ public class ExpVar extends Exp {
 	public void codeGen(int nl, CustomStringBuilder sb) {
 		if (idEntry.getType().isParameter()) {
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
-
+	
 			if (idEntry.getType().isRef())
 				sb.newLine("lw $a0 0($a0) 4");
 		} else {
@@ -109,5 +101,13 @@ public class ExpVar extends Exp {
 			sb.newLine("lw $a0 ", Integer.toString(idEntry.offset), "($t1) ",
 					Integer.toString(idEntry.getType().getDimension()));
 		}
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public STEntry getIdEntry() {
+		return idEntry;
 	}
 }

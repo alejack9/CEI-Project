@@ -53,13 +53,13 @@ public class Main {
 		logger.write("Checking Lexical ... ");
 
 		if (lexer.errors.size() > 0) {
-			logger.writeLine("failed", true);
+			logger.writeLineWithoutDateTime("failed");
 			for (LexicalError error : lexer.errors)
 				logger.writeLine("Lexical Error: " + error.toString());
 			return false;
 		}
 
-		logger.writeLine("succeeded", true);
+		logger.writeLineWithoutDateTime("succeeded");
 
 		return true;
 	};
@@ -73,13 +73,13 @@ public class Main {
 		List<SemanticError> errors = mainBlock.checkSemantics(new ListOfMapEnv<STEntry>());
 
 		if (errors.size() > 0) {
-			logger.writeLine("failed", true);
+			logger.writeLineWithoutDateTime("failed");
 			for (SemanticError err : errors)
 				logger.writeLine(err.toString());
 			return false;
 		}
 
-		logger.writeLine("succeeded", true);
+		logger.writeLineWithoutDateTime("succeeded");
 		return true;
 	};
 
@@ -92,13 +92,13 @@ public class Main {
 		mainBlock.inferType();
 
 		if (TypeErrorsStorage.getTypeErrors().size() > 0) {
-			logger.writeLine("failed", true);
+			logger.writeLineWithoutDateTime("failed");
 			for (TypeError err : TypeErrorsStorage.getTypeErrors())
 				logger.writeLine(err.toString());
 			return false;
 		}
 
-		logger.writeLine("succeeded", true);
+		logger.writeLineWithoutDateTime("succeeded");
 		return true;
 	};
 
@@ -111,13 +111,13 @@ public class Main {
 		logger.write("Analysing Behaviour ... ");
 
 		if (bErrors.size() > 0) {
-			logger.writeLine("failed", true);
+			logger.writeLineWithoutDateTime("failed");
 			for (SemanticError bErr : bErrors)
 				logger.writeLine(bErr.toString());
 			return false;
 		}
 
-		logger.writeLine("succeeded", true);
+		logger.writeLineWithoutDateTime("succeeded");
 		return true;
 	};
 
@@ -129,7 +129,7 @@ public class Main {
 
 		generateOutCode(new CodeMaker(mainBlock).codeGen());
 
-		logger.writeLine("done", true);
+		logger.writeLineWithoutDateTime("done");
 		return true;
 	};
 

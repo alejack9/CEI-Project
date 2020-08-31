@@ -58,6 +58,22 @@ public class StmtAssignment extends Stmt {
 	}
 
 	/**
+	 * Check that the variable type is the same as the expression type.
+	 *
+	 * @return null
+	 */
+	@Override
+	public Type inferType() {
+		Type expType = exp.inferType();
+		if (!expType.getType().equalsTo(idEntry.getType()))
+			TypeErrorsStorage.addError(new TypeError(
+					"Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType + ")", line,
+					column));
+	
+		return null;
+	}
+
+	/**
 	 * Infer expression behaviour and than check that the entry is not in
 	 * {@link EEffect#T TOP} state.
 	 */
@@ -73,22 +89,6 @@ public class StmtAssignment extends Stmt {
 			toRet.add(new DeletedVariableError(id, line, column));
 
 		return toRet;
-	}
-
-	/**
-	 * Check that the variable type is the same as the expression type.
-	 *
-	 * @return null
-	 */
-	@Override
-	public Type inferType() {
-		Type expType = exp.inferType();
-		if (!expType.getType().equalsTo(idEntry.getType()))
-			TypeErrorsStorage.addError(new TypeError(
-					"Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType + ")", line,
-					column));
-
-		return null;
 	}
 
 	@Override

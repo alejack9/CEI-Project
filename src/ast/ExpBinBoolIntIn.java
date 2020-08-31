@@ -44,13 +44,6 @@ public abstract class ExpBinBoolIntIn extends ExpBin {
 		return EType.BOOL.getType();
 	}
 
-	/**
-	 * Get the related code of the specific arithmetic operation
-	 *
-	 * @return the related string
-	 */
-	protected abstract String getOperator();
-
 	@Override
 	public final void codeGen(int nl, CustomStringBuilder sb) {
 		String trueLabel = CodeGenUtils.freshLabel();
@@ -67,4 +60,11 @@ public abstract class ExpBinBoolIntIn extends ExpBin {
 		sb.newLine("li $a0 1");
 		sb.newLine(end, ":");
 	}
+
+	/**
+	 * Get the related code of the specific arithmetic operation
+	 *
+	 * @return the related string
+	 */
+	protected abstract String getOperator();
 }

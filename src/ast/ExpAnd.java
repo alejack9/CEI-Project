@@ -19,11 +19,6 @@ public class ExpAnd extends ExpBinBoolBoolIn {
 	}
 
 	@Override
-	protected String getOperationSymbol() {
-		return "&&";
-	}
-
-	@Override
 	public void codeGen(int nl, CustomStringBuilder sb) {
 		String falseLabel = CodeGenUtils.freshLabel();
 		String end = CodeGenUtils.freshLabel();
@@ -36,6 +31,11 @@ public class ExpAnd extends ExpBinBoolBoolIn {
 		sb.newLine(falseLabel, ":");
 		sb.newLine("li $a0 0");
 		sb.newLine(end, ":");
+	}
+
+	@Override
+	protected String getOperationSymbol() {
+		return "&&";
 	}
 
 	/**
