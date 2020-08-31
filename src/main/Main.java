@@ -220,11 +220,12 @@ public class Main {
 		try {
 			mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
 		} catch (Exception e) {
+			if (!syntaxErrorListeners.get(0).errorsDetected()) throw e;
+		} finally {
 			if (syntaxErrorListeners.get(0).errorsDetected())
 				quit();
-			throw e;
 		}
-
+		
 		// Execute each step; if any step return false, the processor is killed
 		for (Step step : steps)
 			if (!step.get())
