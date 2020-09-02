@@ -13,19 +13,17 @@ import org.antlr.v4.runtime.dfa.DFA;
 import logger.Logger;
 
 /**
- * A generic error listener.
+ * A syntax error listener.
  */
-public abstract class CustomErrorListener implements ANTLRErrorListener {
+public class SyntaxErrorListener implements ANTLRErrorListener {
 
-	protected final Logger logger;
+	public final Logger logger;
 	private boolean errors = false;
 
 	/**
-	 * This class can be instanced by children.
-	 * 
 	 * @param logger The logger in which write
 	 */
-	protected CustomErrorListener(Logger logger) {
+	public SyntaxErrorListener(Logger logger) {
 		this.logger = logger;
 	}
 
@@ -34,7 +32,7 @@ public abstract class CustomErrorListener implements ANTLRErrorListener {
 			String msg, RecognitionException e) {
 		try {
 			if (logger != null)
-				this.logger.writeLine("line " + line + ":" + charPositionInLine + "\t" + msg);
+				logger.writeLine("SYNTAX ERROR: " + "[ " + line + ":" + charPositionInLine + " ] - " + msg);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

@@ -12,8 +12,7 @@ import ast.errors.BehaviourError;
 import ast.errors.LexicalError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
-import listeners.LexerErrorListener;
-import listeners.ParseErrorListener;
+import listeners.SyntaxErrorListener;
 import logger.Logger;
 import logger.LoggerFactory;
 
@@ -39,12 +38,12 @@ public class Main {
 
 	private Logger logger;
 	private String inFileName = "test.spl";
-	private String errorsFileName = null;
 	private String outCodeFileName;
 
 	private StmtBlock mainBlock;
 	private SimplePlusLexer lexer;
-	private List<ParseErrorListener> syntaxErrorListeners = new LinkedList<ParseErrorListener>();
+
+	private SyntaxErrorListener parserErrorsListener;
 
 	/**
 	 * The step that performs lexical check.
@@ -190,27 +189,13 @@ public class Main {
 
 		lexer = new SimplePlusLexer(input);
 
-		// Disable default ANTLR lexer listener (to override default behaviour)
-		lexer.removeErrorListener(ConsoleErrorListener.INSTANCE);
-
-		// If the parameter for the lexical errors file name is specified, add an error
-		// listener that writes on a file
-		if (errorsFileName != null) {
-			logger.writeLine("Errors File Name: " + errorsFileName);
-			syntaxErrorListeners.add(new ParseErrorListener(LoggerFactory.getLogger(errorsFileName)));
-			lexer.addErrorListener(new LexerErrorListener(LoggerFactory.getLogger(errorsFileName)));
-		}
-		lexer.addErrorListener(new LexerErrorListener(logger));
-		syntaxErrorListeners.add(new ParseErrorListener(logger));
-
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 
 		SimplePlusParser parser = new SimplePlusParser(tokens);
 
 		parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
-
-		for (ParseErrorListener el : syntaxErrorListeners)
-			parser.addErrorListener(el);
+		parserErrorsListener = new SyntaxErrorListener(logger);
+		parser.addErrorListener(parserErrorsListener);
 
 		// Tell the parser to build the AST
 		parser.setBuildParseTree(true);
@@ -220,16 +205,21 @@ public class Main {
 		try {
 			mainBlock = (StmtBlock) visitor.visitBlock(parser.block());
 		} catch (Exception e) {
-			if (!syntaxErrorListeners.get(0).errorsDetected()) throw e;
+			if (!parserErrorsListener.errorsDetected())
+				throw e;
 		} finally {
-			if (syntaxErrorListeners.get(0).errorsDetected())
+			if (parserErrorsListener.errorsDetected())
 				quit();
 		}
-		
+
 		// Execute each step; if any step return false, the processor is killed
 		for (Step step : steps)
 			if (!step.get())
 				quit();
+		// same as the above but without "quitting" message
+//		int i = 0;
+//		while(steps.get(i++).get());
+
 	}
 
 	/**
@@ -244,12 +234,8 @@ public class Main {
 		case 1:
 			inFileName = args[0];
 			break;
-		case 2:
-			inFileName = args[0];
-			errorsFileName = args[1];
-			break;
 		default:
-			System.out.println("Usage: \"java -jar .\\exportedJar.jar input_file [errors_file]\"");
+			System.out.println("Usage: \"java -jar .\\exportedJar.jar input_file\"");
 		}
 
 		// Set outCodeFileName with the same name of the input file but different

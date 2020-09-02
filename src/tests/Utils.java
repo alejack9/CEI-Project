@@ -17,7 +17,7 @@ import ast.VisitorImplSP;
 import ast.VisitorImplSVM;
 import ast.errors.BehaviourError;
 import ast.errors.SemanticError;
-import listeners.ParseErrorListener;
+import listeners.SyntaxErrorListener;
 import parser.ExecuteVM;
 import parser.SVMLexer;
 import parser.SVMParser;
@@ -44,7 +44,7 @@ class Utils {
 		lexer = new SimplePlusLexer(new ANTLRInputStream(new ByteArrayInputStream(code.getBytes())));
 
 		SimplePlusParser parser = new SimplePlusParser(new CommonTokenStream(lexer));
-		ParseErrorListener parseErrorListener = new ParseErrorListener(null);
+		SyntaxErrorListener parseErrorListener = new SyntaxErrorListener(null);
 		parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
 		parser.addErrorListener(parseErrorListener);
 
@@ -66,7 +66,6 @@ class Utils {
 	 *
 	 * @param code   the code
 	 * @param number the expected number of errors
-	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void lexicalErrors(String code, int number) throws IOException {
@@ -80,7 +79,6 @@ class Utils {
 	 * 
 	 * @param code   the code
 	 * @param number the expected number of errors
-	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void semanticErrors(String code, int number) throws IOException {
@@ -96,7 +94,6 @@ class Utils {
 	 * 
 	 * @param code   the code
 	 * @param number the expected number of errors
-	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void typeErrors(String code, int number) throws IOException {
@@ -113,7 +110,6 @@ class Utils {
 	 * 
 	 * @param code   the code
 	 * @param number the expected number of errors
-	 * @return the main block
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void behaviourErrors(String code, int number) throws IOException {
