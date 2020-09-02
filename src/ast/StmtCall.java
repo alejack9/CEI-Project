@@ -29,6 +29,7 @@ import ast.errors.SemanticError;
 public class StmtCall extends Stmt {
 
 	private List<Exp> exps;
+	private List<EEffect> expsB = new LinkedList<EEffect>();
 
 	private String ID;
 	private STEntry idEntry;
@@ -43,6 +44,7 @@ public class StmtCall extends Stmt {
 		super(line, column);
 		this.ID = ID;
 		this.exps = exps;
+		exps.forEach(s -> expsB.add(EEffect.BOTTOM));
 	}
 
 	@Override
@@ -105,18 +107,28 @@ public class StmtCall extends Stmt {
 		return funT.getReturnType();
 	}
 
+	private class Tuple<X, Y> {
+		public final X x;
+		public final Y y;
+
+		public Tuple(X x, Y y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-
+		
 		List<Type> parsTypes = ((ArrowType) idEntry.getType()).getParamTypes();
 
 		// Sigma_1
 		List<BTEntry> e1 = e.getIDEntry(ID).getE1();
 
 		// Sigma'
-		HashMap<String, List<EEffect>> eStar = new HashMap<>();
+		HashMap<String, Tuple<Integer, List<EEffect>>> eStar = new HashMap<>();
 
 		for (int i = 0; i < parsTypes.size(); i++) {
 			if (parsTypes.get(i).isRef()) {
@@ -126,21 +138,27 @@ public class StmtCall extends Stmt {
 				BTEntry next = e1.get(i);
 
 				// Get the behaviours list of the current variable or creates a new one
-				List<EEffect> btList = eStar.getOrDefault(((ExpVar) exps.get(i)).getId(), new LinkedList<>());
+				List<EEffect> btList = eStar.getOrDefault(((ExpVar) exps.get(i)).getId(),
+						new Tuple<>(i, new LinkedList<>())).y;
 				// Add to the list the seq operation result
 				// NOTE: the method performs a seq operation between the "local" effect of
 				// "prev" and the "ref" effect of "next"
 				btList.add(BTHelper.invocationSeq(prev, next));
 				// Update the behaviour list associated with that variable
-				eStar.put(((ExpVar) exps.get(i)).getId(), btList);
+				eStar.put(((ExpVar) exps.get(i)).getId(), new Tuple<>(i, btList));
 			}
+			// check not-referenced variables
+			else
+				toRet.addAll(exps.get(i).inferBehaviour(e));
 		}
 
 		// The "setLocalEffect" represents the theoretical function "update"; before the
 		// update, the "par" operation is performed on all retrieved effects
 		eStar.entrySet().forEach(entry -> {
-			e.getIDEntry(entry.getKey())
-					.setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
+			EEffect eeff = entry.getValue().y.stream().reduce((a, b) -> BTHelper.par(a, b)).get();
+			e.getIDEntry(entry.getKey()).setLocalEffect(eeff);
+
+			expsB.set(entry.getValue().x, eeff);
 
 			// If any local behaviour (upgraded by the previous command) is TOP, add an
 			// error
@@ -183,6 +201,10 @@ public class StmtCall extends Stmt {
 
 			// Push $a0 with appropriate dimension
 			sb.newLine("push $a0 ", Integer.toString(paramsType.get(i).getDimension()));
+
+			// If the variabile has been deleted by the function invocation
+			if (exps.get(i) instanceof ExpVar && expsB.get(i).compareTo(EEffect.D) == 0)
+				((ExpVar) exps.get(i)).getIdEntry().setDeleted(true);
 		}
 
 		// Push the $al
@@ -190,7 +212,6 @@ public class StmtCall extends Stmt {
 		for (int i = 0; i < nl - idEntry.nestingLevel; i++)
 			sb.newLine("lw $al 0($al) 4");
 		sb.newLine("push $al 4");
-		// Actually jump to the function
 		sb.newLine("jal ", idEntry.label);
 	}
 }
