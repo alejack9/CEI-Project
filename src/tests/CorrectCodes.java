@@ -15,6 +15,7 @@ class CorrectCodes {
 	@AfterEach
 	public void resetTypeErrorsStorage() {
 		TypeErrorsStorage.clear();
+		System.out.println("-----------------");
 	}
 
 	@Test
@@ -249,6 +250,28 @@ class CorrectCodes {
 				, "    f(x);"
 				, "    int x;"
 				, "    print x;"
+				, "}"
+				)
+			);
+	}
+	
+	/**
+	 * Example of "for" implemented in SimplePlus
+	 */
+	@Test
+	void correctCode14() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    void action(int base, int max, int step) {"
+				, "        print base;"
+				, "    }"
+				, "    void for(int base, int max, int step) {"
+				, "        if(base >= max) return;"
+				, "        action(base, max, step);"
+				, "        for(base + step, max, step);"
+				, "    }"
+				, "    int i = 0;"
+				, "    for(i, 10, 1);"
 				, "}"
 				)
 			);

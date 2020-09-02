@@ -9,7 +9,8 @@ import support.CustomStringBuilder;
 public class ExpOr extends ExpBinBoolBoolIn {
 
 	/**
-	 * @param exp    the expression
+	 * @param left   the left side of the expression
+	 * @param right  the right side of the expression
 	 * @param line   the line in the code
 	 * @param column the column in the code
 	 */

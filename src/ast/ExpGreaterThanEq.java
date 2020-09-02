@@ -1,7 +1,7 @@
 package ast;
 
 /**
- * The class of greater than or equal expressions ("x >= y").
+ * The class of greater than or equal expressions ("x &gt;= y").
  */
 public class ExpGreaterThanEq extends ExpBinBoolIntIn {
 

@@ -9,7 +9,7 @@ class TypeFactory {
 	}
 
 	/**
-	 * Create the type associated to the passed {@link Etype EType} value.
+	 * Create the type associated to the passed {@link EType EType} value.
 	 *
 	 * @param type        the Etype value
 	 * @param isParameter the related variable is a parameter

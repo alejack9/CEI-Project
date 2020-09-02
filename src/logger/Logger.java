@@ -41,7 +41,7 @@ public abstract class Logger {
 	/**
 	 * Write a message.
 	 *
-	 * @param message      The message to print
+	 * @param message The message to print
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public void writeLineWithoutDateTime(String message) throws IOException {

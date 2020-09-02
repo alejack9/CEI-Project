@@ -163,7 +163,7 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 	@Override
 	public StmtDecFun visitDecFun(DecFunContext ctx) {
 		List<Arg> args = new LinkedList<Arg>();
-		int prev = currentFunctionArgsDimension; 
+		int prev = currentFunctionArgsDimension;
 		// Reset lastArgsDimension
 		currentFunctionArgsDimension = 0;
 		if (ctx.arg() != null)

@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface Step {
 	/**
+	 * @return true if there has been no errors, false otherwise
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public boolean get() throws IOException;

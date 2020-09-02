@@ -221,7 +221,8 @@ public class ExecuteVM {
 	}
 
 	/**
-	 * Calculates a specific byte value of an integer number.
+	 * Split passed integer to byte list and return the required index. NOTE: index
+	 * 0 returns the least significant value, and so on.
 	 * 
 	 * @param number the integer number
 	 * @param i      the position of the required byte
@@ -247,7 +248,10 @@ public class ExecuteVM {
 	 * value. <br>
 	 * The sequence must be passed from the most significant byte to the least.
 	 * 
-	 * @param numbers the byte values that build the number
+	 * @param b1 the most significant byte
+	 * @param b2 ...
+	 * @param b3 ...
+	 * @param b4 the least significant byte
 	 * @return the integer built value
 	 */
 	private static int byteToDec(byte b1, byte b2, byte b3, byte b4) {

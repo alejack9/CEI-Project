@@ -94,7 +94,7 @@ public class BTEntry extends Entry {
 		for (int i = 0; i < e1.size(); i++)
 			if (e1.get(i).getRefEffect().compareTo(e1_1.get(i).getRefEffect()) != 0)
 				return false;
-	
+
 		return true;
 	}
 
@@ -114,7 +114,7 @@ public class BTEntry extends Entry {
 			for (int i = 0; i < effects.size(); i++)
 				if (effects.get(i).compareTo(casted.effects.get(i)) != 0)
 					return false;
-	
+
 		return true;
 	}
 
@@ -122,7 +122,7 @@ public class BTEntry extends Entry {
 	public Object clone() {
 		BTEntry toRet = new BTEntry();
 		toRet.deleted = this.deleted;
-	
+
 		if (e1 == null) {
 			toRet.effects = new LinkedList<EEffect>();
 			for (EEffect e : effects)

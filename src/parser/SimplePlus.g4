@@ -1,17 +1,14 @@
 grammar SimplePlus;
 
-// THIS IS THE PARSER INPUT
-
 @header {
-import java.util.List;
-import java.util.LinkedList;
-import ast.errors.LexicalError;
+	import java.util.List;
+	import java.util.LinkedList;
+	import ast.errors.LexicalError;
 }
 
 @lexer::members {
-public List<LexicalError> errors = new LinkedList<LexicalError>();
+	public List<LexicalError> errors = new LinkedList<LexicalError>();
 }
-
 block	    : '{' statement* '}';
 
 statement   : declaration 
