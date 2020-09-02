@@ -96,10 +96,6 @@ local.properties
 # virtual machine crash logs, see http:
 hs_err_pid*
 
-/src/parser/SimplePlus*.java
-/src/parser/SimplePlus*.tokens
-/src/parser/SVM*.java
-/src/parser/SVM*.tokens
 /test.out
 /errors.txt
 
