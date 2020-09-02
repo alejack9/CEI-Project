@@ -4,11 +4,11 @@ package ast.errors;
  * Represents a semantic error, in particular the variable that is required to
  * delete is already deleted.
  */
-public class VariableAlreadyDeletedError extends SemanticError {
+public class VariableAlreadyDeletedError extends BehaviourError {
 	private static final long serialVersionUID = 1L;
 
 	public VariableAlreadyDeletedError(String variabileId, int line, int col) {
-		super(variabileId, SemanticErrorType.VARIABLEDOESNTEXIST, line, col);
+		super(variabileId, line, col);
 	}
 
 	@Override

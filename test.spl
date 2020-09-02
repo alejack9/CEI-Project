@@ -1,12 +1,13 @@
 {
 	int x;
-	delete x;
-	int x;
-	
-	void f(int var y, int var z) {
-		delete y;
-		print z;
+	void f (int var x){
+		void g(int var y){
+			delete y;
+		}
+		g(x);
+		delete x;
 	}
+	f(x);
 	
-	f(x, x);
+	x = 3;
 }

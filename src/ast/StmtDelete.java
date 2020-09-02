@@ -12,7 +12,6 @@ import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
 import util_analysis.entries.STEntry;
 import ast.errors.BehaviourError;
-import ast.errors.DeletedVariableError;
 import ast.errors.SemanticError;
 import ast.errors.TypeError;
 import ast.errors.VariableAlreadyDeletedError;
@@ -101,7 +100,7 @@ public class StmtDelete extends Stmt {
 		e.getIDEntry(id).setLocalEffect(BTHelper.seq(e.getIDEntry(id).getLocalEffect(), EEffect.D));
 
 		if (e.getIDEntry(id).getLocalEffect().equals(EEffect.T))
-			toRet.add(new DeletedVariableError(id, line, column));
+			toRet.add(new VariableAlreadyDeletedError(id, line, column));
 
 		return toRet;
 	}

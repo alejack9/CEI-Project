@@ -69,7 +69,7 @@ public class StmtAssignment extends Stmt {
 			TypeErrorsStorage.addError(new TypeError(
 					"Variable type (" + idEntry.getType() + ") is not equal to expression type (" + expType + ")", line,
 					column));
-	
+
 		return null;
 	}
 
@@ -83,6 +83,10 @@ public class StmtAssignment extends Stmt {
 
 		toRet.addAll(exp.inferBehaviour(e));
 
+		/**
+		 * Set the local effect to the id local effect seq by {@link EEffect#RW RW}
+		 * idLocalEffect = idLocalEffect ▷ RW
+		 */
 		e.getIDEntry(id).setLocalEffect(BTHelper.seq(e.getIDEntry(id).getLocalEffect(), EEffect.RW));
 
 		if (e.getIDEntry(id).getLocalEffect().equals(EEffect.T))

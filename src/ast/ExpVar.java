@@ -67,13 +67,6 @@ public class ExpVar extends Exp {
 		BTEntry current = e.getIDEntry(id);
 
 		/**
-		 * If the current behaviour is {@link EEffect#T TOP}, return without performing
-		 * any other operations
-		 */
-		if (EEffect.T.compareTo(current.getLocalEffect()) == 0)
-			return toRet;
-
-		/**
 		 * Set the local effect to the current local effect seq by {@link EEffect#RW RW}
 		 * currentLocalEffect = currentLocalEffect ▷ RW
 		 */
@@ -93,7 +86,7 @@ public class ExpVar extends Exp {
 	public void codeGen(int nl, CustomStringBuilder sb) {
 		if (idEntry.getType().isParameter()) {
 			CodeGenUtils.getVariableCodeGen(idEntry, nl, sb);
-	
+
 			if (idEntry.getType().isRef())
 				sb.newLine("lw $a0 0($a0) 4");
 		} else {

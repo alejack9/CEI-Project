@@ -136,6 +136,8 @@ public class StmtCall extends Stmt {
 			}
 		}
 
+		// The "setLocalEffect" represents the theoretical function "update"; before the
+		// update, the "par" operation is performed on all retrieved effects
 		eStar.entrySet().forEach(entry -> {
 			e.getIDEntry(entry.getKey())
 					.setLocalEffect(entry.getValue().stream().reduce((a, b) -> BTHelper.par(a, b)).get());
