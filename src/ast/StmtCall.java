@@ -30,7 +30,7 @@ import ast.errors.SemanticError;
 public class StmtCall extends Stmt {
 
 	private List<Exp> exps;
-	private List<EEffect> expsB = new LinkedList<EEffect>();
+	private List<EEffect> expsBehaviour = new LinkedList<EEffect>();
 
 	private String ID;
 	private STEntry idEntry;
@@ -45,7 +45,7 @@ public class StmtCall extends Stmt {
 		super(line, column);
 		this.ID = ID;
 		this.exps = exps;
-		exps.forEach(s -> expsB.add(EEffect.BOTTOM));
+		exps.forEach(s -> expsBehaviour.add(EEffect.BOTTOM));
 	}
 
 	@Override
@@ -146,10 +146,10 @@ public class StmtCall extends Stmt {
 		// The "setLocalEffect" represents the theoretical function "update"; before the
 		// update, the "par" operation is performed on all retrieved effects
 		eStar.entrySet().forEach(entry -> {
-			EEffect eeff = entry.getValue().y.stream().reduce((a, b) -> BTHelper.par(a, b)).get();
-			e.getIDEntry(entry.getKey()).setLocalEffect(eeff);
+			e.getIDEntry(entry.getKey())
+					.setLocalEffect(entry.getValue().y.stream().reduce((a, b) -> BTHelper.par(a, b)).get());
 
-			expsB.set(entry.getValue().x, eeff);
+			expsBehaviour.set(entry.getValue().x, e.getIDEntry(entry.getKey()).getLocalEffect());
 
 			// If any local behaviour (upgraded by the previous command) is TOP, add an
 			// error
@@ -193,8 +193,8 @@ public class StmtCall extends Stmt {
 			// Push $a0 with appropriate dimension
 			sb.newLine("push $a0 ", Integer.toString(paramsType.get(i).getDimension()));
 
-			// If the variabile has been deleted by the function invocation
-			if (exps.get(i) instanceof ExpVar && expsB.get(i).compareTo(EEffect.D) == 0)
+			// If the variable has been deleted by the function invocation
+			if (exps.get(i) instanceof ExpVar && expsBehaviour.get(i).compareTo(EEffect.D) == 0)
 				((ExpVar) exps.get(i)).getIdEntry().setDeleted(true);
 		}
 
