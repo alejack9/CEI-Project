@@ -96,4 +96,10 @@ local.properties
 # virtual machine crash logs, see http:
 hs_err_pid*
 
+SimplePlus*.java
+SimplePlus*.tokens
+SVM*.java
+SVM*.tokens
+
+
 # End of https:
