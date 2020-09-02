@@ -12,6 +12,7 @@ import behavioural_analysis.BTHelper;
 import behavioural_analysis.EEffect;
 import support.CodeGenUtils;
 import support.CustomStringBuilder;
+import support.Tuple;
 import util_analysis.Environment;
 import util_analysis.TypeErrorsStorage;
 import util_analysis.entries.BTEntry;
@@ -107,21 +108,11 @@ public class StmtCall extends Stmt {
 		return funT.getReturnType();
 	}
 
-	private class Tuple<X, Y> {
-		public final X x;
-		public final Y y;
-
-		public Tuple(X x, Y y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
-
 	@Override
 	public List<BehaviourError> inferBehaviour(Environment<BTEntry> e) {
 
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
-		
+
 		List<Type> parsTypes = ((ArrowType) idEntry.getType()).getParamTypes();
 
 		// Sigma_1
