@@ -276,4 +276,42 @@ class CorrectCodes {
 				)
 			);
 	}
+
+	/**
+	 * Example of a function that modify the referenced passed variable, int and
+	 * bool variants.
+	 */
+	@Test
+	void correctCode15() throws IOException {
+		Utils.correctCode(String.join("\r\n"
+				, "{"
+				, "    void boolModify(bool var x, bool value) {"
+				, "        x = value;"
+				, "    }"
+				, "    void workOnBool(bool x) {"
+				, "        print x;"
+				, "        if(x == true)"
+				, "            boolModify(x, false);"
+				, "        else"
+				, "            boolModify(x, true);"
+				, "        print x;"
+				, "    }"
+				, "    workOnBool(false);"
+				, "    "
+				, "    void intModify(int var x, int value) {"
+				, "        x = value;"
+				, "    }"
+				, "    void workOnInt(int x) {"
+				, "        print x;"
+				, "        if(x > 3)"
+				, "            intModify(x, 2);"
+				, "        else"
+				, "            intModify(x, 10);"
+				, "        print x;"
+				, "    }"
+				, "    workOnInt(8);"
+				, "}"
+				)
+			);
+	}
 }
