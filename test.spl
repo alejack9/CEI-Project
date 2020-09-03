@@ -1,13 +1,2 @@
 {
-	int x;
-	void f (int var x){
-		void g(int var y){
-			delete y;
-		}
-		g(x);
-		delete x;
-	}
-	f(x);
-	
-	x = 3;
 }
