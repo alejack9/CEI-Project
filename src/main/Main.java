@@ -1,6 +1,7 @@
 package main;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -181,7 +182,14 @@ public class Main {
 	private void start(String[] args) throws IOException {
 		manipulateArgs(args);
 
-		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(inFileName));
+		ANTLRInputStream input = null;
+
+		try {
+			input = new ANTLRInputStream(new FileInputStream(inFileName));
+		} catch(FileNotFoundException e) {
+			System.out.println("Input file '%s' not found".replace("%s", inFileName));
+			quit();
+		}
 
 		logger.writeLine("Input File Name: " + inFileName);
 		logger.writeLine("Code File Name: " + outCodeFileName);
