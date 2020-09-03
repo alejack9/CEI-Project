@@ -140,6 +140,6 @@ public class StmtAssignment extends Stmt {
 			sb.sameRow(Integer.toString(idEntry.offset), "($al) ");
 
 		/** Add the dimension of the variable to save */
-		sb.sameRow(Integer.toString(idEntry.getType().getDimension()));
+		sb.sameRow(Integer.toString(idEntry.getType().getReferencedDimension()));
 	}
 }

@@ -44,6 +44,15 @@ public abstract class Type implements Cloneable {
 	}
 
 	/**
+	 * Get dimension of the referenced type. <br>
+	 * 
+	 * @return the dimension
+	 */
+	public int getReferencedDimension() {
+		return _getDimension();
+	}
+
+	/**
 	 * Check if the type is related to a parameter.
 	 *
 	 * @return true if it's a parameter, false otherwise
