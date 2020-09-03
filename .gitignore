@@ -97,7 +97,6 @@ local.properties
 hs_err_pid*
 
 /test.out
-/errors.txt
 
 # End of https:
 /doc/
