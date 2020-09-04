@@ -1,6 +1,5 @@
 package ast;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,8 +78,7 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 
 	@Override
 	public StmtCall visitCall(CallContext ctx) {
-		List<Exp> exps = ctx.exp() == null ? Collections.emptyList()
-				: ctx.exp().stream().map(p -> (Exp) visit(p)).collect(Collectors.toList());
+		List<Exp> exps = ctx.exp().stream().map(p -> (Exp) visit(p)).collect(Collectors.toList());
 		return new StmtCall(ctx.ID().getText(), exps, ctx.start.getLine(), ctx.start.getCharPositionInLine());
 	}
 
@@ -166,13 +164,12 @@ public class VisitorImplSP extends SimplePlusBaseVisitor<ElementBase> {
 		int prev = currentFunctionArgsDimension;
 		// Reset lastArgsDimension
 		currentFunctionArgsDimension = 0;
-		if (ctx.arg() != null)
-			for (ArgContext spArg : ctx.arg()) {
-				// Add arguments to "args" array
-				args.add(visitArg(spArg));
-				// Add current argument dimension
-				currentFunctionArgsDimension += args.get(args.size() - 1).getType().getDimension();
-			}
+		for (ArgContext spArg : ctx.arg()) {
+			// Add arguments to "args" array
+			args.add(visitArg(spArg));
+			// Add current argument dimension
+			currentFunctionArgsDimension += args.get(args.size() - 1).getType().getDimension();
+		}
 		StmtDecFun toRet = new StmtDecFun(EType.getEnum(ctx.type().getText()).getType(), ctx.ID().getText(), args,
 				visitBlock(ctx.block()), ctx.start.getLine(), ctx.start.getCharPositionInLine());
 		// Reset the lastArgsDimension again

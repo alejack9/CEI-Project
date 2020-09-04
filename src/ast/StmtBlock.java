@@ -54,9 +54,8 @@ public class StmtBlock extends Stmt {
 	 */
 	public List<SemanticError> checkSemanticsSameScope(Environment<STEntry> e) {
 		List<SemanticError> toRet = new LinkedList<SemanticError>();
-		if (children != null)
-			for (Stmt el : children)
-				toRet.addAll(el.checkSemantics(e));
+		for (Stmt el : children)
+			toRet.addAll(el.checkSemantics(e));
 		return toRet;
 	}
 
@@ -138,9 +137,8 @@ public class StmtBlock extends Stmt {
 	public List<BehaviourError> inferBehaviourSameScope(Environment<BTEntry> e) {
 		List<BehaviourError> toRet = new LinkedList<BehaviourError>();
 
-		if (children != null)
-			for (Stmt el : children)
-				toRet.addAll(el.inferBehaviour(e));
+		for (Stmt el : children)
+			toRet.addAll(el.inferBehaviour(e));
 
 		return toRet;
 	}
