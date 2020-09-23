@@ -81,14 +81,18 @@ public class StmtBlock extends Stmt {
 			toRet = candidate != null && !(child instanceof StmtCall) ? candidate : toRet;
 
 			// If some expressions has returned not-null, perform action
-			if (toRet != null) {
+			// BUG FIX: 'toRet' should be 'candidate'
+//			if (toRet != null) {
+			if (candidate != null) {
 				// If the previous return type is not the same as the candidate, put the flag
 				// "changed" to "true"
 				if (lastRetT != null && !lastRetT.equalsTo(toRet))
 					changed = true;
 				// Otherwise update the last returned type
 				else
-					lastRetT = toRet.getType();
+					// BUG FIX: see line 84
+//					lastRetT = toRet.getType();
+					lastRetT = candidate.getType();
 
 				// If the current statement is an if-then-else ..
 				if (child instanceof StmtIte) {
